@@ -1,5 +1,7 @@
-rods = float(input("Input a number of rods: "))
-print(f"You input {rods} rods ")
+def getrods(rods):
+    rods = float(input("Input a number of rods: "))
+    print(f"You input {rods} rods ")
+    return rods
 
 def get_metres(rods):
     metres = rods * 5.0292
@@ -22,6 +24,7 @@ def get_time(rods):
     return time
 
 def run(rods):
+    getrods(rods)
     print("Conversions: ")
     print(f"Metres: {get_metres(rods)}")
     print(f"Feet: {get_feet(rods)}")
