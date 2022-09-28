@@ -21,16 +21,17 @@ def process_results(rows):
     for row in rows:
         home = row[1]
         away = row[2]
-        goals_by_home = row[3]
-        goals_by_away = row[4]
+        home_goals = int(row[3])
+        away_goals = int(row[4])
         winner = row[5]
         home,away,homegoals,awaygoals,winner=row[1],row[2],row[3],row[4],row[5]
+        
         if home not in dictionary:
-            dictionary[home] = [0,0,0,0,0,0,0] #winner, draw, loss, goal dif, points, shots, target shots
+            dictionary[home] = [0,0,0,0,0] #winner, draw, loss, goal dif, points
         if away not in dictionary:
-            dictionary[away] = [0,0,0,0,0,0,0]
-        dictionary[home][5] += goals_by_home
-        dictionary[away][5] += goals_by_away
+            dictionary[away] = [0,0,0,0,0]
+        
+        
         if winner == "D":
             dictionary[home][4] += 1
             dictionary[away][4] += 1
@@ -44,19 +45,20 @@ def process_results(rows):
             dictionary[home][0] += 1
             dictionary[home][4] += 3
             dictionary[away][2] += 1
-        goal_difference = abs(dictionary[row][7] - dictionary[row][8])
+            
+        goal_difference = home_goals - away_goals
         dictionary[home][3] += goal_difference
         dictionary[away][3] += goal_difference
         
-        home_shots += row[7]
-        dictionary[home][5] += home_shots
-        home_shots_target += row[9]
-        dictionary[home][6] += home_shots_target
-        away_shots += row[8]
-        away_shots_target += row[10]
+
+    return dictionary   
         
         
         
 if __name__ == "__main__":
     file_contents = read_csv(csv_file)
-    print(process_results(file_contents))
+    myDict=process_results(file_contents)
+    print('Club' + ' '*16 + 'Wins' + ' '*6+ 'Draws' + ' '*7 + 'Loses' + ' '*4 + 'Goal dif' + ' '*4 + 'Points')
+    for key, value in sorted(myDict.items(), key=lambda e: e[1][4], reverse=True):
+        print(f'{key:<20} {value[0]:<10} {value[1]:<10} {value[2]:<10} {value[3]:<10} {value[4]:<10}')
+    
