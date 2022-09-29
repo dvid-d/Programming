@@ -11,3 +11,8 @@ class testingWindChill(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+    #when executing this, the program also runs the input() methods inside the air_temp and air_speed variables in the other file
+    #even though I only imported the calculate_wind_chill method.
+    #It would still do the test after that. The only solution to this that I have thought of was to make the two variables comments.
+    
