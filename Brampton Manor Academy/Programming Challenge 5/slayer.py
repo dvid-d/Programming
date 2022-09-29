@@ -1,9 +1,9 @@
-def program():
+# SLAYER = int(input("Enter your guess for slayer: "))
+
+def program(SLAYER):
     print("""Guess a six-digit number SLAYER so that the following equation is true,
           where each one of the letters stands for the digit in the position shown:
                            SLAYER + SLAYER + SLAYER = LAYERS""")
-
-    SLAYER = int(input("Enter your guess for slayer: "))
 
     digits_slayer = []
     for i in str(SLAYER):
@@ -33,8 +33,10 @@ def program():
         print(f"SLAYER + SLAYER + SLAYER = {LAYERS}")
         print(f"LAYERS = {LAYERS}")
         print("Thanks for playing.")
+        check = "True"
+        return check
     else:
         print("Your guess is incorrect")
 
 if __name__ == '__main__':
-    program()
+    program(SLAYER)
