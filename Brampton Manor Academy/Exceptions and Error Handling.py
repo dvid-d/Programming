@@ -1,31 +1,21 @@
 import operator
 
-operators = {"+":operator.add, "-".operator.sub, "*":operator.mul, "/":operator.truediv}
+operators = {"+":operator.add, "-":operator.sub, "*":operator.mul, "/":operator.truediv}
 
 def table():
-    operator_user = str(input("Enter an operator"))
-    n = str(input("Enter a natural number"))
-    try:
-        if not operator_user in operators:
-            raise NameError()
-        if operator_user == "/" and n == 0:
-            raise ZeroDivisionError()
-    ##
-    else:
-        line_one = []
-        for i in range(0, n+1):
-            line_one.append(i)
-        print(f"{operator_user} | ")
-        for j in range(0, n):
-            print(line_one[j], end = ' ')
-        print("-"*(n*3))
-        if operator_user == "+":
-            for i in range(0,n+1):
-                print(i, end = ' ')
-                print("|", end = ' ')
-                if i == 0:
-                    for i in range(0, n+1):
-                        print(i, end = ' ')
-                else:
-                    print(i+1,end=' ')
-                print(" ")
+    operator_user = str(input("Enter an operator: ")) #asks user for operator
+    n = int(input("Enter a natural number: ")) #asks user for a number
+    a = 0
+    while a < (n+1):
+        if a == 0:
+             print(f"{a}  | ", end = ' ')
+             a += 1
+        else:
+            print(f"{a}  ", end = ' ')
+            a += 1
+    print("\n" + "----"*(n+1))
+    for i in range(0, n):
+        if i == 0:
+            print(f"{i}  | ", end = ' ')
+        else:
+            print(operators[operator_user](i, 1), end == ' ')
