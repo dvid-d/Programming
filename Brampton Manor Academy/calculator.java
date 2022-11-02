@@ -25,7 +25,7 @@ public class calculator {
         int b = new Scanner(System.in);
         switch (operation){
             case "A":
-
+                ...
         }
     }
 }
