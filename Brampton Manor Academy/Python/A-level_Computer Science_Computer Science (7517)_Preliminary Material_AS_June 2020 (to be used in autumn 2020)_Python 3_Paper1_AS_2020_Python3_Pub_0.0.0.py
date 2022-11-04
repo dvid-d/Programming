@@ -12,7 +12,7 @@ MAX_HEIGHT = 100
 class FileHeader:
   def __init__(self):
     """
-       Parameters: object
+       Parameters: Object
        Description: Creates an object
     """
     self.Title = EMPTY_STRING
@@ -22,7 +22,7 @@ class FileHeader:
 
 def DisplayError(ErrorMessage):
   """
-   Parameters: string
+   Parameters: String
    Description: Displays an error message
 """
   print("Error: ", ErrorMessage)
@@ -40,7 +40,7 @@ def PrintHeading(Heading):
 
 def DisplayImage(Grid, Header):
   """
-     Parameters: list, object
+     Parameters: List, object
      Description: Displays the image
   """
   print()
@@ -71,7 +71,7 @@ def SaveImage(Grid, Header):
 
 def EditImage(Grid, Header):
   """
-     Parameters: String, object
+     Parameters: List, object
      Return type: String
      Description: Allows the user to edit the image selected
   """
@@ -96,7 +96,7 @@ def ConvertChar(PixelValue):
   """
      Parameters: Integer
      Return type: String
-     Description: Converts the value of a pixel to its corresponding character
+     Description: Converts the value of a pixel to its corresponding ascii character
   """
   if PixelValue <= 32:
     AsciiChar = '#'
@@ -118,9 +118,9 @@ def ConvertChar(PixelValue):
 
 def LoadGreyScaleImage(FileIn, Grid, Header):
   """
-     Parameters: String
+     Parameters: String, list, string
      Return type: String
-     Description: Loads the
+     Description: -
   """
   try:
     for Row in range(Header.Height):
@@ -133,6 +133,11 @@ def LoadGreyScaleImage(FileIn, Grid, Header):
   return Grid
   
 def LoadAsciiImage(FileIn, Grid, Header):
+  """
+     Parameters: String, list, object
+     Return type: List
+     Description: Loads the ascii (text) image
+  """
   try:
     ImageData = FileIn.readline()
     NextChar = 0
@@ -145,6 +150,11 @@ def LoadAsciiImage(FileIn, Grid, Header):
   return Grid
 
 def LoadFile(Grid, Header):
+  """
+     Parameters: List, object
+     Return type: List, object
+     Description: Loads the file passed in
+  """
   FileFound = False
   FileTypeOK = False
   FileName = input("Enter filename to load: ")
@@ -177,6 +187,10 @@ def LoadFile(Grid, Header):
   return Grid, Header
 
 def SaveFile(Grid, Header):
+  """
+     Parameters: List, object
+     Description: Saves the edits made by the user
+  """
   FileName = input("Enter filename: ")
   FileOut = open(FileName + ".txt", 'w')
   FileOut.write(Header.Title + ',' + str(Header.Width) + ',' + str(Header.Height) + ',' + 'A' + '\n')
@@ -186,12 +200,20 @@ def SaveFile(Grid, Header):
   FileOut.close()
 
 def ClearGrid(Grid):
+  """
+     Parameters: List
+     Return type: List
+     Description: Replaces the image displayed with dots.
+  """
   for Row in range(MAX_HEIGHT):
     for Column in range(MAX_WIDTH):
       Grid[Row][Column] = '.'
   return Grid
    
 def DisplayMenu():
+  """
+     Description: Displays the menu options to the user
+  """
   print()
   print("Main Menu")
   print("=========")
@@ -203,12 +225,19 @@ def DisplayMenu():
   print()
 
 def GetMenuOption():
+  """
+     Return type: String
+     Description: Obtains the option selected by the user and returns it
+  """
   MenuOption = EMPTY_STRING
   while len(MenuOption) != 1:
     MenuOption = input("Enter your choice: ")
   return MenuOption
   
 def Graphics():
+  """
+     Description: Displays the graphics of the program
+  """
   Grid = [['' for Column in range(MAX_WIDTH)] for Row in range(MAX_HEIGHT)]
   Grid = ClearGrid(Grid)
   Header = FileHeader()
