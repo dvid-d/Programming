@@ -41,14 +41,30 @@ public class Calculator {
         System.out.println("Operations: cube (a^3)");
         System.out.println("Operations: power (a^b)");
         switch (method) {
-            case "add" -> System.out.println(add(a, b));
-            case "subtract" -> System.out.println(subtract(a, b));
-            case "multiply" -> System.out.println(multiply(a, b));
-            case "divide" -> System.out.println(divide(a, b));
-            case "square" -> System.out.println(square(a));
-            case "cube" -> System.out.println(cube(a));
-            case "power" -> System.out.println(power(a, b));
-            default -> System.out.print("Please enter a valid operator and/or numbers.");
+            case "add":
+                System.out.println(add(a, b));
+                break;
+            case "subtract":
+                System.out.println(subtract(a, b));
+                break;
+            case "multiply":
+                System.out.println(multiply(a, b));
+                break;
+            case "divide":
+                System.out.println(divide(a, b));
+                break;
+            case "square":
+                System.out.println(square(a));
+                break;
+            case "cube":
+                System.out.println(cube(a));
+                break;
+            case "power":
+                System.out.println(power(a, b));
+                break;
+            default:
+                System.out.print("Please enter a valid operator and/or numbers.");
+                break;
         }
     }
 }
