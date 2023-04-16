@@ -104,7 +104,3 @@ if __name__ == "__main__":
 # Buttons: Subject, Exam Board (after clicking Level button), Level (if AS/A level is to be added, button for each),
 # Settings Links to exam board-specific text books in every subject, Revision summary for every subject,
 # Exam Questions, Spec Subjects: English Lit, Maths, Bio, Chem, Physics, Comp Sci
-
-# 16/4/23
-# The big ugly fucking blocks are the logos. I don't know why they're there, and it's really annoying :|
-# 18:35pm nvm I fixed it lol
