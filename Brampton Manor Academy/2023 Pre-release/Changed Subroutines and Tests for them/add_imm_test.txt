@@ -1,0 +1,4 @@
+ NUM1:      2
+START: LDA  NUM1
+       AND# 2
+       HLT 

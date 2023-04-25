@@ -1,0 +1,135 @@
+def ExtractOpCode(Instruction, LineNumber, Memory):
+  if len(Instruction) > 9:
+    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BLT", "BGT", "LSL#", "LSR#", "AND", "AND#","   "]
+    Operation = Instruction[7:10]
+    if len(Instruction) > 10:
+      AddressMode = Instruction[10:11]
+      if AddressMode == '#':
+        Operation += AddressMode
+    if Operation in OpCodeValues:
+      Memory[LineNumber].OpCode = Operation
+    else:
+      if Operation != EMPTY_STRING:
+        print("Error Code 5")
+        Memory[0].OpCode = "ERR"
+  return Memory
+
+def ExecuteLSLimm(Registers, Address):
+  Value = ConvertToBinary(Registers[ACC]) + "0"
+  Registers[ACC] = ConvertToDecimal(Value)
+  return Registers
+
+
+def ExecuteLSRimm(Registers, Address):
+  Value = Registers[ACC]
+  for i in range(Address):
+    Value = Value / 2
+  Value = int(Value)
+  Registers[ACC] = Value
+  return Registers
+
+def ExecuteBNE(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  FlagZ = StatusRegister[0]
+  if FlagZ != "1":
+    Registers[PC] = Address
+  return Registers
+
+def ExecuteBLT(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  FlagN = StatusRegister[1]
+  if FlagN == "1":
+    Registers[PC] = Address
+  return Registers
+
+def ExecuteBGT(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  FlagZ = StatusRegister[0]
+  FlagN = StatusRegister[1]
+  if (FlagZ == "0") and (FlagN == "0"):
+    Registers[PC] = Address
+  return Registers
+
+def ExecuteANDimm(Registers, Address):
+  Value = ConvertToBinary(Registers[ACC])
+  Compared_Value = ConvertToBinary(Address)
+  if Value == Compared_Value:
+    Flags = ConvertToBinary(Registers[STATUS]) #Same logic as 'a == b'
+    Flags = Flags[1:]
+    Flags = "1" + Flags
+    Registers[STATUS] = ConvertToDecimal(Flags)
+  return Registers
+
+def ExecuteAND(Memory, Registers, Address):
+  Value = ConvertToBinary(Registers[ACC])
+  Compared_Value = ConvertToBinary(Memory[Address].OperandValue)
+  if Value == Compared_Value:
+    Flags = ConvertToBinary(Registers[STATUS]) #Same logic as 'a == b'
+    Flags = Flags[1:]
+    Flags = "1" + Flags
+    Registers[STATUS] = ConvertToDecimal(Flags)
+  return Registers
+
+#def ExecuteORR:
+#turn both into their bit patterns
+#if unequal in length, let the longer one be used for the number of bits they do not both have.
+#then split them into individual bits and compare accondingly
+
+def Execute(SourceCode, Memory): 
+  Registers = [0, 0, 0, 0, 0] 
+  Registers = SetFlags(Registers[ACC], Registers)
+  Registers[PC] = 0 
+  Registers[TOS] = HI_MEM
+  FrameNumber = 0
+  DisplayFrameDelimiter(FrameNumber)
+  DisplayCurrentState(SourceCode, Memory, Registers)
+  OpCode = Memory[Registers[PC]].OpCode
+  while OpCode != "HLT":
+    FrameNumber += 1
+    print()
+    DisplayFrameDelimiter(FrameNumber)
+    Operand = Memory[Registers[PC]].OperandValue
+    print("*  Current Instruction Register: ", OpCode, Operand)
+    Registers[PC] = Registers[PC] + 1
+    if OpCode == "LDA":
+      Registers = ExecuteLDA(Memory, Registers, Operand)
+    elif OpCode == "STA": 
+      Memory = ExecuteSTA(Memory, Registers, Operand) 
+    elif OpCode == "LDA#": 
+      Registers = ExecuteLDAimm(Registers, Operand)
+    elif OpCode == "ADD":
+      Registers = ExecuteADD(Memory, Registers, Operand)
+    elif OpCode == "JMP": 
+      Registers = ExecuteJMP(Registers, Operand)
+    elif OpCode == "JSR":
+      Memory, Registers = ExecuteJSR(Memory, Registers, Operand)
+    elif OpCode == "CMP#":
+      Registers = ExecuteCMPimm(Registers, Operand)
+    elif OpCode == "BEQ":
+      Registers = ExecuteBEQ(Registers, Operand) 
+    elif OpCode == "SUB":
+      Registers = ExecuteSUB(Memory, Registers, Operand)
+    elif OpCode == "SKP":
+      ExecuteSKP()
+    elif OpCode == "RTN":
+      Registers = ExecuteRTN(Memory, Registers)
+    elif OpCode == "BNE":
+      Registers = ExecuteBNE(Registers, Operand)
+    elif OpCode == "BLT":
+      Registers = ExecuteBLT(Registers, Operand)
+    elif OpCode == "BGT":
+      Registers = ExecuteBGT(Registers, Operand)
+    elif OpCode == "LSL#":
+      Registers = ExecuteLSLimm(Registers, Operand)
+    elif OpCode == "LSR#":
+      Registers = ExecuteLSRimm(Registers, Operand)
+    elif OpCode == "AND#":
+      Registers = ExecuteANDimm(Registers, Operand)
+    elif OpCode == "AND":
+      Registers = ExecuteAND(Memory, Registers, Operand)
+    if Registers[ERR] == 0:
+      OpCode = Memory[Registers[PC]].OpCode    
+      DisplayCurrentState(SourceCode, Memory, Registers)
+    else:
+      OpCode = "HLT"
+  print("Execution terminated")

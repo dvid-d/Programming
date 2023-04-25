@@ -1,0 +1,10 @@
+ NUM1:      3 
+ NUM2:      4 
+ NUM3:      0 
+START: LDA  NUM1
+WHILE: CMP# 12
+       BNE  WEND
+       SKP
+ WEND: ADD  NUM2
+       STA  NUM3
+       HLT 

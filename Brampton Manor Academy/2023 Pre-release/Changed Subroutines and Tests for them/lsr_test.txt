@@ -1,0 +1,6 @@
+ NUM1:      4
+ NUM2:      0
+START: LDA  NUM1
+       LSR# 1
+       STA  NUM2
+       HLT 
