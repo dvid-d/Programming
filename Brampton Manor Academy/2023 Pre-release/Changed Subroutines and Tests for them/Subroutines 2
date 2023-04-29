@@ -29,9 +29,9 @@ def ExecuteMVN(Registers, Memory, Address):
   Registers[ACC]= Value
   return Registers
 
-def EditSourceCode(SourceCode, Memory):
+def EditSourceCode(SourceCode):
   LineNumber = 0
-  while LineNumber <= 0 or LineNumber > Memory[0]:
+  while LineNumber <= 0 or LineNumber > int(SourceCode[0]):
     LineNumber = int(input("Enter a valid line number of code to edit: "))
   print(SourceCode[LineNumber])
   Choice = EMPTY_STRING
