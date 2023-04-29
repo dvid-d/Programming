@@ -1,0 +1,56 @@
+
+def ExecuteCMP(Registers, Memory, Address):
+  Value = Registers[ACC] - Memory[Address].OperandValue
+  Registers = SetFlags(Value, Registers)
+  return Registers
+  
+def ExecuteSUBimm(Registers, Address):
+  Registers[ACC] = Registers[ACC] - Address
+  Registers = SetFlags(Registers[ACC], Registers)
+  if Registers[STATUS] == ConvertToDecimal("001"):
+    ReportRunTimeError("Overflow", Registers)
+  return Registers
+
+def ExecuteADDimm(Registers, Address):
+  Registers[ACC] = Registers[ACC] + Address
+  Registers = SetFlags(Registers[ACC], Registers)
+  if Registers[STATUS] == ConvertToDecimal("0010"):
+    ReportRunTimeError("Overflow", Registers)
+  return Registers
+
+def ExecuteMVNimm(Registers, Address):
+  Value = ~ Address
+  Registers[ACC] = Value
+  return Registers
+
+def ExecuteMVN(Registers, Memory, Address):
+  Value = Memory[Address].OperandValue
+  Value = ~ Value
+  Registers[ACC]= Value
+  return Registers
+
+## inside AssemblerSimulator()
+else:
+        SourceCode = EditSourceCode(SourceCode, Memory)
+        Memory = ResetMemory(Memory)
+
+def EditSourceCode(SourceCode, Memory):
+  LineNumber = 0
+  while LineNumber <= 0 or LineNumber > Memory[0]:
+    LineNumber = int(input("Enter a valid line number of code to edit: "))
+  print(SourceCode[LineNumber])
+  Choice = EMPTY_STRING
+  while Choice != "C":
+    Choice = EMPTY_STRING
+    while Choice != "E" and Choice != "C":
+      print("E - Edit this line")
+      print("C - Cancel edit")
+      Choice = input("Enter your choice: ")
+    if Choice == "E":
+      SourceCode[LineNumber] = input("Enter the new line: ")
+    DisplaySourceCode(SourceCode)
+  return SourceCode
+ 
+## Create any new test files where necessary
+## Don't forget to download and upload latest version of program
+## Don't forget to modify the symbol table and the Execute subroutine
