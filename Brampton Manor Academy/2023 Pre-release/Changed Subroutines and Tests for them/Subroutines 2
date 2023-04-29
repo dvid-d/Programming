@@ -29,11 +29,6 @@ def ExecuteMVN(Registers, Memory, Address):
   Registers[ACC]= Value
   return Registers
 
-## inside AssemblerSimulator()
-else:
-        SourceCode = EditSourceCode(SourceCode, Memory)
-        Memory = ResetMemory(Memory)
-
 def EditSourceCode(SourceCode, Memory):
   LineNumber = 0
   while LineNumber <= 0 or LineNumber > Memory[0]:
