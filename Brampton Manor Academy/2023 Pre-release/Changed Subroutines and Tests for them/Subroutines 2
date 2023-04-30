@@ -57,21 +57,22 @@ def EditSourceCode(SourceCode):
     DisplaySourceCode(SourceCode)
   return SourceCode
  
- def Assemble(SourceCode, Memory):
+def Assemble(SourceCode, Memory):
   Memory = ResetMemory(Memory)
   NumberOfLines = int(SourceCode[0])
   SymbolTable = {}
   Memory, SymbolTable = PassOne(SourceCode, Memory, SymbolTable)
+  if "HLT" not in SourceCode:
+      Memory[0].OpCode = "ERR"
   if Memory[0].OpCode != "ERR":
     Memory[0].OpCode = "JMP"
     if "START" in SymbolTable:
       Memory[0].OperandValue = SymbolTable["START"]
-    elif "HLT" not in SymbolTable:
-      Memory[0].OpCode = "ERR"
     else:
       Memory[0].OperandValue = 1 
     Memory = PassTwo(Memory, SymbolTable, NumberOfLines)
   return Memory
+
  
 ## Create any new test files where necessary
 ## Don't forget to download and upload latest version of program
