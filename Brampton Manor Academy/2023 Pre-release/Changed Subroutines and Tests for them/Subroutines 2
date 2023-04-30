@@ -29,6 +29,17 @@ def ExecuteMVN(Registers, Memory, Address):
   Registers[ACC]= Value
   return Registers
 
+def SaveFile(SourceCode):
+  FileName = input("Enter a name to save the program as: ")
+  File = open(FileName + ".txt","w")
+  try:
+    for Line in range(1, len(SourceCode)):
+      File.write(SourceCode[Line] + "\n")
+    File.close()
+    print("File saved successfully.")
+  except:
+    print("An error has occoured")
+
 def EditSourceCode(SourceCode):
   LineNumber = 0
   while LineNumber <= 0 or LineNumber > int(SourceCode[0]):
