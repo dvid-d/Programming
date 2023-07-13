@@ -5,7 +5,7 @@
 
 from tkinter import *
 from tkinter import ttk
-
+from PIL import ImageTk,Image
 
 def InitialiseGame():
     source = Tk()
@@ -16,12 +16,20 @@ def InitialiseGame():
     return source, screen_width, screen_height
 
 
-def LoadImage():
-    pass
+def LoadImage(source):
+    map = ImageTk.PhotoImage(Image.open("London Underground (Victoria line only).png"))
+    map_label = Label(image=map)
+    map_label.place(x=20, y=50)
 
 
-def GenerateMap(playButton):
-    playButton.destroy()
+def ClearFrame(source):
+    for widget in source.winfo_children():
+        widget.destroy()
+
+
+def GenerateMap(source):
+    ClearFrame(source)
+    LoadImage(source)
 
 
 def Play(playButton):
@@ -33,7 +41,7 @@ def QuitGame():
 
 
 def main_screen(source, screen_width, screen_height):
-    playButton = Button(source, padx=250, pady=50, text="Play", command=lambda: Play(playButton), background="grey")
+    playButton = Button(source, padx=250, pady=50, text="Play", command=lambda: Play(source), background="grey")
     playButton.place(x=screen_width/3, y=screen_height/3)
 
     quitButton = Button(source, padx=15, pady=15, text="Quit", background="gray", command=QuitGame)
