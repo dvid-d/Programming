@@ -5,20 +5,23 @@ import Button
 
 pygame.init()
 
-screen_width = 1920
-screen_height = 1080
-screen = pygame.display.set_mode((screen_width,screen_height))
-pygame.display.set_caption("2D London Underground Simulator")
 
-run = True
-while run:
-    screen.fill((237,239,228))
-
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
+def MainMenu():
+    screen_width = 1920
+    screen_height = 1080
+    screen = pygame.display.set_mode((screen_width,screen_height))
+    pygame.display.set_caption("2D London Underground Simulator")
     pygame.display.update()
+    return screen_width, screen_height, screen
 
-pygame.quit()
+
+def Play():
+    pygame.display.update()
+    
+
+if __name__ == '__main__':
+    run = True
+    screen_width, screen_height, screen = MainMenu()
+    while run:
+        Play()
+    pygame.quit()
