@@ -12,8 +12,8 @@ pygame.display.set_caption("2D London Underground Simulator")
 
 run = True
 while run:
-
     screen.fill((237,239,228))
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
