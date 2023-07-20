@@ -3,8 +3,8 @@
 import pygame
 from inspect import getsourcefile
 from os.path import abspath
-#import Button
-#import controls
+import Button
+import controls
 
 
 def SetUpScreen():
