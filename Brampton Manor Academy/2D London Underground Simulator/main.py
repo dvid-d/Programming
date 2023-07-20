@@ -3,7 +3,7 @@
 import pygame
 from inspect import getsourcefile
 from os.path import abspath
-import Button
+import button
 import controls
 
 
