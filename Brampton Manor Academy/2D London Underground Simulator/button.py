@@ -24,9 +24,3 @@ class Button():
                 self.isClicked = True
             elif pygame.mouse.get_pressed()[0] == 0:
                 self.isClicked = False
-
-<<<<<<< HEAD:Brampton Manor Academy/2D London Underground Simulator/Button.py
-        return self.isClicked
-=======
-        surface.blit(self.image, (self.shape.x, self.shape.y))
->>>>>>> e3ae6b1b6751bfd75dd318cf8ee5fbb7533a1483:Brampton Manor Academy/2D London Underground Simulator/button.py
