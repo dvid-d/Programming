@@ -1,7 +1,7 @@
 import pygame
-#[0] - [0] left mouse button
-#[1] - [1] middle mouse button
-#[2] - [2] right mouse button
+#[0] left mouse button
+#[1] middle mouse button
+#[2] right mouse button
 
 
 class Button():
@@ -24,3 +24,4 @@ class Button():
                 self.isClicked = True
             elif pygame.mouse.get_pressed()[0] == 0:
                 self.isClicked = False
+        return self.isClicked
