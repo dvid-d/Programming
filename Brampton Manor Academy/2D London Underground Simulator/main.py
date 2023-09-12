@@ -13,6 +13,7 @@ from sys import exit
 from inspect import getsourcefile
 from os.path import abspath
 import button
+import gameState
 import controls
 
 
@@ -28,7 +29,7 @@ def SetUpScreen():
     return SCREEN_WIDTH, SCREEN_HEIGHT, screen, path
 
 
-def MainMenu(path, screen, savesMenu):
+def MainMenu(path, screen):
     start_button_icon = pygame.image.load(f"{path}\\Icons\\play_button.png")
     start_button = button.Button(screen, 180, 220, start_button_icon, 9/20)
 
@@ -39,13 +40,12 @@ def MainMenu(path, screen, savesMenu):
 
 
 def SavesMenu(path, screen):
-    returnToSaves = False
     screen.fill((58,208,241))
     
     save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
-    save_1_button = button.Button(screen, 50, 90, save_rect, 1) # creates the first, second and third buttons respectivelly
-    save_2_button = button.Button(screen, 50, 200, save_rect, 1)
-    save_3_button = button.Button(screen, 50, 310, save_rect, 1)
+    save_1_button = button.Button(screen, 40, 90, save_rect, 1) # creates the first, second and third buttons respectivelly
+    save_2_button = button.Button(screen, 40, 200, save_rect, 1)
+    save_3_button = button.Button(screen, 40, 310, save_rect, 1)
 
     save_surface = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 40)
     save_1_surface = save_surface.render("Save 1", True, "black")
@@ -54,7 +54,7 @@ def SavesMenu(path, screen):
 
     screen.blit(save_1_surface, (50,110))
     screen.blit(save_2_surface, (50,220))
-    screen.blit(save_3_surface, (50,330))        
+    screen.blit(save_3_surface, (50,330))
     return save_1_button, save_2_button, save_3_button
 
 def Quit():
@@ -69,13 +69,7 @@ def Play():
 if __name__ == '__main__':
     pygame.init()
     run = True
-    # game states
-    startUp = True
-    savesMenu = False
-    playGame = False
-    inSettings = False
-    returnToMenu = False
-    returnToSaves = False
+    #states = {"startUp":1,"savesMenu":2,"playGame":3,"inSettings":4,"returnToMenu":5,"returnToSaves":6}
 
     # sets up screen & frame rate
     SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen()
@@ -83,8 +77,8 @@ if __name__ == '__main__':
     
     # main game loop
     while run:
-        if startUp == True or returnToMenu == True:
-            start_button, quit_button = MainMenu(path, screen, savesMenu)
+        if startUp == True or gameState.state == True:
+            start_button, quit_button = MainMenu(path, screen)
             if quit_button.wasClicked():
                 run = False
             elif start_button.wasClicked():
@@ -92,6 +86,17 @@ if __name__ == '__main__':
                 savesMenu = True
         elif savesMenu == True or returnToSaves == True:
             save_1_button, save_2_button, save_3_button = SavesMenu(path, screen)
+            if save_1_button.wasClicked():
+                savesMenu = False
+                returnToSaves = False
+                print("00000000000000000000000000000000000000000")
+                #load file and generate game map for all three save options
+            elif save_2_button.wasClicked():
+                savesMenu = False
+                returnToSaves = False
+            elif save_3_button.wasClicked():
+                savesMenu = False
+                returnToSaves = False
         elif playGame == True:
             Play()
 
