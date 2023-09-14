@@ -18,8 +18,8 @@ import controls
 
 
 def SetUpScreen():
-    SCREEN_WIDTH = 960
-    SCREEN_HEIGHT = 540
+    SCREEN_WIDTH = 1920
+    SCREEN_HEIGHT = 1080
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT)) # sets window width & length
     pygame.display.set_caption('2D London Underground Simulator') # sets window name
     screen.fill((58,208,241)) # sets window colour
@@ -31,10 +31,10 @@ def SetUpScreen():
 
 def MainMenu(path, screen):
     start_button_icon = pygame.image.load(f"{path}\\Icons\\play_button.png")
-    start_button = button.Button(screen, 180, 220, start_button_icon, 9/20)
+    start_button = button.Button(screen, SCREEN_WIDTH/2.8, SCREEN_HEIGHT/2.4, start_button_icon, 9/20)
 
     quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
-    quit_button = button.Button(screen, 560, 220, quit_button_icon, 9/20)
+    quit_button = button.Button(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2.4, quit_button_icon, 9/20)
 
     return start_button, quit_button
 
@@ -43,18 +43,19 @@ def SavesMenu(path, screen):
     screen.fill((58,208,241))
     
     save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
-    save_1_button = button.Button(screen, 40, 90, save_rect, 1) # creates the first, second and third buttons respectivelly
-    save_2_button = button.Button(screen, 40, 200, save_rect, 1)
-    save_3_button = button.Button(screen, 40, 310, save_rect, 1)
+    save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1) # creates the first, second and third buttons respectivelly
+    save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
+    save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
 
     save_surface = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 40)
     save_1_surface = save_surface.render("Save 1", True, "black")
     save_2_surface = save_surface.render("Save 2", True, "black")
     save_3_surface = save_surface.render("Save 3", True, "black")
 
-    screen.blit(save_1_surface, (50,110))
-    screen.blit(save_2_surface, (50,220))
-    screen.blit(save_3_surface, (50,330))
+    screen.blit(save_1_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3))
+    screen.blit(save_2_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 110))
+    screen.blit(save_3_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 230))
+    
     return save_1_button, save_2_button, save_3_button
 
 def Quit():
@@ -69,7 +70,7 @@ def Play():
 if __name__ == '__main__':
     pygame.init()
     run = True
-    #states = {"startUp":1,"savesMenu":2,"playGame":3,"inSettings":4,"returnToMenu":5,"returnToSaves":6}
+    gameState = gameState.GameState(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
 
     # sets up screen & frame rate
     SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen()
@@ -77,28 +78,22 @@ if __name__ == '__main__':
     
     # main game loop
     while run:
-        if startUp == True or gameState.state == True:
+        if gameState.state == 1 or gameState.state == 2:
             start_button, quit_button = MainMenu(path, screen)
             if quit_button.wasClicked():
                 run = False
             elif start_button.wasClicked():
-                startUp = False
-                savesMenu = True
-        elif savesMenu == True or returnToSaves == True:
+                gameState.changeState(3)
+        elif gameState.state == 3 or gameState.state == 4:
             save_1_button, save_2_button, save_3_button = SavesMenu(path, screen)
             if save_1_button.wasClicked():
-                savesMenu = False
-                returnToSaves = False
+                gameState.changeState(5)
                 print("00000000000000000000000000000000000000000")
                 #load file and generate game map for all three save options
             elif save_2_button.wasClicked():
-                savesMenu = False
-                returnToSaves = False
+                gameState.changeState(5)
             elif save_3_button.wasClicked():
-                savesMenu = False
-                returnToSaves = False
-        elif playGame == True:
-            Play()
+                gameState.changeState(5)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
