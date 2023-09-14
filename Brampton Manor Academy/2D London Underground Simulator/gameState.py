@@ -1,10 +1,17 @@
+states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
+
 class GameState():
-    states = {"startUp":1,"savesMenu":2,"playGame":3,"inSettings":4,"returnToMenu":5,"returnToSaves":6}
     def __init__(self, state):
-        self.state = states[state]
+        for possible_state in states_dict:
+            if states_dict[possible_state] == state:
+                self.state = state
+                break
     
     def getState(self):
         return self.state
     
     def changeState(self, state):
-        self.state = state
+        for possible_state in states_dict:
+            if states_dict[possible_state]== state:
+                self.state = state
+                break
