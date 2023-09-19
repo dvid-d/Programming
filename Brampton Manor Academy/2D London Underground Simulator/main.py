@@ -14,6 +14,7 @@ from inspect import getsourcefile
 from os.path import abspath
 import button
 import gameState
+from pytmx.util_pygame import load_pygame
 import controls
 
 
@@ -62,9 +63,14 @@ def Quit():
     pygame.quit()
     exit()
 
+def LoadMap(save):
+    map_data = load_pygame(f'{path}\\Saves\\{save}')
+    pass
 
-def Play():
-    pygame.display.update()
+def Play(gameState, save):
+    while gameState.state == 5:
+        LoadMap(save)
+        pygame.display.update()
     
 
 if __name__ == '__main__':
@@ -88,12 +94,14 @@ if __name__ == '__main__':
             save_1_button, save_2_button, save_3_button = SavesMenu(path, screen)
             if save_1_button.wasClicked():
                 gameState.changeState(5)
-                print("00000000000000000000000000000000000000000")
+                Play(gameState, "save_1")
                 #load file and generate game map for all three save options
             elif save_2_button.wasClicked():
                 gameState.changeState(5)
+                Play(gameState, "save_2")
             elif save_3_button.wasClicked():
                 gameState.changeState(5)
+                Play(gameState, "save_3")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
