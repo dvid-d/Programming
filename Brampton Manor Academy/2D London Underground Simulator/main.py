@@ -15,6 +15,7 @@ from os.path import abspath
 import button
 import gameState
 from pytmx.util_pygame import load_pygame
+import tile
 import controls
 
 
@@ -45,31 +46,46 @@ def SavesMenu(path, screen):
     
     save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
     save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1) # creates the first, second and third buttons respectivelly
-    save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
-    save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
+    # save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
+    # save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
 
     save_surface = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 40)
     save_1_surface = save_surface.render("Save 1", True, "black")
-    save_2_surface = save_surface.render("Save 2", True, "black")
-    save_3_surface = save_surface.render("Save 3", True, "black")
+    # save_2_surface = save_surface.render("Save 2", True, "black")
+    # save_3_surface = save_surface.render("Save 3", True, "black")
 
     screen.blit(save_1_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3))
-    screen.blit(save_2_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 110))
-    screen.blit(save_3_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 230))
+    # screen.blit(save_2_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 110))
+    # screen.blit(save_3_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 230))
     
-    return save_1_button, save_2_button, save_3_button
+    return save_1_button #, save_2_button, save_3_button
 
 def Quit():
     pygame.quit()
     exit()
 
-def LoadMap(save):
-    map_data = load_pygame(f'{path}\\Saves\\{save}')
-    pass
+def LoadMap():
+    map_data = load_pygame(f'{path}\\Maps\\victoria_line_map.tmx') #CHANGE THIS
+    sprite_group = pygame.sprite.Group()
+    for layer in map_data.visible_layers:
+        if layer in ():
+            for x,y,surface in layer.tiles():
+                pos = (x*630,y*360)
+                tile.Tile(pos = pos, surface = surface, groups = sprite_group)
+    return sprite_group
 
-def Play(gameState, save):
+def InGameSettings(screen): #ONLY CONTAINS LEAVE BUTTON
+    quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
+    leave_button = button.Button(screen, 0, 0, quit_button_icon, 0.5)
+    return leave_button
+
+def Play(path, gameState, screen):
     while gameState.state == 5:
-        LoadMap(save)
+        sprite_group = LoadMap()
+        sprite_group.draw(screen)
+        leave_button = InGameSettings(screen)
+        if leave_button.wasClicked():
+            gameState.changeState(4)
         pygame.display.update()
     
 
@@ -91,17 +107,12 @@ if __name__ == '__main__':
             elif start_button.wasClicked():
                 gameState.changeState(3)
         elif gameState.state == 3 or gameState.state == 4:
-            save_1_button, save_2_button, save_3_button = SavesMenu(path, screen)
+            save_1_button = SavesMenu(path, screen)
             if save_1_button.wasClicked():
+                print("something")
                 gameState.changeState(5)
-                Play(gameState, "save_1")
-                #load file and generate game map for all three save options
-            elif save_2_button.wasClicked():
-                gameState.changeState(5)
-                Play(gameState, "save_2")
-            elif save_3_button.wasClicked():
-                gameState.changeState(5)
-                Play(gameState, "save_3")
+        elif gameState.state == 5:
+            Play(path, gameState, screen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
