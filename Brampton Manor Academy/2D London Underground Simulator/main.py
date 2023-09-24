@@ -8,15 +8,10 @@
 # screen.blit(text_surface, (coordinates))
 # shift+tab to unindent blocks of code
 
-import pygame
-from sys import exit
+import pygame, sys, button, tile, gameState, controls
 from inspect import getsourcefile
 from os.path import abspath
-import button
-import gameState
 from pytmx.util_pygame import load_pygame
-import tile
-import controls
 
 
 def SetUpScreen():
@@ -65,12 +60,12 @@ def Quit():
     exit()
 
 def LoadMap():
-    map_data = load_pygame(f'{path}\\Maps\\victoria_line_map.tmx') #CHANGE THIS
+    map_data = load_pygame(f'{path}\\Maps\\tutorial.tmx', pixelalpha = True) #CHANGE THIS
     sprite_group = pygame.sprite.Group()
     for layer in map_data.visible_layers:
-        if layer in ():
+        if True:
             for x,y,surface in layer.tiles():
-                pos = (x*630,y*360)
+                pos = (x*126+200,y*72 + 50) #10x15 tiles
                 tile.Tile(pos = pos, surface = surface, groups = sprite_group)
     return sprite_group
 
@@ -80,12 +75,16 @@ def InGameSettings(screen): #ONLY CONTAINS LEAVE BUTTON
     return leave_button
 
 def Play(path, gameState, screen):
+    sprite_group = LoadMap()
     while gameState.state == 5:
-        sprite_group = LoadMap()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
         sprite_group.draw(screen)
-        leave_button = InGameSettings(screen)
-        if leave_button.wasClicked():
-            gameState.changeState(4)
+        #leave_button = InGameSettings(screen)
+        #if leave_button.wasClicked():
+        #    gameState.changeState(4)
         pygame.display.update()
     
 
@@ -109,7 +108,6 @@ if __name__ == '__main__':
         elif gameState.state == 3 or gameState.state == 4:
             save_1_button = SavesMenu(path, screen)
             if save_1_button.wasClicked():
-                print("something")
                 gameState.changeState(5)
         elif gameState.state == 5:
             Play(path, gameState, screen)
