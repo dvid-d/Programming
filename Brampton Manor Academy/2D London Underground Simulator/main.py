@@ -15,8 +15,8 @@ from pytmx.util_pygame import load_pygame
 
 
 def SetUpScreen():
-    SCREEN_WIDTH = 1920
-    SCREEN_HEIGHT = 1080
+    SCREEN_WIDTH = 1800
+    SCREEN_HEIGHT = 1250
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT)) # sets window width & length
     pygame.display.set_caption('2D London Underground Simulator') # sets window name
     screen.fill((58,208,241)) # sets window colour
@@ -59,13 +59,13 @@ def Quit():
     pygame.quit()
     exit()
 
-def LoadMap():
-    map_data = load_pygame(f'{path}\\Maps\\tutorial.tmx', pixelalpha = True) #CHANGE THIS
+def LoadMap(map):
+    map_data = load_pygame(f'{path}\\Maps\\{map}.tmx', pixelalpha = True) #CHANGE THIS
     sprite_group = pygame.sprite.Group()
     for layer in map_data.visible_layers:
         if True:
             for x,y,surface in layer.tiles():
-                pos = (x*126+200,y*72 + 50) #10x15 tiles
+                pos = (x*192,y*108) # size of tiles
                 tile.Tile(pos = pos, surface = surface, groups = sprite_group)
     return sprite_group
 
@@ -74,8 +74,8 @@ def InGameSettings(screen): #ONLY CONTAINS LEAVE BUTTON
     leave_button = button.Button(screen, 0, 0, quit_button_icon, 0.5)
     return leave_button
 
-def Play(path, gameState, screen):
-    sprite_group = LoadMap()
+def Play(path, gameState, screen, map):
+    sprite_group = LoadMap(map)
     while gameState.state == 5:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -90,27 +90,26 @@ def Play(path, gameState, screen):
 
 if __name__ == '__main__':
     pygame.init()
-    run = True
-    gameState = gameState.GameState(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
-
-    # sets up screen & frame rate
-    SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen()
     clock = pygame.time.Clock()
+    gameState = gameState.GameState(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
+    SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen() # sets up screen & frame rate
     
-    # main game loop
+if __name__ == "__main__": # main game loop
+    run = True
     while run:
         if gameState.state == 1 or gameState.state == 2:
             start_button, quit_button = MainMenu(path, screen)
-            if quit_button.wasClicked():
+            if quit_button.wasClicked(): #shuts the game down if the quit button is clicked
                 run = False
-            elif start_button.wasClicked():
+            elif start_button.wasClicked(): # changes game state so save menu is shown
                 gameState.changeState(3)
         elif gameState.state == 3 or gameState.state == 4:
             save_1_button = SavesMenu(path, screen)
             if save_1_button.wasClicked():
                 gameState.changeState(5)
         elif gameState.state == 5:
-            Play(path, gameState, screen)
+            map = "victoria line" # change so that the map is selected from the save file data
+            Play(path, gameState, screen, map)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

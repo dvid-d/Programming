@@ -1,23 +1,36 @@
 {
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
     "activeFile": "",
     "expandedProjectPaths": [
     ],
     "fileStates": {
-        "victoria line.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 1
+        "victoria line.tmx": {
+            "scale": 0.4344270833333333,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 961.035847020741,
+                "y": 542.0932741877474
+            }
         }
     },
     "last.imagePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
+    "map.height": 10,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 108,
+    "map.tileWidth": 192,
+    "map.width": 10,
     "openFiles": [
     ],
     "project": "victoria line.tiled-project",
     "recentFiles": [
-        "victoria line.tsx"
+        "victoria line.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
-        "height": 72,
-        "width": 74
+        "height": 108,
+        "width": 192
     }
 }
