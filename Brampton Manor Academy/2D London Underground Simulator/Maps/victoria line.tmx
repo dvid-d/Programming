@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="2" nextobjectid="1">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="4" nextobjectid="42">
  <tileset firstgid="1" source="victoria line.tsx"/>
  <layer id="1" name="Tile Layer 1" width="10" height="10">
   <data encoding="csv">
@@ -15,4 +15,40 @@
 23,92,93,94,95,96,97,98,99,100
 </data>
  </layer>
+ <objectgroup id="2" name="Station">
+  <object id="1" name="Walthamstow Central" x="1133.33" y="258" width="40.6667" height="37.3333"/>
+  <object id="2" name="Blackhorse Road" x="1067.33" y="257.333" width="44" height="39.3333"/>
+  <object id="3" name="Tottenham Hale" x="1012.67" y="260.667" width="21.3333" height="34"/>
+  <object id="4" name="Seven Sisters" x="943.333" y="264" width="28.6667" height="24.6667"/>
+  <object id="5" name="Finsbury Park" x="914.667" y="303.333" width="27.3333" height="20.6667"/>
+  <object id="6" name="Highbury &amp; Islington" x="813.333" y="395.333" width="30" height="27.3333"/>
+  <object id="7" name="K's X &amp; St P Int" x="742.667" y="461.333" width="36" height="29.3333"/>
+  <object id="8" name="Euston" x="680.667" y="456.667" width="29.3333" height="28"/>
+  <object id="9" name="Warren Street" x="622" y="528.667" width="26" height="26"/>
+  <object id="10" name="Oxford Circus" x="555.333" y="590.667" width="28.6667" height="30"/>
+  <object id="11" name="Green Park" x="483.333" y="657.333" width="31.3333" height="26"/>
+  <object id="12" name="Victoria" x="488.667" y="722.667" width="30" height="25.3333"/>
+  <object id="13" name="Pimlico" x="488" y="822.667" width="30" height="24"/>
+  <object id="14" name="Vauxhall" x="482.667" y="886.667" width="30" height="26.6667"/>
+  <object id="15" name="Stockwell" x="556.667" y="948" width="21.3333" height="28.6667"/>
+  <object id="16" name="Brixton" x="619.333" y="983.333" width="23.3333" height="31.3333"/>
+ </objectgroup>
+ <objectgroup id="3" name="Track" offsetx="1.66667" offsety="-3.66667">
+  <object id="17" x="580.104" y="976.521" width="35.2137" height="10.9214" rotation="45"/>
+  <object id="19" x="605" y="998.042" width="11.875" height="6.25"/>
+  <object id="22" x="515" y="912" width="56" height="9.25" rotation="45"/>
+  <object id="23" x="494.333" y="850.667" width="11" height="37.3333"/>
+  <object id="24" x="494.667" y="752.333" width="9" height="71.3333"/>
+  <object id="26" x="495.333" y="688" width="8.66667" height="36.3333"/>
+  <object id="28" x="548" y="619" width="9.33333" height="54" rotation="45"/>
+  <object id="30" x="580" y="590" width="50" height="6" rotation="-45"/>
+  <object id="31" x="677" y="490.39" width="9.27273" height="50.27" rotation="45"/>
+  <object id="33" x="708.97" y="473.758" width="31.4545" height="9"/>
+  <object id="35" x="1110.33" y="277.121" width="20.7273" height="8.72727"/>
+  <object id="36" x="1033.42" y="277.667" width="30.9091" height="8.54545"/>
+  <object id="37" x="971.061" y="277.485" width="39.6364" height="8.18182"/>
+  <object id="38" x="810" y="426.03" width="6.54545" height="50" rotation="45"/>
+  <object id="40" x="910" y="325" width="7.09091" height="100" rotation="45"/>
+  <object id="41" x="942" y="293" width="6.15625" height="13.5" rotation="45"/>
+ </objectgroup>
 </map>

@@ -59,7 +59,7 @@ def Quit():
     pygame.quit()
     exit()
 
-def LoadMap(map):
+def LoadMap(path, map):
     map_data = load_pygame(f'{path}\\Maps\\{map}.tmx', pixelalpha = True) #CHANGE THIS
     sprite_group = pygame.sprite.Group()
     for layer in map_data.visible_layers:
@@ -75,7 +75,7 @@ def InGameSettings(screen): #ONLY CONTAINS LEAVE BUTTON
     return leave_button
 
 def Play(path, gameState, screen, map):
-    sprite_group = LoadMap(map)
+    sprite_group = LoadMap(path, map)
     while gameState.state == 5:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

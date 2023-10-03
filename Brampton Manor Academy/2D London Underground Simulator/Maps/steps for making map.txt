@@ -1,0 +1,6 @@
+1 Make map with metro map maker website
+2 Download and upload to photopea
+3 Adjust size until it is a multiple of 1920x1080
+4 Size it down to 1920x1080
+
+Each tile is 192x108 (so 10x10 tiles)
