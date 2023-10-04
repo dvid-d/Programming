@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="4" nextobjectid="42">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="4" nextobjectid="51">
  <tileset firstgid="1" source="victoria line.tsx"/>
  <layer id="1" name="Tile Layer 1" width="10" height="10">
   <data encoding="csv">
@@ -16,39 +16,50 @@
 </data>
  </layer>
  <objectgroup id="2" name="Station">
-  <object id="1" name="Walthamstow Central" x="1133.33" y="258" width="40.6667" height="37.3333"/>
-  <object id="2" name="Blackhorse Road" x="1067.33" y="257.333" width="44" height="39.3333"/>
-  <object id="3" name="Tottenham Hale" x="1012.67" y="260.667" width="21.3333" height="34"/>
-  <object id="4" name="Seven Sisters" x="943.333" y="264" width="28.6667" height="24.6667"/>
-  <object id="5" name="Finsbury Park" x="914.667" y="303.333" width="27.3333" height="20.6667"/>
-  <object id="6" name="Highbury &amp; Islington" x="813.333" y="395.333" width="30" height="27.3333"/>
-  <object id="7" name="K's X &amp; St P Int" x="742.667" y="461.333" width="36" height="29.3333"/>
-  <object id="8" name="Euston" x="680.667" y="456.667" width="29.3333" height="28"/>
-  <object id="9" name="Warren Street" x="622" y="528.667" width="26" height="26"/>
-  <object id="10" name="Oxford Circus" x="555.333" y="590.667" width="28.6667" height="30"/>
-  <object id="11" name="Green Park" x="483.333" y="657.333" width="31.3333" height="26"/>
-  <object id="12" name="Victoria" x="488.667" y="722.667" width="30" height="25.3333"/>
-  <object id="13" name="Pimlico" x="488" y="822.667" width="30" height="24"/>
-  <object id="14" name="Vauxhall" x="482.667" y="886.667" width="30" height="26.6667"/>
-  <object id="15" name="Stockwell" x="556.667" y="948" width="21.3333" height="28.6667"/>
-  <object id="16" name="Brixton" x="619.333" y="983.333" width="23.3333" height="31.3333"/>
+  <object id="1" name="Walthamstow Central" x="1133.33" y="275.273" width="25.9394" height="6.24239"/>
+  <object id="2" name="Blackhorse Road" x="1067.33" y="275.151" width="44" height="6.06057"/>
+  <object id="3" name="Tottenham Hale" x="1012.67" y="275.212" width="21.3333" height="6.18182"/>
+  <object id="5" name="Finsbury Park" x="933.303" y="299.788" width="5.99153" height="29.6662" rotation="45"/>
+  <object id="6" name="Highbury &amp; Islington" x="840.606" y="392.969" width="5.31555" height="40.4469" rotation="45"/>
+  <object id="7" name="K's X &amp; St P Int" x="742.667" y="471.515" width="24.7273" height="5.69694"/>
+  <object id="9" name="Warren Street" x="644.136" y="524.44" width="5.55819" height="37.1851" rotation="45"/>
+  <object id="10" name="Oxford Circus" x="581.708" y="586.855" width="5.66482" height="42.2909" rotation="45"/>
+  <object id="12" name="Victoria" x="498.479" y="722.667" width="6.5" height="25.3333"/>
+  <object id="13" name="Pimlico" x="498.438" y="823.855" width="6.5" height="22.8125"/>
+  <object id="15" name="Stockwell" x="561.667" y="954.818" width="22.3435" height="7.10722" rotation="45"/>
+  <object id="16" name="Brixton" x="619.842" y="994.606" width="15.9157" height="6.42421"/>
+  <object id="44" name="Vauxhall" x="498.13" y="884.92">
+   <polygon points="0,0 6.82609,-0.137211 6.65217,13.8583 13.0435,19.987 8.52174,24.515 1.95652,17.8831 0.608696,17.7916"/>
+  </object>
+  <object id="45" name="Green Park" x="510" y="658.5">
+   <polygon points="0,0 -13.125,12.9375 -10.875,14.8125 -11,25.3125 -5.5625,25.4375 -5.75,12.1875 6.625,1.0625 2.375,-2.8125"/>
+  </object>
+  <object id="48" name="Euston" x="710.125" y="470.75">
+   <polygon points="0,0 0.125,6.19565 -11.25,6.32473 -23.125,17.8125 -26.3125,14.5856 -15.1875,3.16236 -15.125,0.774457"/>
+  </object>
+  <object id="50" name="Seven Sisters" x="972.375" y="274.75">
+   <polygon points="0,0 0,6.125 -12.0625,6.125 -24.125,18.3125 -28.0625,14.375 -15.8125,3 -15.625,0.125"/>
+  </object>
  </objectgroup>
  <objectgroup id="3" name="Track" offsetx="1.66667" offsety="-3.66667">
-  <object id="17" x="580.104" y="976.521" width="35.2137" height="10.9214" rotation="45"/>
-  <object id="19" x="605" y="998.042" width="11.875" height="6.25"/>
-  <object id="22" x="515" y="912" width="56" height="9.25" rotation="45"/>
-  <object id="23" x="494.333" y="850.667" width="11" height="37.3333"/>
-  <object id="24" x="494.667" y="752.333" width="9" height="71.3333"/>
-  <object id="26" x="495.333" y="688" width="8.66667" height="36.3333"/>
-  <object id="28" x="548" y="619" width="9.33333" height="54" rotation="45"/>
-  <object id="30" x="580" y="590" width="50" height="6" rotation="-45"/>
-  <object id="31" x="677" y="490.39" width="9.27273" height="50.27" rotation="45"/>
-  <object id="33" x="708.97" y="473.758" width="31.4545" height="9"/>
-  <object id="35" x="1110.33" y="277.121" width="20.7273" height="8.72727"/>
-  <object id="36" x="1033.42" y="277.667" width="30.9091" height="8.54545"/>
-  <object id="37" x="971.061" y="277.485" width="39.6364" height="8.18182"/>
-  <object id="38" x="810" y="426.03" width="6.54545" height="50" rotation="45"/>
-  <object id="40" x="910" y="325" width="7.09091" height="100" rotation="45"/>
-  <object id="41" x="942" y="293" width="6.15625" height="13.5" rotation="45"/>
+  <object id="17" type="Diagonal - Left" x="576.083" y="975.426" width="32.0481" height="6.1645" rotation="45"/>
+  <object id="19" type="Horizontal" x="599.438" y="998.634" width="18.6983" height="5.875"/>
+  <object id="22" type="Diagonal - Left" x="509.764" y="908.673" width="69.6399" height="6.55014" rotation="45"/>
+  <object id="23" type="Vertical" x="496.708" y="850.667" width="6.5625" height="37.3333"/>
+  <object id="24" type="Vertical" x="496.917" y="752.333" width="6.75" height="71.3333"/>
+  <object id="26" type="Vertical" x="497.146" y="688" width="5.72917" height="36.3333"/>
+  <object id="28" type="Diagonal - Right" x="549.844" y="620.844" width="5.62102" height="54" rotation="45"/>
+  <object id="30" type="Diagonal - Right" x="580" y="590" width="50" height="6" rotation="-45"/>
+  <object id="31" type="Diagonal - Right" x="681.42" y="489.06" width="5.15865" height="54.3359" rotation="45"/>
+  <object id="33" type="Horizontal" x="708.97" y="473.758" width="31.4545" height="9"/>
+  <object id="35" type="Horizontal" x="1110.33" y="279.121" width="20.7273" height="6"/>
+  <object id="36" type="Horizontal" x="1033.42" y="278.94" width="30.9091" height="5.81818"/>
+  <object id="37" type="Horizontal" x="971.061" y="278.758" width="39.6364" height="5.81818"/>
+  <object id="38" type="Diagonal - Right" x="810" y="426.03" width="5.51693" height="65.0421" rotation="45"/>
+  <object id="40" type="Diagonal - Right" x="910" y="325" width="5.80526" height="100" rotation="45"/>
+  <object id="41" type="Diagonal - Right" x="942" y="293" width="6.15625" height="13.5" rotation="45"/>
+  <object id="42" type="Diagonal - Right" x="594.697" y="1002.19" rotation="359.125">
+   <polygon points="0,0 4.65095,2.25198 4.65095,-4.15008"/>
+  </object>
  </objectgroup>
 </map>

@@ -9,16 +9,16 @@
     ],
     "fileStates": {
         "victoria line.tmx": {
-            "scale": 0.4344270833333333,
-            "selectedLayer": 0,
+            "scale": 1,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 958.7339647524279,
-                "y": 542.0932741877474
+                "x": 869.5,
+                "y": 521.5
             }
         },
         "victoria line.tsx": {
             "scaleInDock": 0.25,
-            "scaleInEditor": 1
+            "scaleInEditor": 0.75
         }
     },
     "last.imagePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
