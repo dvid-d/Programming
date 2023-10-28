@@ -8,21 +8,23 @@
 # screen.blit(text_surface, (coordinates))
 # shift+tab to unindent blocks of code
 
-import pygame, sys, button, tile, gameState, controls, settings
+import pygame, sys, button, tile, gameState, controls, settings, play
 from inspect import getsourcefile
 from os.path import abspath
 from pytmx.util_pygame import load_pygame
 
 
 def SetUpScreen():
-    SCREEN_WIDTH = 1800
+    SCREEN_WIDTH = 1600
     SCREEN_HEIGHT = 1250
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT)) # sets window width & length
     pygame.display.set_caption('2D London Underground Simulator') # sets window name
     screen.fill((58,208,241)) # sets window colour
+
     path = abspath(getsourcefile(lambda:0))[:-8] # obtains path of program
     icon = pygame.image.load(f'{path}\\underground.png') # opens program icon
     pygame.display.set_icon(icon) #sets window icon
+    
     return SCREEN_WIDTH, SCREEN_HEIGHT, screen, path
 
 
@@ -70,32 +72,22 @@ def LoadMap(path, map):
         #print(object)
     return sprite_group
 
-def InGameSettings(screen): #ONLY CONTAINS LEAVE BUTTON
-    quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
-    leave_button = button.Button(screen, 0, 0, quit_button_icon, 0.5)
-    return leave_button
-
-def Play(path, gameState, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT):
-    sprite_group = LoadMap(path, map)
-    while gameState.state == 5:
+def InGameSettings(screen, game_settings, path):
+    inSettings = True
+    while inSettings is True:
+        game_settings.Display(screen, path)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                sys.exit()
-        sprite_group.draw(screen)
-
-        settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
-        settings_button = button.Button(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3, settings_button_icon, 1)
-        quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
-        quit_button = button.Button(screen, SCREEN_WIDTH/1.18, SCREEN_HEIGHT/6, quit_button_icon, 1/4)
-        if quit_button.wasClicked():
-            Quit()
-        if settings_button.wasClicked():
-            settings.Display()
-        #leave_button = InGameSettings(screen)
-        #if leave_button.wasClicked():
-        #    gameState.changeState(4)
+                exit()
+                
         pygame.display.update()
+        pygame.time.Clock().tick(60)
+
+
+def Play(path, gameState, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT):
+    play.Play.Load(path, screen, map)
+    play.Play.Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, gameState)
     
 
 if __name__ == '__main__':
@@ -104,7 +96,6 @@ if __name__ == '__main__':
     gameState = gameState.GameState(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
     SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen() # sets up screen & frame rate
     
-if __name__ == "__main__": # main game loop
     run = True
     while run:
         if gameState.state == 1 or gameState.state == 2:
