@@ -1,2 +1,3 @@
 level = 0.0
 customerSatisfaction = 100
+customers_at_stations = {}
