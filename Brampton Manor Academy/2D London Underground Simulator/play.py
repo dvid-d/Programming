@@ -21,7 +21,7 @@ class Play():
             if buttons[0].wasClicked():
                     main.Quit()
             if buttons[1].wasClicked():
-                main.InGameSettings(screen, game_settings, path)
+                settings.InGameSettings(screen, game_settings, path)
                 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

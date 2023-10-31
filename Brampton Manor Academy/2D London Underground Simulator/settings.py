@@ -4,6 +4,19 @@ class Settings():
     def __init__(self, volume, difficulty):
         self.volume = volume
         self.difficulty = difficulty
+
+    def InGameSettings(screen, game_settings, path):
+        inSettings = True
+        while inSettings is True:
+            game_settings.Display(screen, path)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                    
+            pygame.display.update()
+            pygame.time.Clock().tick(60)
+
     def Display(self,screen, path):
         background = pygame.Rect(400,250,1000,700)
         pygame.draw.rect(screen, (255,255,255), background)
@@ -27,6 +40,8 @@ class Settings():
         quit_button_icon = pygame.image.load(f'{path}\\icons\\quit_button.png')
         quit_button = button.Button(screen, 750, 800, quit_button_icon, 1/2)
 
+        back_button_icon = pygame.image.load(f"{path}\\icons\\back_button.png")
+        back_button = button.Button(screen, 750, 200, back_button_icon, 1)
         #controls sub section
         
         if quit_button.wasClicked():
