@@ -17,9 +17,8 @@ sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
 
 
-
-import pygame
-import button, controls, settings, play, game
+import pygame, os
+import button, controls, settings, play, game, saves, time
 from inspect import getsourcefile
 from os.path import abspath
 from pytmx.util_pygame import load_pygame
@@ -33,7 +32,6 @@ def SetUpScreen():
     screen.fill((58,208,241)) # sets window colour
 
     path = abspath(getsourcefile(lambda:0))[:-16] # obtains path of program
-    print(path)
     icon = pygame.image.load(f'{path}\\RunTime\\underground.png') # opens program icon
     pygame.display.set_icon(icon) #sets window icon
     
@@ -50,24 +48,8 @@ def MainMenu(path, screen):
     return start_button, quit_button
 
 
-def SavesMenu(path, screen):
-    screen.fill((58,208,241))
-    save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
-    save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1) # creates the first, second and third buttons respectivelly
-    save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
-    save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
-
-    save_surface = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 40)
-    save_1_surface = save_surface.render("Save 1", True, "black")
-    save_2_surface = save_surface.render("Save 2", True, "black")
-    save_3_surface = save_surface.render("Save 3", True, "black")
-
-    screen.blit(save_1_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3))
-    screen.blit(save_2_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 120))
-    screen.blit(save_3_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 260))
-
-    back_button_image = pygame.image.load(f"{path}\\Icons\\back_button.png") #CHANGE BUTTON
-    back_button = button.Button(screen, x=SCREEN_WIDTH/5, y=SCREEN_HEIGHT/10, image=back_button_image, scale=1)
+def SavesMenu(path, screen, firstRun):
+    back_button, save_1_button, save_2_button, save_3_button = saves.Saves.LoadMenu(screen, SCREEN_WIDTH, SCREEN_HEIGHT, path)
     while game.state == 3 or game.state == 4:
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -76,14 +58,31 @@ def SavesMenu(path, screen):
 
         if back_button.wasClicked():
             game.changeState(2)
-        if save_1_button.wasClicked():
+
+        elif save_1_button.wasClicked():
             game.changeState(5)
-            # game_levels = []
-            # game_file = open("save_1.txt", "r")
-            # line = game_file.readline()[:-1] #exclude \n at end of line
-            # level = line[-3]
-            
-            return map
+            if firstRun:
+                save_name = saves.Saves.ChangeFileName(screen, path, "save_1.txt")
+            else:
+                save_name = "save_1.txt"
+            map_data = saves.Saves.GetSaveInfo(screen, path, save_name+".txt")
+            return map_data
+        elif save_2_button.wasClicked():
+            game.changeState(5)
+            if firstRun:
+                save_name = saves.Saves.ChangeFileName(screen, path,"save_2.txt")
+            else:
+                save_name = "save_2.txt"
+            map_data = saves.Saves.GetSaveInfo(save_name+".txt")
+            return map_data
+        elif save_3_button.wasClicked():
+            game.changeState(5)
+            if firstRun:
+                save_name = saves.Saves.ChangeFileName(screen, path,"save_3.txt")
+            else:
+                save_name = "save_3.txt"
+            map_data = saves.Saves.GetSaveInfo(save_name+".txt")
+            return map_data
 
         pygame.display.update()
 
@@ -93,9 +92,9 @@ def Quit():
     exit()
 
 
-def Play(path, gameState, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT):
+def Play(path, game, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT):
     play.Play.Load(path, screen, map)
-    play.Play.Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game)
+    play.Play.Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game, map)
     
 
 if __name__ == '__main__':
@@ -103,9 +102,10 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     game = game.Game(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
     SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen() # sets up screen & frame rate
-    
     run = True
-    first_run = True
+    file = open(f"{path}\\RunTime\\firstRun.txt","r")
+    firstRun = file.readline()[11:]
+    file.close()
     while run:
         if game.state == 1 or game.state == 2:
             if game.state == 2:
@@ -114,20 +114,15 @@ if __name__ == '__main__':
             if quit_button.wasClicked(): #shuts the game down if the quit button is clicked
                 run = False
             elif start_button.wasClicked(): # changes game state so save menu is shown
+                time.sleep(3)
                 game.changeState(3)
 
         elif game.state == 3 or game.state == 4:
-            map = SavesMenu(path, screen)
+            map = SavesMenu(path, screen, firstRun)
 
         elif game.state == 5:
-            if first_run is True:
-                map = "victoria line" # change so that the map is selected from the save file data
-                Play(path, game.state, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT)
-            else:
-                map = "victoria line" # change so that the map is selected from the save file data
-                Play(path, game.state, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT)
-                pass
-            first_run = False
+            Play(path, game, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT)
+            pass
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -135,4 +130,7 @@ if __name__ == '__main__':
                 exit()                
         pygame.display.update()
         clock.tick(60) # max framerate
+    # file = open(f"{path}\\RunTime\\firstRun.txt","w")
+    # file.write("firstRun = False")
+    # file.close()
     pygame.quit()

@@ -1,3 +1,9 @@
 {
-    "python.analysis.typeCheckingMode": "off"
+    "python.analysis.typeCheckingMode": "off",
+    "python.analysis.extraPaths": [
+        "./Brampton Manor Academy/2D London Underground Simulator/Game Properties",
+        "./Brampton Manor Academy/2D London Underground Simulator/Maps",
+        "./Brampton Manor Academy/2D London Underground Simulator/RunTime",
+        "./Brampton Manor Academy/2D London Underground Simulator/Saves"
+    ]
 }

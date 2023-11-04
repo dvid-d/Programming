@@ -1,4 +1,3 @@
-
 import sys
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Game Properties")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Fonts")
@@ -28,27 +27,28 @@ class Play():
         
     def CheckIfClicked(buttons, screen, game_settings, path):
             if buttons[0].wasClicked():
-                main.Quit()
-            if buttons[1].wasClicked():
                 game_settings.InGameSettings(screen, game_settings, path)
+                return True
+            else:
+                return False
+            
+
+    def Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game, map):
+        game_settings = settings.Settings(100, 3)
+        settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
+        while game.state == 5:
+            settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5))
+            buttons = [settings_button]
+            clicked = Play.CheckIfClicked(buttons, screen, game_settings, path)
+            if clicked is True:
+                Play.Load(path, screen, map)
                 
+            #Simulation code
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-
-    def Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game):
-        while game.state == 5:
-            settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
-            settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 200, SCREEN_HEIGHT/6, settings_button_icon, 1/(4.5))
-            game_settings = settings.Settings(100, 3)
-
-            quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
-            quit_button = button.Button(screen, SCREEN_WIDTH/1.11, SCREEN_HEIGHT/6, quit_button_icon, 1/4)
-
-            buttons = [quit_button, settings_button]
-            Play.CheckIfClicked(buttons, screen, game_settings, path)
-            
             pygame.display.update()
 
             
