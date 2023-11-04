@@ -49,12 +49,9 @@ class Saves():
                 pygame.display.update()
         file = path + "\\Saves\\"+ save_name
         os.rename(file, path+"\\Saves\\"+name+".txt")
-        print("slay2")
         return name
 
     def GetSaveInfo(screen, path, save_name):
-        print("slay1")
-        print("slay3")
         import time
         time.sleep(1)
         temporary_file = open(f"{path}\\Saves\\{save_name}", "r")
@@ -71,12 +68,12 @@ class Saves():
         map = lines[0][6:]
         gameLevels = lines[1][13:]
         level = lines[2][8:]
-        time = lines[3][7:]
+        game_time = lines[3][7:]
         difficulty = lines[4][13:]
         customerSatisfaction = lines[5][24:]
         customers_at_stations = lines[6][25:]
         money = lines[7][8:]
         debt = lines[8][7:]
-        save_data = [map, gameLevels, level, time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
+        save_data = [map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
 
         return save_data
