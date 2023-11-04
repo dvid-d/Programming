@@ -1,4 +1,13 @@
-import pygame, settings, main, button, gameState, sys, tile
+
+import sys
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Game Properties")
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Fonts")
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Maps")
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\RunTime")
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Saves")
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
+
+import pygame, settings, main, button, gameState, tile
 from pytmx.util_pygame import load_pygame
 
 class Play():
@@ -19,19 +28,19 @@ class Play():
         
     def CheckIfClicked(buttons, screen, game_settings, path):
             if buttons[0].wasClicked():
-                    main.Quit()
+                main.Quit()
             if buttons[1].wasClicked():
-                settings.InGameSettings(screen, game_settings, path)
+                game_settings.InGameSettings(screen, game_settings, path)
                 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
-    def Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, gameState):
-        while gameState.state == 5:
+    def Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game):
+        while game.state == 5:
             settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
-            settings_button = button.Button(screen, SCREEN_WIDTH/1.17, SCREEN_HEIGHT/6, settings_button_icon, 1/(4.5))
+            settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 200, SCREEN_HEIGHT/6, settings_button_icon, 1/(4.5))
             game_settings = settings.Settings(100, 3)
 
             quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
