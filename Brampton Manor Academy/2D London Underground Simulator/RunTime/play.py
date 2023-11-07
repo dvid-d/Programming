@@ -10,8 +10,8 @@ import pygame, settings, main, button, gameState, tile
 from pytmx.util_pygame import load_pygame
 
 class Play():
-    def Load(path, screen, map):
-        sprite_group = Play.LoadMap(path, map)
+    def Load(path, screen, save_data):
+        sprite_group = Play.LoadMap(path, save_data[0])
         sprite_group.draw(screen)
 
     def LoadMap(path, map):

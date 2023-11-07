@@ -50,6 +50,24 @@ class Saves():
         file = path + "\\Saves\\"+ save_name
         os.rename(file, path+"\\Saves\\"+name+".txt")
         return name
+    
+    def GetSaveName(path, number):
+        files = []
+        location = os.fsencode(path)
+
+        for file in os.listdir(location):
+            name = os.fsencode (file)
+            if name.endswith(".txt"):
+                files.append(name)
+
+        for file in files:
+            file_no = open(file)
+            file_no = file.readline()
+            if file_no == number:
+                save_name = file.readline()[6:]
+                break
+        return save_name
+
 
     def GetSaveInfo(screen, path, save_name):
         import time
@@ -62,18 +80,19 @@ class Saves():
         lines = []
         
         for line_no in range(no_lines):
-            line = game_file.readline()[:-2]
+            line = game_file.readline()[:-1]
             lines.append(line)
 
-        map = lines[0][6:]
-        gameLevels = lines[1][13:]
-        level = lines[2][8:]
-        game_time = lines[3][7:]
-        difficulty = lines[4][13:]
-        customerSatisfaction = lines[5][24:]
-        customers_at_stations = lines[6][25:]
-        money = lines[7][8:]
-        debt = lines[8][7:]
-        save_data = [map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
-
+        file = lines[0][7:]
+        map = lines[1][6:]
+        gameLevels = lines[2][13:] #split string into parts and add into actual list
+        level = float(lines[3][8:])
+        game_time = [lines[4][7:][:2], lines[4][7][2:4], lines[4][7][5:]] #day, month, year. stored as strings.
+        difficulty = lines[5][13:]
+        customerSatisfaction = int(lines[6][24:])
+        customers_at_stations = lines[7][25:] #do similarly like for game_time
+        money = int(lines[8][8:])
+        debt = int(lines[9][7:])
+        save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
+        print(save_data)
         return save_data

@@ -18,7 +18,15 @@ class Settings():
     def InGameSettings(self, screen, game_settings, path):
         inSettings = True
         while inSettings is True:
-            inSettings = game_settings.Display(screen, path)
+            quit_button, back_button = game_settings.Display(screen, path)
+            if back_button.wasClicked():
+                inSettings = False
+            if quit_button.wasClicked():
+                #ask user if they want to save
+                #save if they want to
+                main.Quit()
+                pygame.display.update()
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -39,20 +47,4 @@ class Settings():
         back_button_icon = pygame.image.load(f"{path}\\icons\\back_button.png")
         back_button = button.Button(screen, 750, 200, back_button_icon, 1)
         #controls sub section
-
-        while back_button.wasClicked() is False:
-            if back_button.wasClicked():
-                inSettings = False
-                return inSettings
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    exit()
-                    
-            pygame.display.update()
-            
-        if quit_button.wasClicked():
-            #ask user if they want to save
-            #save if they want to
-            main.Quit()
+        return quit_button, back_button

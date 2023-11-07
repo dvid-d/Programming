@@ -64,7 +64,8 @@ def SavesMenu(path, screen, firstRun):
             if firstRun:
                 save_name = saves.Saves.ChangeFileName(screen, path, "save_1.txt")
             else:
-                save_name = "save_1.txt"
+                save_name = saves.Saves.GetSaveNo(1)
+
             map_data = saves.Saves.GetSaveInfo(screen, path, save_name+".txt")
             return map_data
         elif save_2_button.wasClicked():
@@ -72,7 +73,7 @@ def SavesMenu(path, screen, firstRun):
             if firstRun:
                 save_name = saves.Saves.ChangeFileName(screen, path,"save_2.txt")
             else:
-                save_name = "save_2.txt"
+                save_name = saves.Saves.GetSaveNo(2)
             map_data = saves.Saves.GetSaveInfo(save_name+".txt")
             return map_data
         elif save_3_button.wasClicked():
@@ -80,7 +81,7 @@ def SavesMenu(path, screen, firstRun):
             if firstRun:
                 save_name = saves.Saves.ChangeFileName(screen, path,"save_3.txt")
             else:
-                save_name = "save_3.txt"
+                save_name = saves.Saves.GetSaveNo(3)
             map_data = saves.Saves.GetSaveInfo(save_name+".txt")
             return map_data
 
@@ -114,7 +115,7 @@ if __name__ == '__main__':
             if quit_button.wasClicked(): #shuts the game down if the quit button is clicked
                 run = False
             elif start_button.wasClicked(): # changes game state so save menu is shown
-                time.sleep(3)
+                time.sleep(1)
                 game.changeState(3)
 
         elif game.state == 3 or game.state == 4:
@@ -130,7 +131,7 @@ if __name__ == '__main__':
                 exit()                
         pygame.display.update()
         clock.tick(60) # max framerate
-    # file = open(f"{path}\\RunTime\\firstRun.txt","w")
-    # file.write("firstRun = False")
-    # file.close()
+    file = open(f"{path}\\RunTime\\firstRun.txt","w")
+    file.write("firstRun = False")
+    file.close()
     pygame.quit()

@@ -6,7 +6,7 @@ class Game():
             if states_dict[possible_state] == state:
                 self.state = state
                 break
-        levels = {"level 1":0, "level 2":1} #continue adding levels
+        levels = {"level 1":0, "level 2":1} #continue adding level
 
     def getState(self):
         return self.state
