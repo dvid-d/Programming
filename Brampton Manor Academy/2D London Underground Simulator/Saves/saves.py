@@ -7,7 +7,7 @@ class Saves():
     def LoadMenu(screen, SCREEN_WIDTH, SCREEN_HEIGHT, path):
         screen.fill((58,208,241))
         save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
-        save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1) # creates the first, second and third buttons respectivelly
+        save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1)
         save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
         save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
 
@@ -52,30 +52,23 @@ class Saves():
         return name
     
     def GetSaveName(path, number):
-        files = []
-        location = os.fsencode(path)
-
+        location = os.fsencode(path + "\\Saves")
         for file in os.listdir(location):
-            name = os.fsencode (file)
+            name = os.fsdecode(file)
             if name.endswith(".txt"):
-                files.append(name)
-
-        for file in files:
-            file_no = open(file)
-            file_no = file.readline()
-            if file_no == number:
-                save_name = file.readline()[6:]
-                break
-        return save_name
+                file = open(f"{path}\\Saves\\{name}", "r")
+                file_no = file.readline()[7]
+                if file_no == number:
+                    return name[:-4]
 
 
     def GetSaveInfo(screen, path, save_name):
         import time
         time.sleep(1)
-        temporary_file = open(f"{path}\\Saves\\{save_name}", "r")
+        temporary_file = open(f"{path}\\Saves\\{save_name}.txt", "r")
         temp_lines = temporary_file.readlines()
         no_lines = len(temp_lines)
-        game_file = open(f"{path}\\Saves\\{save_name}", "r")
+        game_file = open(f"{path}\\Saves\\{save_name}.txt", "r")
 
         lines = []
         
@@ -87,12 +80,12 @@ class Saves():
         map = lines[1][6:]
         gameLevels = lines[2][13:] #split string into parts and add into actual list
         level = float(lines[3][8:])
-        game_time = [lines[4][7:][:2], lines[4][7][2:4], lines[4][7][5:]] #day, month, year. stored as strings.
+        game_time = [lines[4][7:9], lines[4][10:12], lines[4][13:]] #day, month, year. stored as strings.
         difficulty = lines[5][13:]
-        customerSatisfaction = int(lines[6][24:])
-        customers_at_stations = lines[7][25:] #do similarly like for game_time
-        money = int(lines[8][8:])
-        debt = int(lines[9][7:])
+        customerSatisfaction = int(lines[6][23:])
+        customers_at_stations = lines[7][24:] #do similarly like for game_time
+        money = float(lines[8][8:])
+        debt = float(lines[9][6:])
         save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
         print(save_data)
         return save_data

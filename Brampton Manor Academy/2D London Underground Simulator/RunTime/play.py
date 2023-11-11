@@ -11,11 +11,11 @@ from pytmx.util_pygame import load_pygame
 
 class Play():
     def Load(path, screen, save_data):
-        sprite_group = Play.LoadMap(path, save_data[0])
+        sprite_group = Play.LoadMap(path, save_data[1])
         sprite_group.draw(screen)
 
     def LoadMap(path, map):
-        map_data = load_pygame(f'{path}\\Maps\\{map}.tmx') #CHANGE THIS
+        map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
         for layer in map_data.visible_layers:
             for x,y,surface in layer.tiles():

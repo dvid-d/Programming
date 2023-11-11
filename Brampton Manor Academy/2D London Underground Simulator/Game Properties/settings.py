@@ -42,9 +42,9 @@ class Settings():
         pygame.draw.rect(screen,(0,0,0),border,2)
 
         quit_button_icon = pygame.image.load(f'{path}\\icons\\quit_button.png')
-        quit_button = button.Button(screen, 750, 800, quit_button_icon, 1/2)
+        quit_button = button.Button(screen, 700, 840, quit_button_icon, 0.35)
 
         back_button_icon = pygame.image.load(f"{path}\\icons\\back_button.png")
-        back_button = button.Button(screen, 750, 200, back_button_icon, 1)
+        back_button = button.Button(screen, 1190, 260, back_button_icon, 0.2)
         #controls sub section
         return quit_button, back_button
