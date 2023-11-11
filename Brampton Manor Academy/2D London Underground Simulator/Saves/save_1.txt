@@ -1,0 +1,11 @@
+file = 1
+map = victoria line
+gameLevels = {1:"intro"}
+level = 0.0
+time = 00/00/0000
+difficulty = Easy
+customerSatisfaction = 100
+customers_at_stations = [{"victoria line" : [{station: 0, station: 0}]}, {"district line":[{station: 0, station: 0}]}]
+money = 0.0
+debt = 0.0
+trainsPerHour = {}

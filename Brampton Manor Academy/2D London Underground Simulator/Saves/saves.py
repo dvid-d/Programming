@@ -28,7 +28,6 @@ class Saves():
         name = ""
         done = False
         dialogue_box = pygame.Rect(400,500,800,200)
-        pygame.draw.rect(screen, (0,0,0), dialogue_box, 5)
         font = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 30)
         layer = font.render(name,False,(0,0,0))
         screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 3))
@@ -36,17 +35,21 @@ class Saves():
             for event in pygame.event.get():
                 if not done:
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_BACKSPACE:
+                        if event.key == pygame.K_RETURN:
+                            done = True
+                        elif event.key == pygame.K_BACKSPACE:
                             name = name[:-1]
                             layer = font.render(name,True,(0,0,0))
-                            screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
-                        elif event.key == pygame.K_RETURN:
-                            done = True
                         else:
                             name += event.unicode
                             layer = font.render(name,True,(0,0,0))
-                            screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
-                pygame.display.update()
+            screen.fill((58,208,241))
+            pygame.draw.rect(screen, (255,255,255), dialogue_box)
+            pygame.draw.rect(screen, (0,0,0), pygame.Rect(400,500,800,200), 3)
+            font = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 30)
+            screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
+            screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
+            pygame.display.update()
         file = path + "\\Saves\\"+ save_name
         os.rename(file, path+"\\Saves\\"+name+".txt")
         return name
@@ -78,7 +81,7 @@ class Saves():
 
         file = lines[0][7:]
         map = lines[1][6:]
-        gameLevels = lines[2][13:] #split string into parts and add into actual list
+        gameLevels = lines[2][13:] #split string into parts and add into a dictionary
         level = float(lines[3][8:])
         game_time = [lines[4][7:9], lines[4][10:12], lines[4][13:]] #day, month, year. stored as strings.
         difficulty = lines[5][13:]
@@ -86,6 +89,7 @@ class Saves():
         customers_at_stations = lines[7][24:] #do similarly like for game_time
         money = float(lines[8][8:])
         debt = float(lines[9][6:])
-        save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt]
+        trainsPerHour = lines[10][16:] # do similarly like for game_time, customers_at_stations
+        save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour]
         print(save_data)
         return save_data
