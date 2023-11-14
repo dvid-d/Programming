@@ -26,11 +26,13 @@ class Saves():
 
     def ChangeFileName(screen, path, save_name):
         name = ""
-        done = False
+
         dialogue_box = pygame.Rect(400,500,800,200)
         font = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 30)
         layer = font.render(name,False,(0,0,0))
         screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 3))
+
+        done = False
         while not done:
             for event in pygame.event.get():
                 if not done:
@@ -50,6 +52,7 @@ class Saves():
             screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
             screen.blit(layer, (dialogue_box.x+3,dialogue_box.y + 5))
             pygame.display.update()
+            
         file = path + "\\Saves\\"+ save_name
         os.rename(file, path+"\\Saves\\"+name+".txt")
         return name
