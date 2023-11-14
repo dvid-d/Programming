@@ -85,7 +85,7 @@ class Saves():
         file = lines[0][7:]
         map = lines[1][6:]
         gameLevels = lines[2][13:] #split string into parts and add into a dictionary
-        level = float(lines[3][8:])
+        level = int(lines[3][8:])
         game_time = [lines[4][7:9], lines[4][10:12], lines[4][13:]] #day, month, year. stored as strings.
         difficulty = lines[5][13:]
         customerSatisfaction = int(lines[6][23:])

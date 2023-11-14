@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys, button
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Game Properties")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Fonts")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Maps")
@@ -19,6 +19,15 @@ class Shop():
         pass
 
     def GetSignals(self):
+        pass
+
+    def UseShop(self, inShop):
+        self.Shop.Load()
+        while inShop is True:
+            
+            pass
+
+    def Load(self):
         pass
 
     def Display(self):

@@ -81,8 +81,8 @@ def SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                     save_name = saves.Saves.ChangeFileName(screen, path,"save_2.txt")
                     file = open(f"{path}\\Saves\\check_saves.txt","w")
                     file_1.close()
-                    file.write(lines[0])
-                    file.write("save_2 = True")
+                    file.write(lines[0][:-1] + "\n")
+                    file.write("save_2 = True" +"\n")
                     file.write(lines[2])
                     file.close()
                 else:
@@ -94,8 +94,8 @@ def SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
                     save_name = saves.Saves.ChangeFileName(screen, path,"save_3.txt")
                     file_1.close()
                     file = open(f"{path}\\Saves\\check_saves.txt","w")
-                    file.write(lines[0])
-                    file.write(lines[1])
+                    file.write(lines[0] + "\n")
+                    file.write(lines[1] + "\n")
                     file.write("save_3 = True")
                     file.close()
                 else:
@@ -115,9 +115,9 @@ def Reset():
     pass
 
 
-def Play(path, game, screen, map, SCREEN_WIDTH, SCREEN_HEIGHT):
-    play.Play.Load(path, screen, map)
-    play.Play.Run(screen, path, SCREEN_WIDTH, SCREEN_HEIGHT, game, map)
+def Play(path, game, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
+    play.Play.Load(path, screen, save_data)
+    play.Play.Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game, map)
     
 
 if __name__ == '__main__':
@@ -138,10 +138,10 @@ if __name__ == '__main__':
                 game.changeState(3)
 
         elif game.state == 3 or game.state == 4:
-            map_data = SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+            save_data = SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
 
         elif game.state == 5:
-            Play(path, game, screen, map_data, SCREEN_WIDTH, SCREEN_HEIGHT)
+            Play(path, game, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT)
             pass
 
         for event in pygame.event.get():

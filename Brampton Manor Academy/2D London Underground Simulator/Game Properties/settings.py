@@ -8,7 +8,7 @@ sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
 
 
-import pygame, button, main
+import pygame, button, main, shop
 
 class Settings():
     def __init__(self, volume, difficulty):
@@ -18,10 +18,10 @@ class Settings():
     def InGameSettings(self, screen, game_settings, path):
         inSettings = True
         while inSettings is True:
-            quit_button, back_button = game_settings.Display(screen, path)
+            quit_button, back_button, shop_button = game_settings.Display(screen, path)
             if back_button.wasClicked():
                 inSettings = False
-            if quit_button.wasClicked():
+            elif quit_button.wasClicked():
                 #ask user if they want to save
                 #save if they want to
                 main.Quit()
@@ -46,5 +46,8 @@ class Settings():
 
         back_button_icon = pygame.image.load(f"{path}\\icons\\back_button.png")
         back_button = button.Button(screen, 1190, 260, back_button_icon, 0.2)
+
+
+
         #controls sub section
         return quit_button, back_button
