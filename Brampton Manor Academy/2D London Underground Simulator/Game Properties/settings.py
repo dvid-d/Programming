@@ -18,7 +18,7 @@ class Settings():
     def InGameSettings(self, screen, game_settings, path):
         inSettings = True
         while inSettings is True:
-            quit_button, back_button, shop_button = game_settings.Display(screen, path)
+            quit_button, back_button = game_settings.Display(screen, path) #add shop_button
             if back_button.wasClicked():
                 inSettings = False
             elif quit_button.wasClicked():

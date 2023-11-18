@@ -116,8 +116,8 @@ def Reset():
 
 
 def Play(path, game, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
-    play.Play.Load(path, screen, save_data)
-    play.Play.Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game, map)
+    play.Play.Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT)
+    play.Play.Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game)
     
 
 if __name__ == '__main__':
