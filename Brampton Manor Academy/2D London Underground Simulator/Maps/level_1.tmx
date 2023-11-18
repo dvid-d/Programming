@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="4" nextobjectid="4">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="192" tileheight="108" infinite="0" nextlayerid="6" nextobjectid="95">
  <tileset firstgid="1" source="victoria line.tsx"/>
  <layer id="1" name="Tile Layer 1" width="10" height="10">
   <data encoding="csv">
-1,2,3,4,5,6,7,8,9,1,
+1,2,3,4,5,6,7,8,9,56,
 11,12,13,14,15,16,17,18,19,20,
 21,22,23,24,25,26,27,28,29,30,
 31,32,33,34,35,36,37,38,39,40,
@@ -12,17 +12,60 @@
 61,62,63,64,65,66,67,68,69,70,
 71,72,73,74,75,76,77,78,79,80,
 81,82,83,84,85,86,87,88,89,90,
-1,92,93,94,95,96,97,98,99,100
+56,92,93,94,95,96,97,98,99,100
 </data>
  </layer>
- <objectgroup id="2" name="TrackSouthbound">
-  <object id="2" name="Southbound" type="TrackSouthbound" x="628.75" y="995.25">
-   <polygon points="5.91761,2.12784 -26.9148,2.04545 -126.045,-93.9318 -128.557,-320.545 67.75,-519.364 132.034,-519.807 331.682,-718.591 530.659,-717.739 530.75,-710.25 334.239,-712.426 136.114,-511.932 71.9886,-513.057 -118,-320.75 -118,-98 -24.8267,-8.09943 6.05114,-8.10511"/>
-  </object>
+ <objectgroup id="2" name="StationSouthbound" visible="0" offsetx="-3.63636" offsety="-0.363636">
+  <object id="1" name="Brixton" x="631" y="988" width="9" height="10"/>
+  <object id="2" name="Stockwell" x="574" y="957" width="7" height="7" rotation="45"/>
+  <object id="7" x="510" y="894" width="6" height="7" rotation="45"/>
+  <object id="9" name="Pimlico" x="505.934" y="830.466" width="8.75" height="8.25"/>
+  <object id="27" name="Victoria" x="505.697" y="731.68" width="9.38989" height="8.81818"/>
+  <object id="29" name="Green Park" x="510.386" y="666.223" width="7.21257" height="9.1542" rotation="45"/>
+  <object id="42" name="Oxford Circus" x="574.204" y="603.267" width="9.87127" height="8.81818" rotation="45"/>
+  <object id="43" name="Warren Street" x="639.82" y="538.372" width="9.63754" height="8.81818" rotation="45"/>
+  <object id="44" name="Euston" x="702.506" y="474.485" width="8.3892" height="8.19318" rotation="45"/>
+  <object id="45" name="KGX" x="765.886" y="474.938" width="8.54545" height="8.81818"/>
+  <object id="46" name="Highbury &amp; Islington" x="837.779" y="407.613" width="8.54545" height="8.81818" rotation="45"/>
+  <object id="47" name="Finsbury Park" x="934.885" y="309.174" width="8.54545" height="8.81818" rotation="45"/>
+  <object id="48" name="Seven Sisters" x="966.523" y="276.915" width="8.54545" height="8.81818" rotation="45"/>
+  <object id="49" name="Tottenham Hale" x="1025" y="277.587" width="8.67878" height="8.81818"/>
+  <object id="50" name="Blackhorse Road" x="1091.05" y="279.224" width="8.54545" height="8.81818"/>
+  <object id="51" name="Brixton" x="1155.69" y="278.678" width="8.54545" height="8.81818"/>
+  <object id="92" name="Brixton" x="1155.93" y="268.205" width="8.54545" height="8.81818"/>
  </objectgroup>
- <objectgroup id="3" name="TrackNorthbound">
-  <object id="3" name="Southbound" type="TrackSouthbound" x="627.375" y="1008">
-   <polygon points="7.53125,0.78125 -28.3125,0.8125 -134.773,-102.114 -136.193,-336.909 67.6364,-540.182 131.034,-539.716 330.5,-738 531.75,-738.25 532.25,-731 332.875,-731.636 133.125,-533 68.8826,-532.58 -127.636,-333.568 -124.893,-106.316 -25.4063,-10.4375 7.125,-10.5"/>
-  </object>
+ <objectgroup id="5" name="StationNorthbound" visible="0">
+  <object id="54" name="Brixton" x="627.601" y="997.87" width="8.54545" height="8.81818"/>
+  <object id="55" name="Stockwell" x="564.409" y="962.294" width="7.57318" height="8.81818" rotation="45"/>
+  <object id="56" name="Stockwell" x="497.445" y="894.841" width="7.57318" height="6.97443" rotation="45"/>
+  <object id="58" name="Victoria" x="494.125" y="731.313" width="7.63985" height="8.90776"/>
+  <object id="59" name="Green Park" x="501.192" y="660.448" width="7.57318" height="9.03426" rotation="45"/>
+  <object id="63" name="Warren Street" x="630.692" y="532.507" width="7.57318" height="8.89933" rotation="45"/>
+  <object id="64" name="Warren Street" x="695.233" y="465.156" width="8.47916" height="8.89933" rotation="45"/>
+  <object id="84" name="Pimlico" x="492.825" y="830.097" width="8.59444" height="8.07222"/>
+  <object id="85" name="KGX" x="755.543" y="465.129" width="8.54545" height="9.29644"/>
+  <object id="86" name="Highbury &amp; Islington" x="825.977" y="400.443" width="8.54545" height="8.81818" rotation="45"/>
+  <object id="87" name="Finsbury Park" x="924.321" y="301.872" width="8.54545" height="8.81818" rotation="45"/>
+  <object id="90" name="Seven Sisters" x="956.879" y="267.178" width="9.43702" height="9.09487" rotation="45"/>
+  <object id="91" name="Tottenham Hale" x="1021.37" y="268.122" width="8.54545" height="8.81818"/>
+  <object id="93" name="Oxford Circus" x="564.463" y="597.113" width="7.57318" height="8.89933" rotation="45"/>
+ </objectgroup>
+ <objectgroup id="3" name="TrackNorthbound" visible="0">
+  <object id="68" x="599.688" y="998.314" width="27.5416" height="3.23382"/>
+  <object id="70" x="501.075" y="900.851" width="138.962" height="4.58773" rotation="45"/>
+  <object id="73" x="495.322" y="667.457" width="4.72134" height="230.133"/>
+  <object id="76" x="691.429" y="473.367" width="4.5" height="266.966" rotation="45"/>
+  <object id="77" x="755.938" y="469.618" width="4.5" height="56.273" rotation="90"/>
+  <object id="79" x="953.548" y="277.995" width="4.5" height="271.509" rotation="45"/>
+  <object id="83" x="1153.26" y="271.908" width="4.5" height="192.209" rotation="90"/>
+ </objectgroup>
+ <objectgroup id="4" name="TrackSouthbound">
+  <object id="3" x="599.933" y="994.522" width="27.5416" height="3.23382"/>
+  <object id="6" name="Brixton-Stockwell" x="508.121" y="900.746" width="131.23" height="3.85853" rotation="45"/>
+  <object id="13" x="502.026" y="673.697" width="4.5" height="224.15"/>
+  <object id="16" x="693.993" y="480.277" width="4.5" height="264.109" rotation="45"/>
+  <object id="17" x="762.11" y="476.157" width="4.5" height="61.2908" rotation="90"/>
+  <object id="19" x="956.28" y="282.718" width="4.5" height="271.541" rotation="45"/>
+  <object id="23" x="1152.98" y="278.634" width="4.5" height="188.084" rotation="90"/>
  </objectgroup>
 </map>
