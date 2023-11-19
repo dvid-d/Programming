@@ -40,15 +40,11 @@
             }
         },
         "level_1.tmx": {
-            "expandedObjectLayers": [
-                2,
-                3
-            ],
-            "scale": 16,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 622.03125,
-                "y": 987.65625
+                "x": 597,
+                "y": 882.9999999999999
             }
         },
         "untitled.tmx": {
@@ -83,13 +79,14 @@
     "openFiles": [
         "victoria line.tsx",
         "level_1.tmx",
-        "level_1.tmx"
+        "level_1 - Copy.tmx"
     ],
     "project": "victoria line.tiled-project",
     "recentFiles": [
-        "untitled.tmx",
         "victoria line.tsx",
+        "level_1 - Copy.tmx",
         "level_1.tmx",
+        "untitled.tmx",
         "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/level_1.tmx",
         "victoria line.tmx",
         "C:/Users/ddobr/Desktop/victoria line.tmx"
