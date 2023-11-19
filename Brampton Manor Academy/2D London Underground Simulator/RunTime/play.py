@@ -14,16 +14,20 @@ class Play():
         sprite_group, map_data = Play.LoadMap(path, save_data, screen)
         sprite_group.draw(screen)
         objects = map_data.objects
-        track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        # track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         for object in objects:
             if object.__class__ == "StationSouthbound":
                 pass
             if object.type[:5] == "Track":
                 track = object
                 if track.type == "TrackSouthbound":
-                    if track.name == "Southbound":
+                    if track.name == "Southbound": #add to display NorthBound Track as well, add coordinates to a large list like [[victoria_line, [(coordtrack_1_x, coordtrack_1_y)], [(station_1_x, station_1,y)]],[central_line,[...]]]]
                         points = [(point.x, point.y) for point in track.points]
+                        print(points)
                         pygame.draw.polygon(screen, (100,100,100), points, 1)
+                        #points go clockwise from the bottom right
+                        
+
         #also add Trains and other things
 
     def LoadMap(path, save_data, screen):

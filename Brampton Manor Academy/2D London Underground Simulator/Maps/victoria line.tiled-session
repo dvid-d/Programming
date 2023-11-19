@@ -31,24 +31,32 @@
             "dynamicWrapping": true,
             "scaleInDock": 1
         },
-        "level_1.tmx": {
-            "expandedObjectLayers": [
-                3,
-                2
-            ],
-            "scale": 2,
-            "selectedLayer": 1,
-            "viewCenter": {
-                "x": 1210.75,
-                "y": 380.25
-            }
-        },
-        "untitled.tmx": {
+        "level_1 - Copy.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 827.3333333333333,
-                "y": 555.3333333333333
+                "x": 895.3333333333334,
+                "y": 1136.6666666666665
+            }
+        },
+        "level_1.tmx": {
+            "expandedObjectLayers": [
+                2,
+                3
+            ],
+            "scale": 16,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 622.03125,
+                "y": 987.65625
+            }
+        },
+        "untitled.tmx": {
+            "scale": 11,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 610.409090909091,
+                "y": 1001.8636363636364
             }
         },
         "victoria line.tmx": {
@@ -79,10 +87,10 @@
     ],
     "project": "victoria line.tiled-project",
     "recentFiles": [
+        "untitled.tmx",
         "victoria line.tsx",
         "level_1.tmx",
         "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/level_1.tmx",
-        "untitled.tmx",
         "victoria line.tmx",
         "C:/Users/ddobr/Desktop/victoria line.tmx"
     ],
