@@ -6,7 +6,7 @@ sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Saves")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
 
-import pygame, settings, main, button, gameState, tile, shop
+import pygame, settings, main, button, gameState, tile, shop, train
 from pytmx.util_pygame import load_pygame
 
 class Play():
@@ -24,8 +24,8 @@ class Play():
                     if track.name == "Southbound": #add to display NorthBound Track as well, add coordinates to a large list like [[victoria_line, [(coordtrack_1_x, coordtrack_1_y)], [(station_1_x, station_1,y)]],[central_line,[...]]]]
                         points = [(point.x, point.y) for point in track.points]
                         print(points)
-                        pygame.draw.polygon(screen, (100,100,100), points, 1)
-                        #points go clockwise from the bottom right
+                        pygame.draw.polygon(screen, (100,100,100), points, 1) #points go clockwise from the bottom right
+        lines = save_data[11]
                         
 
         #also add Trains and other things
@@ -44,31 +44,42 @@ class Play():
             #print(object)
         return sprite_group, map_data
     
+    def LoadTrains(path, screen, lines):
+        #lines[Line][Train]
+        #lines[Line][Train][NewCoords]
+        for line in lines:
+            trains = line[1]
+            icon_location = f"{path}\\Icons\\{line}.png"
+            for obj in trains:
+                train_location = trains[obj]
+                train.Train.Display(screen, icon_location, train_location)
+
     def CheckForRewards():
         pass
 
     def GetMap(save_data):
-        map = "level_" + str(int(save_data[3]))
         if save_data[3] == 1.0 or save_data[3] == 0.0:
             map = "level_1"
-        elif save_data[3] == 2.0:
-            map = "level_2"
-        elif save_data[3] == 3.0:
-            map = "level_3"
-        elif save_data[3] == 4.0:
-            map = "level_4"
-        elif save_data[3] == 5.0:
-            map = "level_5"
-        elif save_data[3] == 6.0:
-            map = "level_6"
-        elif save_data[3] == 7.0:
-            map = "level_7"
-        elif save_data[3] == 8.0:
-            map = "level_8"
-        elif save_data[3] == 9.0:
-            map = "level_9"
-        elif save_data[3] == 10.0:
-            map = "level_10"
+        else:
+            map = "level_" + str(int(save_data[3]))
+        # elif save_data[3] == 2.0:
+        #     map = "level_2"
+        # elif save_data[3] == 3.0:
+        #     map = "level_3"
+        # elif save_data[3] == 4.0:
+        #     map = "level_4"
+        # elif save_data[3] == 5.0:
+        #     map = "level_5"
+        # elif save_data[3] == 6.0:
+        #     map = "level_6"
+        # elif save_data[3] == 7.0:
+        #     map = "level_7"
+        # elif save_data[3] == 8.0:
+        #     map = "level_8"
+        # elif save_data[3] == 9.0:
+        #     map = "level_9"
+        # elif save_data[3] == 10.0:
+        #     map = "level_10"
         return map
 
     def CheckIfClicked(buttons, screen, game_settings, path):
@@ -126,6 +137,7 @@ class Play():
             #Simulation code
             #check to see if next threshold has been met;
             #Play.CheckLevel()
+            #Check to see if any train has met the end of their line
             run = 0
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

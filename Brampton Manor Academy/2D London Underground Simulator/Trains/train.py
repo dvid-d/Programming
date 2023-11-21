@@ -11,15 +11,18 @@ class Train():
         rectangle.center = [train_location[0]+50, train_location[1]-50] #change depending on southbound/northbounding intially or when loading| Should be a tuple
         self.OnTrack = onTrack
 
+    def L():
+        pass
+
     def CheckTrain_SideOfTrack(point_1, point_2, point_3, point_4):
-        PosVector1  = pygame.math.Vector2(*point_1)
-        PosVector2 = pygame.math.Vector2(*point_2)
-        Line1Vector = PosVector2 - PosVector1
+        P1  = pygame.math.Vector2(*point_1)
+        P2 = pygame.math.Vector2(*point_2)
+        Line1Vector = P2 - P1
         Line1UnitVector = Line1Vector.normalize()
 
-        PosVector3  = pygame.math.Vector2(*point_3)
-        PosVector4 = pygame.math.Vector2(*point_4)
-        Line2Vector = PosVector4 - PosVector3
+        P3  = pygame.math.Vector2(*point_3)
+        P4 = pygame.math.Vector2(*point_4)
+        Line2Vector = P4 - P3
         Line2UnitVector = Line2Vector.normalize()
 
         NormalLine1 = pygame.math.Vector2(Line1UnitVector[1], -Line1UnitVector[0])
@@ -28,7 +31,7 @@ class Train():
         if Line1UnitVectordotSVN == 0: #if dot product = 0, line and normal of other line are perpendicular
             return False
         
-        DirectionVector3_4  = PosVector3 - PosVector1
+        DirectionVector3_4  = P3 - P1
         a = DirectionVector3_4.dot(NormalLine2) / Line1UnitVectordotSVN
         b = DirectionVector3_4.dot(NormalLine1) / Line1UnitVectordotSVN
 
@@ -37,8 +40,8 @@ class Train():
     def CollideTrainTrack(train, point_1, point_2):
         return (Train.CheckTrain_SideOfTrack(point_1, point_2, train.topleft, train.bottomleft) or
                 Train.CheckTrain_SideOfTrack(point_1, point_2, train.bottomleft, train.bottomright) or
-                Train(point_1, point_2, train.bottomright, train.topright) or
-                Train(point_1, point_2, train.topright, train.topleft))
+                Train.CheckTrain_SideOfTrack(point_1, point_2, train.bottomright, train.topright) or
+                Train.CheckTrain_SideOfTrack(point_1, point_2, train.topright, train.topleft))
 
     def NotOnTrack(self, track_points, line):
         if line == len(track_points):
@@ -64,7 +67,7 @@ class Train():
         #         if event.key == pygame.K_a:
         #             MoveLeft = False
         #         if event.key == pygame.K_d:
-        #             MoveRight = False |||||SHould be executed before calling Move()
+        #             MoveRight = False |||||Should be executed before calling Move()
 
 
         if (not Train.NotOnTrack(self, track, 2)) or (not Train.NotOnTrack(self, track, 3)):
@@ -80,8 +83,17 @@ class Train():
         #           add should also add for other sides of line
         Train.DisplayTrain(self, screen, icon_location, self.train_location)
 
-        def DisplayTrain(self, screen, icon_location, train_location):
-            icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-            rectangle = self.icon.get_rect()
-            rectangle.center = train_location
-            screen.blit(icon, rectangle)
+    def CheckIfAtEndOfLine():
+        pass
+
+    def Clean(lines):
+        pass
+
+    def Move(train):
+        train.
+
+    def DisplayTrain(screen, icon_location, train_location):
+        icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
+        hitbox = icon.icon.get_rect()
+        hitbox.center = train_location
+        screen.blit(icon, hitbox)

@@ -93,6 +93,7 @@ class Saves():
         money = float(lines[8][8:])
         debt = float(lines[9][6:])
         trainsPerHour = lines[10][16:] # do similarly like for game_time, customers_at_stations
-        save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour]
+        trainLocations = lines[11][17:] # as above
+        save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour, trainLocations]
         print(save_data)
         return save_data

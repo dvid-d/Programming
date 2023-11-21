@@ -9,3 +9,4 @@ customers_at_stations = [{"victoria line" : [{station: 0, station: 0}]}, {"distr
 money = 0.0
 debt = 0.0
 trainsPerHour = {}
+trainLocations = [["Line1", {"Train1":Coords}]]
