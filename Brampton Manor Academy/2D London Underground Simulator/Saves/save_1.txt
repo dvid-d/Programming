@@ -1,12 +1,12 @@
 file = 1
 map = victoria line
-gameLevels = {1:"intro"}
+gameLevels = {1:intro,2:Victoria,3:H&C}
 level = 0.0
 time = 00/00/0000
 difficulty = Easy
 customerSatisfaction = 100
-customers_at_stations = [{"victoria line" : [{station: 0, station: 0}]}, {"district line":[{station: 0, station: 0}]}]
+customers_at_stations = [{victoria line:[{Brixton 50-Stockwell 194}]},{district line:[{station3 3-station4 4}]}]
 money = 0.0
 debt = 0.0
 trainsPerHour = {}
-trainLocations = [["Line1", {"Train1":Coords}]]
+trainLocations = [["Line1", {"Train1Northbound":Coords}]]

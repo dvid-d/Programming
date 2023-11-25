@@ -84,16 +84,61 @@ class Saves():
 
         file = lines[0][7:]
         map = lines[1][6:]
+
         gameLevels = lines[2][13:] #split string into parts and add into a dictionary
+        gameLevels_temp = gameLevels[1:-1] #removes {} from string
+        gameLevels_temp = gameLevels_temp.split(",") #splits terms
+        gameLevels_temp = [[int(gameLevels_temp[i][0]), gameLevels_temp[i][2:]] for i in range(len(gameLevels_temp))] #further splits terms
+        gameLevels = {}
+        for pair in gameLevels_temp:
+            gameLevels[pair[0]] = pair[1] #reassembles terms into dictionary
+        #print(gameLevels)
+
         level = int(float(lines[3][8:]))
         game_time = [lines[4][7:9], lines[4][10:12], lines[4][13:]] #day, month, year. stored as strings.
         difficulty = lines[5][13:]
         customerSatisfaction = int(lines[6][23:])
+
         customers_at_stations = lines[7][24:] #do similarly like for game_time
+        customers_at_stations = customers_at_stations[1:-1]
+        custSublist = customers_at_stations.split(",")
+        custSublist = [custSublist[i][1:-1].split(":") for i in range(len(custSublist))]
+        tubeLines = [line[0] for line in custSublist]
+        stationSublists = [custSublist[i][1][2:-2].split("-") for i in range(len(custSublist))]
+
+        stations = []
+        for i in range(len(stationSublists)):
+            dict = {}
+            for j in range(len(stationSublists[i])):
+                temp = stationSublists[i][j].split(" ")
+                dict[temp[0]] = int(temp[1])
+            stations.append(dict)
+
+        customersAtStations = []
+        for line in range(len(tubeLines)):
+            dict = {}
+            list = [stations[line]]
+            dict[tubeLines[line]] = list
+            customersAtStations.append(dict)
+
         money = float(lines[8][8:])
         debt = float(lines[9][6:])
+
         trainsPerHour = lines[10][16:] # do similarly like for game_time, customers_at_stations
+        trainsPerHour = lines[2][13:] #split string into parts and add into a dictionary
+        trainsPerHour_temp = trainsPerHour[1:-1] #removes {} from string
+        trainsPerHour_temp = trainsPerHour_temp.split(",") #splits terms
+        trainsPerHour_temp = [[int(trainsPerHour_temp[i][0]), trainsPerHour_temp[i][2:]] for i in range(len(trainsPerHour_temp))] #further splits terms
+        trainsPerHour = {}
+        for pair in trainsPerHour_temp:
+            trainsPerHour[pair[0]] = pair[1] #reassembles terms into dictionary
+
         trainLocations = lines[11][17:] # as above
+        print("hey!")
+        print(trainLocations)
         save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour, trainLocations]
         print(save_data)
         return save_data
+    
+    def Save():
+        pass

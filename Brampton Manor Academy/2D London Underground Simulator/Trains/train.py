@@ -90,8 +90,8 @@ class Train():
         pass
 
     def Move(train):
-        train.
-
+        pass
+    
     def DisplayTrain(screen, icon_location, train_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         hitbox = icon.icon.get_rect()
