@@ -6,7 +6,7 @@ sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Saves")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
 
-import pygame, settings, main, button, gameState, tile, shop, train
+import pygame, settings, main, button, gameState, tile, shop, train, userTrain
 from pytmx.util_pygame import load_pygame
 
 class Play():
@@ -15,20 +15,41 @@ class Play():
         sprite_group.draw(screen)
         objects = map_data.objects
         # track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+        tracks = []
+        stations = [[save_data[11][0],["NB"], ["SB"]] for i in range(len(save_data[11]))]
         for object in objects:
-            if object.__class__ == "StationSouthbound":
-                pass
             if object.type[:5] == "Track":
                 track = object
-                if track.type == "TrackSouthbound":
-                    if track.name == "Southbound": #add to display NorthBound Track as well, add coordinates to a large list like [[victoria_line, [(coordtrack_1_x, coordtrack_1_y)], [(station_1_x, station_1,y)]],[central_line,[...]]]]
-                        points = [(point.x, point.y) for point in track.points]
-                        print(points)
-                        pygame.draw.polygon(screen, (100,100,100), points, 1) #points go clockwise from the bottom right
+                direction = track.type
+                points = [(point.x, point.y) for point in track.points]  #points go clockwise from the bottom right
+                pygame.draw.polygon(screen, (100,100,100), points, 1)
+                if direction[5:7] == "SB":
+                    tracks.append(["SB", track.type[-3:], points])
+                elif direction[5:7] == "NB":
+                    tracks.append(["NB",track.type[-3:], points])
+                print()
+
+            if object.type[:7] == "Station":
+                station = object
+                direction = station.type[7:9]
+                pygame.draw.polygon(screen, (100,100,100), station.points, 1)
+
+                stationsList = ["Vic", "H&C", "Cir", "Dis", "Jub", "Met", "Cen", "Pic", "Nor"]
+                for i in range(len(stationsList)):
+                    if stationsList[i] == stations.type[-3:]:
+                        stations = Play.AddStations(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
+
         lines = save_data[11]
                         
 
         #also add Trains and other things
+
+    def AddStations(stations, direction, line_no, station):
+        if direction == "NB":
+            stations[line_no][1].append(station.points)
+        elif direction == "SB":
+            stations[line_no][2].append(station.points)
+        return stations
 
     def LoadMap(path, save_data, screen):
         map = Play.GetMap(save_data)
@@ -121,6 +142,11 @@ class Play():
         game_settings = settings.Settings(100, 3)
         settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
         #shop_button_icon = pygame.image.load(f"{path}\\icons\\shop_button.png")
+
+        #create player
+        icon_location = "" #icon to be made for player and each line
+        train_location = [100,100] #example
+        player =userTrain.UserTrain("Northbound","Player", 100, icon_location, train_location)
         run = 1
         while game.state == 5:
             settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5))
@@ -131,7 +157,7 @@ class Play():
                 Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
             else:
                 if clicked is True:
-                    save_data = Play.CheckThreshold(save_data)
+                    #save_data = Play.CheckThreshold(save_data)
                     Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
                 
             #Simulation code

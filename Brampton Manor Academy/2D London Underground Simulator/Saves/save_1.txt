@@ -9,4 +9,4 @@ customers_at_stations = [{victoria line:[{Brixton 50-Stockwell 194}]},{district 
 money = 0.0
 debt = 0.0
 trainsPerHour = {victoria line:10, district line:50}
-trainLocations = [[Line1-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Line2-{Train3Northbound:Coords3 Train4Northbound:Coords4}]]
+trainLocations = [[Victoria-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[H&C-{Train3Northbound:Coords3 Train4Northbound:Coords4}],[Circle-{Train1Northbound:Coords5 Train2Northbound:Coords6}],[District-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Jubilee-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Metropolitan-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Central-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Picadilly-{Train1Northbound:Coords1 Train2Northbound:Coords2}],[Northern-{Train1Northbound:Coords1 Train2Northbound:Coords2}]]

@@ -1,0 +1,4 @@
+to finish adding stations using 'Tiled'
+to make player icon
+to make train icon for each line
+train icons should be a circle with the colour of the line with a smaller, white dot inside it

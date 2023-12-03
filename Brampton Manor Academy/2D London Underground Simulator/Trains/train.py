@@ -1,20 +1,20 @@
 import pygame, controls
 
 class Train():
-    def __init__(self, direction, type, customer_satisfaction, icon_location, train_location, onTrack):
+    def __init__(self, direction, type, customer_satisfaction, icon_location, train_location):
         self.type = type # #Automatic or user train
         self.direction = direction #Northbound/Southbound/Eastbound/Westbound
-        self.customerSatisfaction = customer_satisfaction #on a scale
+        self.customerSatisfaction = customer_satisfaction #as a percentage
         self.icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         rectangle = self.icon.get_rect()
         self.train_location = train_location #Represents top right hand corner of train.
         rectangle.center = [train_location[0]+50, train_location[1]-50] #change depending on southbound/northbounding intially or when loading| Should be a tuple
-        self.OnTrack = onTrack
+        #self.OnTrack = onTrack
 
     def L():
         pass
 
-    def CheckTrain_SideOfTrack(point_1, point_2, point_3, point_4):
+    def CheckForCollision(point_1, point_2, point_3, point_4):
         P1  = pygame.math.Vector2(*point_1)
         P2 = pygame.math.Vector2(*point_2)
         Line1Vector = P2 - P1
@@ -38,10 +38,10 @@ class Train():
         return a > 0 and b > 0 and a**2 < Line1Vector.magnitude_squared() and b**2 < Line2Vector.magnitude_squared()
     
     def CollideTrainTrack(train, point_1, point_2):
-        return (Train.CheckTrain_SideOfTrack(point_1, point_2, train.topleft, train.bottomleft) or
-                Train.CheckTrain_SideOfTrack(point_1, point_2, train.bottomleft, train.bottomright) or
-                Train.CheckTrain_SideOfTrack(point_1, point_2, train.bottomright, train.topright) or
-                Train.CheckTrain_SideOfTrack(point_1, point_2, train.topright, train.topleft))
+        return (Train.CheckForCollision(point_1, point_2, train.topleft, train.bottomleft) or
+                Train.CheckForCollision(point_1, point_2, train.bottomleft, train.bottomright) or
+                Train.CheckForCollision(point_1, point_2, train.bottomright, train.topright) or
+                Train.CheckForCollision(point_1, point_2, train.topright, train.topleft))
 
     def NotOnTrack(self, track_points, line):
         if line == len(track_points):
@@ -56,7 +56,7 @@ class Train():
     def UpdateTrainLocation(self, train_location):
         self.train_location = train_location
 
-    def Move(self, screen, MoveLeft, MoveRight, MoveUp, MoveDown, track, icon_location):
+    def Move(self, screen, MoveLeft, MoveRight, MoveUp, MoveDown, track_points, icon_location):
         # for event in pygame.event.get():
         #     if event.type == pygame.KEYDOWN:
         #         if event.key == pygame.K_a:
@@ -70,10 +70,10 @@ class Train():
         #             MoveRight = False |||||Should be executed before calling Move()
 
 
-        if (not Train.NotOnTrack(self, track, 2)) or (not Train.NotOnTrack(self, track, 3)):
+        if (not Train.NotOnTrack(self, track_points, 2)) or (not Train.NotOnTrack(self, track_points, 3)):
             if MoveLeft:
                 self.train_location[0] -= 3
-        if not Train.NotOnTrack(self, track, 5):
+        if not Train.NotOnTrack(self, track_points, 5):
             if MoveRight:
                 self.train_location[0] += 3
         #need to:
@@ -84,6 +84,7 @@ class Train():
         Train.DisplayTrain(self, screen, icon_location, self.train_location)
 
     def CheckIfAtEndOfLine():
+        #if at end of line, destroy
         pass
 
     def Clean(lines):

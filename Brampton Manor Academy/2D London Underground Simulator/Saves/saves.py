@@ -144,11 +144,11 @@ class Saves():
 
         for i in range(len(trainCoords)): #splits coordinates into trainName and Coords
             coordsSplit = trainCoords[i][0][1:-1].split(" ")
-            coordsList = []
+            coordsSublist = []
             for j in coordsSplit:
                 train = j.split(":")
-                coordsList.append(train)
-            coords.append(coordsList)
+                coordsSublist.append(train)
+            coords.append(coordsSublist)
 
         tubeLines = [split_trainLocations[i][0] for i in range(len(split_trainLocations))] #gets line names into a list
 
@@ -164,7 +164,7 @@ class Saves():
             trainLocations.append([tubeLines[i], trains[i]])
 
         save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour, trainLocations]
-        print(save_data)
+        print(save_data[11])
         return save_data
     
     def Save():
