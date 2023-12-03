@@ -92,7 +92,6 @@ class Saves():
         gameLevels = {}
         for pair in gameLevels_temp:
             gameLevels[pair[0]] = pair[1] #reassembles terms into dictionary
-        #print(gameLevels)
 
         level = int(float(lines[3][8:]))
         game_time = [lines[4][7:9], lines[4][10:12], lines[4][13:]] #day, month, year. stored as strings.
@@ -134,8 +133,36 @@ class Saves():
             trainsPerHour[pair[0]] = pair[1] #reassembles terms into dictionary
 
         trainLocations = lines[11][17:] # as above
-        print("hey!")
-        print(trainLocations)
+        trainLocations = trainLocations[1:-1] #removes outer brackets []
+        split_trainLocations = trainLocations.split(",") #breaks up based on line (lines separated by ',')
+        split_trainLocations = [[split_trainLocations[i].split("-")[0][1:], split_trainLocations[i].split("-")[1][:-1]] for i in range(len(split_trainLocations))] #splits line and train coordinates into their own list
+
+        trainCoordsTemp = [split_trainLocations[i][1:] for i in range(len(split_trainLocations))] #furhter splits the coordinates themselves
+        trainCoords = [trainCoordsTemp[i] for i in range(len(trainCoordsTemp))]
+
+        coords = []
+
+        for i in range(len(trainCoords)): #splits coordinates into trainName and Coords
+            coordsSplit = trainCoords[i][0][1:-1].split(" ")
+            coordsList = []
+            for j in coordsSplit:
+                train = j.split(":")
+                coordsList.append(train)
+            coords.append(coordsList)
+
+        tubeLines = [split_trainLocations[i][0] for i in range(len(split_trainLocations))] #gets line names into a list
+
+        trains = []
+
+        for i in range(len(coords)): #reassembles terms in a list, as it looks in the save file
+            trainsTemp = {}
+            for j in range(len(coords[i])):
+                trainsTemp[coords[i][j][0]] = coords[i][j][1]
+            trains.append(trainsTemp)
+        trainLocations = []
+        for i in range(len(tubeLines)):
+            trainLocations.append([tubeLines[i], trains[i]])
+
         save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour, trainLocations]
         print(save_data)
         return save_data
