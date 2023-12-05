@@ -164,7 +164,7 @@ class Saves():
             trainLocations.append([tubeLines[i], trains[i]])
 
         save_data = [file, map, gameLevels, level, game_time, difficulty, customerSatisfaction, customers_at_stations, money, debt, trainsPerHour, trainLocations]
-        print(save_data[11])
+        #print(save_data[11])
         return save_data
     
     def Save():

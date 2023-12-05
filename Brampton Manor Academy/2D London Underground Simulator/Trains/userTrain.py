@@ -1,5 +1,5 @@
-import pygame, train
+# import pygame, train
 
-class UserTrain():
-    super(train.Train, train.self).__init__()
-    #idk
+# class UserTrain():
+#     super(Train).__init__()
+#     #idk

@@ -96,5 +96,5 @@ class Train():
     def DisplayTrain(screen, icon_location, train_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         hitbox = icon.icon.get_rect()
-        hitbox.center = train_location
+        hitbox.center = train_location ##?? sort this out
         screen.blit(icon, hitbox)

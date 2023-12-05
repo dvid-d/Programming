@@ -18,6 +18,9 @@ class Play():
         tracks = []
         stations = [[save_data[11][0],["NB"], ["SB"]] for i in range(len(save_data[11]))]
         for object in objects:
+            print()
+            print(object.type)
+            print(object)
             if object.type[:5] == "Track":
                 track = object
                 direction = track.type
@@ -36,9 +39,11 @@ class Play():
 
                 stationsList = ["Vic", "H&C", "Cir", "Dis", "Jub", "Met", "Cen", "Pic", "Nor"]
                 for i in range(len(stationsList)):
-                    if stationsList[i] == stations.type[-3:]:
+                    if stationsList[i] == station.type[-3:]:
                         stations = Play.AddStations(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
 
+            image_location = f"{path}\\Icons\\player.png"
+            train.Train.DisplayTrain(image_location)
         lines = save_data[11]
                         
 
@@ -144,9 +149,9 @@ class Play():
         #shop_button_icon = pygame.image.load(f"{path}\\icons\\shop_button.png")
 
         #create player
-        icon_location = "" #icon to be made for player and each line
-        train_location = [100,100] #example
-        player =userTrain.UserTrain("Northbound","Player", 100, icon_location, train_location)
+        # icon_location = "" #icon to be made for player and each line
+        # train_location = [100,100] #example
+        # player =userTrain.UserTrain("Northbound","Player", 100, icon_location, train_location)
         run = 1
         while game.state == 5:
             settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5))
