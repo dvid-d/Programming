@@ -1,15 +1,19 @@
-import pygame, controls
+import pygame, sys
+
+sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Icons")
 
 class Train():
-    def __init__(self, direction, type, customer_satisfaction, icon_location, train_location):
-        self.type = type # #Automatic or user train
-        self.direction = direction #Northbound/Southbound/Eastbound/Westbound
-        self.customerSatisfaction = customer_satisfaction #as a percentage
-        self.icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        rectangle = self.icon.get_rect()
-        self.train_location = train_location #Represents top right hand corner of train.
-        rectangle.center = [train_location[0]+50, train_location[1]-50] #change depending on southbound/northbounding intially or when loading| Should be a tuple
-        #self.OnTrack = onTrack
+    def __init__(self, surface, direction, line, type, customer_satisfaction, icon_location, train_location):
+        self.__type = type # Player or Non-player
+        self.__direction = direction #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
+        self.__line = line #e.g. District, Victoria, Northern etc
+        self.__customerSatisfaction = customer_satisfaction #as a percentage
+        self.__train_location = train_location #Represents top right hand corner of train.
+
+        self.__image = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
+        hitbox = self.__image.get_rect()
+        hitbox.center = [train_location[0]+50, train_location[1]-50] #change depending on southbound/northbounding intially or when loading| Should be a tuple
+        surface.blit(self.__image, self.__train_location)
 
     def L():
         pass
@@ -43,7 +47,7 @@ class Train():
                 Train.CheckForCollision(point_1, point_2, train.bottomright, train.topright) or
                 Train.CheckForCollision(point_1, point_2, train.topright, train.topleft))
 
-    def NotOnTrack(self, track_points, line):
+    def CheckOnTrack(self, track_points, line):
         if line == len(track_points):
             if Train.CollideTrainTrack(self.icon.get_rect(), track_points[line-1], track_points[0]):
                 return True
@@ -53,48 +57,63 @@ class Train():
         return False
 
 
-    def UpdateTrainLocation(self, train_location):
-        self.train_location = train_location
+    def UpdateTrainLocation(self, surface, image_location, train_location):
+        self.__train_location = train_location
+        image = pygame.image.load(image_location)
+        surface.blit(image, train_location)
+    
+    def IsOnTrack(self, track_points):
+        isOnTrackList = []
+        for i in range(1, len(track_points)+1):
+            isOnTrackList.append(self.CheckOnTrack(track_points, i))
+        return isOnTrackList
 
-    def Move(self, screen, MoveLeft, MoveRight, MoveUp, MoveDown, track_points, icon_location):
-        # for event in pygame.event.get():
-        #     if event.type == pygame.KEYDOWN:
-        #         if event.key == pygame.K_a:
-        #             MoveLeft = True
-        #         if event.key == pygame.K_d:
-        #             MoveRight = True
-        #     if event.type == pygame.KEYUP:
-        #         if event.key == pygame.K_a:
-        #             MoveLeft = False
-        #         if event.key == pygame.K_d:
-        #             MoveRight = False |||||Should be executed before calling Move()
+    def Move(self, surface, image): #, track_points
+        MOVERIGHT, MOVELEFT, MOVEUP, MOVEDOWN = 0, 0, 0, 0
+        for event in pygame.event.get():
+            keys = pygame.key.get_pressed()
+            if event.type == pygame.KEYDOWN:
+                if keys[pygame.K_d]:
+                    MOVERIGHT = 10
+                if keys[pygame.K_a]:
+                    MOVELEFT = 10
+                if keys[pygame.K_w]:
+                    MOVEUP = 10
+                if keys[pygame.K_s]:
+                    MOVEDOWN = 10
 
+            elif event.type == pygame.KEYUP:
+                if not keys[pygame.K_d]:
+                    MOVERIGHT = 0
+                if not keys[pygame.K_a]:
+                    MOVELEFT = 0
+                if not keys[pygame.K_w]:
+                    MOVEUP = 0
+                if not keys[pygame.K_s]:
+                    MOVEDOWN = 0
 
-        if (not Train.NotOnTrack(self, track_points, 2)) or (not Train.NotOnTrack(self, track_points, 3)):
-            if MoveLeft:
-                self.train_location[0] -= 3
-        if not Train.NotOnTrack(self, track_points, 5):
-            if MoveRight:
-                self.train_location[0] += 3
-        #need to:
-        #           check which line the train is on (different for each line)
-        #           check where train's bottom right hand corner is
-        #           if corner within range (needs to be calculated for each line), check for keys, then allow player to move accordingly
-        #           add should also add for other sides of line
-        Train.DisplayTrain(self, screen, icon_location, self.train_location)
+            #isOnTrackList = self.IstOnTrack(track_points)
 
+            # for checkedSide in isOnTrackList:
+            #     if checkedSide:
+            #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
+
+        self.UpdateTrainLocation(surface, image, (self.__train_location[0] + MOVERIGHT + MOVELEFT, self.__train_location[1] + MOVEUP + MOVEDOWN))
+        return self
+        
+        
     def CheckIfAtEndOfLine():
         #if at end of line, destroy
         pass
 
     def Clean(lines):
         pass
-
-    def Move(train):
-        pass
     
-    def DisplayTrain(screen, icon_location, train_location):
+    def DisplayTrain(surface, icon_location, train_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         hitbox = icon.icon.get_rect()
-        hitbox.center = train_location ##?? sort this out
-        screen.blit(icon, hitbox)
+        hitbox.center = train_location ##sort this out
+        surface.blit(icon, hitbox)
+
+class PlayerTrain(Train):
+    super(Train).__init__(Train)
