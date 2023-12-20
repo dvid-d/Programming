@@ -1,0 +1,51 @@
+{
+    "file": 1,
+    "name": "Save_1",
+    "level": 0.0,
+    "time":"00/00/0000",
+    "difficulty":"Easy",
+    "customerSatisfaction": 100,
+    "customers_at_stations": {
+        "victoria line":  {
+            "Brixton":50,
+            "Stockwell": 194},
+        "district line": {
+            "station3": 3,
+            "station4": 4}
+        },
+    "money": 0.0,
+    "debt": 0.0,
+    "trainsPerHour": {
+        "victoria line":10,
+        "district line":50
+    },
+    "trainLocations": {
+        "Victoria": {
+            "Train1Northbound":[0,0],
+            "Train2Northbound":[0,0]},
+        "H&C": {
+            "Train3Northbound":[0,0],
+            "Train4Northbound":[0,0]},
+        "Circle": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "District":{
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "Jubilee": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "Metropolitan": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "Central": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "Picadilly": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]},
+        "Northern": {
+            "Train1Northbound":[],
+            "Train2Northbound":[]}
+        }
+}
