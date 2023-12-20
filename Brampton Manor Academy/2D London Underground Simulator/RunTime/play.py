@@ -6,57 +6,55 @@ sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Saves")
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
 
-import pygame, settings, main, button, gameState, tile, shop, train, userTrain
+import pygame, settings, main, button, gameState, tile, shop, train
 from pytmx.util_pygame import load_pygame
 
 class Play():
     def Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
-        sprite_group, map_data = Play.LoadMap(path, save_data, screen)
+        sprite_group, map_data = Play.LoadMap(path, save_data)
         sprite_group.draw(screen)
         objects = map_data.objects
-        # track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+
         tracks = []
-        stations = [[save_data[11][0],["NB"], ["SB"]] for i in range(len(save_data[11]))]
+        lines = ["Vic", "H&C", "Cir", "Dis", "Jub", "Met", "Cen", "Pic", "Nor"]
+        stations = [["Vic",[],[]], ["H&C",[],[]], ["Cir",[],[]], ["Dis",[],[]], ["Jub",[],[]], ["Met",[],[]], ["Cen",[],[]], ["Pic",[],[]], ["Nor",[],[]]]
+        
         for object in objects:
             print()
-            print(object.type)
-            print(object)
             if object.type[:5] == "Track":
                 track = object
-                direction = track.type
+                direction = track.type[5:7]
                 points = [(point.x, point.y) for point in track.points]  #points go clockwise from the bottom right
                 pygame.draw.polygon(screen, (100,100,100), points, 1)
-                if direction[5:7] == "SB":
-                    tracks.append(["SB", track.type[-3:], points])
-                elif direction[5:7] == "NB":
-                    tracks.append(["NB",track.type[-3:], points])
+                if direction == "SB":
+                    tracks.append([track.type[-3:], "SB", points])
+                elif direction == "NB":
+                    tracks.append([track.type[-3:], "NB", points])
                 print()
 
             if object.type[:7] == "Station":
                 station = object
                 direction = station.type[7:9]
                 pygame.draw.polygon(screen, (100,100,100), station.points, 1)
+                
+                for i in range(len(lines)):
+                    if lines[i] == station.type[-3:]:
+                        stations = Play.AddStationsToList(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
 
-                stationsList = ["Vic", "H&C", "Cir", "Dis", "Jub", "Met", "Cen", "Pic", "Nor"]
-                for i in range(len(stationsList)):
-                    if stationsList[i] == station.type[-3:]:
-                        stations = Play.AddStations(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
-
-            image_location = f"{path}\\Icons\\player.png"
-            train.Train.DisplayTrain(image_location)
-        lines = save_data[11]
-                        
-
+        location = (800,500)                      
+        player, image_location = Play.CreatePlayer(path, screen, location)
         #also add Trains and other things
+        trains = [] #temp
+        return player, image_location, trains
 
-    def AddStations(stations, direction, line_no, station):
+    def AddStationsToList(stations, direction, line_no, station):
         if direction == "NB":
             stations[line_no][1].append(station.points)
         elif direction == "SB":
             stations[line_no][2].append(station.points)
         return stations
 
-    def LoadMap(path, save_data, screen):
+    def LoadMap(path, save_data):
         map = Play.GetMap(save_data)
         map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
@@ -84,7 +82,7 @@ class Play():
         pass
 
     def GetMap(save_data):
-        if save_data[3] == 1.0 or save_data[3] == 0.0:
+        if save_data["level"] == 1.0 or save_data["level"] == 0.0:
             map = "level_1"
         else:
             map = "level_" + str(int(save_data[3]))
@@ -143,15 +141,20 @@ class Play():
             save_data[3] = 3.0
         return save_data
 
+    def CreatePlayer(path, screen, location):
+        image_location = f"{path}\\Icons\\train.png"
+        player = train.PlayerTrain(screen, "NB", "Victoria", "Player", 100, image_location, location) 
+        return player, image_location #to be changed to 'player' object
+
+    def LoadEntities(path, screen, location):
+        Play.CreatePlayer(path, screen, location)
+        return 0 #to be changed to a list of all trains, grouped based on lines
+
     def Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game):
         game_settings = settings.Settings(100, 3)
         settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
         #shop_button_icon = pygame.image.load(f"{path}\\icons\\shop_button.png")
 
-        #create player
-        # icon_location = "" #icon to be made for player and each line
-        # train_location = [100,100] #example
-        # player =userTrain.UserTrain("Northbound","Player", 100, icon_location, train_location)
         run = 1
         while game.state == 5:
             settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5))
@@ -159,19 +162,30 @@ class Play():
             buttons = [settings_button] #, shop_button
             clicked = Play.CheckIfClicked(buttons, screen, game_settings, path)
             if run == 1:
-                Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
+                player, image_location, trains = Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
             else:
                 if clicked is True:
                     #save_data = Play.CheckThreshold(save_data)
-                    Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
+                    player, image_location, trains = Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        game_settings.InGameSettings(screen, game_settings, path)
+                        clicked = True
+
+            # for train in trains:
+            #     train.Move()
+                
+            player.Move(screen, image_location)
                 
             #Simulation code
             #check to see if next threshold has been met;
             #Play.CheckLevel()
             #Check to see if any train has met the end of their line
             run = 0
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
             pygame.display.update()
