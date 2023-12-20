@@ -45,7 +45,9 @@ def MainMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     quit_button_icon = pygame.image.load(f"{path}\\Icons\\quit_button.png")
     quit_button = button.Button(screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2.4, quit_button_icon, 9/20)
 
-    return start_button, quit_button
+    quick_load_icon = pygame.image.load(f"{path}\\Icons\\quick_button.png")
+    quick_load_button = button.Button(screen, SCREEN_WIDTH/1.5, SCREEN_HEIGHT/2.4, quick_load_icon, 9/20)
+    return start_button, quit_button, quick_load_button
 
 
 def SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
@@ -64,44 +66,36 @@ def SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
             file_1 = open(f"{path}\\Saves\\check_saves.txt","r")
             lines = file_1.readlines()
             if save_1_button.wasClicked():
+                save_data = saves.Saves.GetSaveInfo(screen, "save_1.json")
                 if lines[0][9:][:-1] == "False":
-                    save_name = saves.Saves.ChangeFileName(screen, path, "save_1.txt")
+                    saves.Saves.ChangeSaveName(screen, path, "save_1.txt", save_data)
                     file_1.close()
                     file = open(f"{path}\\Saves\\check_saves.txt","w")
                     file.write("save_1 = True" +"\n")
                     file.write(lines[1][:-1] + "\n")
                     file.write(lines[2])
-                    file.close()
-                else:
-                    save_name = saves.Saves.GetSaveName(path, "1")
-                save_data = saves.Saves.GetSaveInfo(screen, path, save_name)
-                return save_data
+                    file.close()                
             elif save_2_button.wasClicked():
+                save_data = saves.Saves.GetSaveInfo(screen, path, "save_2.txt", save_data)
                 if lines[1][9:] == "False":
-                    save_name = saves.Saves.ChangeFileName(screen, path,"save_2.txt")
+                    saves.Saves.ChangeSaveName(screen, path,"save_2.txt")
                     file = open(f"{path}\\Saves\\check_saves.txt","w")
                     file_1.close()
                     file.write(lines[0][:-1] + "\n")
                     file.write("save_2 = True" +"\n")
                     file.write(lines[2])
                     file.close()
-                else:
-                    save_name = saves.Saves.GetSaveName(path, "2")
-                save_data = saves.Saves.GetSaveInfo(save_name+".txt")
-                return save_data
             elif save_3_button.wasClicked():
+                save_data = saves.Saves.GetSaveInfo(screen, path, "save_3.txt", save_data)
                 if lines[2][9:] == "False":
-                    save_name = saves.Saves.ChangeFileName(screen, path,"save_3.txt")
+                    saves.Saves.ChangeSaveName(screen, path,"save_3.txt")
                     file_1.close()
                     file = open(f"{path}\\Saves\\check_saves.txt","w")
                     file.write(lines[0] + "\n")
                     file.write(lines[1] + "\n")
                     file.write("save_3 = True")
                     file.close()
-                else:
-                    save_name = saves.Saves.GetSaveName(path, "3")
-                save_data = saves.Saves.GetSaveInfo(save_name+".txt")
-                return save_data
+            return save_data
 
         pygame.display.update()
 
@@ -130,12 +124,15 @@ if __name__ == '__main__':
         if game.state == 1 or game.state == 2:
             if game.state == 2:
                 screen.fill((58,208,241))
-            start_button, quit_button = MainMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+            start_button, quit_button, quick_load_button = MainMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             if quit_button.wasClicked(): #shuts the game down if the quit button is clicked
                 run = False
             elif start_button.wasClicked(): # changes game state so save menu is shown
                 time.sleep(1)
                 game.changeState(3)
+            elif quick_load_button.wasClicked():
+                save_data = saves.Saves.GetSaveInfo(f"{path}\\Saves\\save_1.json")
+                game.changeState(5)
 
         elif game.state == 3 or game.state == 4:
             save_data = SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
