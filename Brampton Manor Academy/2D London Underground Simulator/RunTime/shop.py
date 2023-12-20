@@ -23,8 +23,7 @@ class Shop():
 
     def UseShop(self, inShop):
         self.Shop.Load()
-        while inShop is True:
-            
+        while inShop:
             pass
 
     def Load(self):
