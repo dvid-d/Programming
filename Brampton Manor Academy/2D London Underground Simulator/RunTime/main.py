@@ -110,15 +110,16 @@ def Reset():
 
 
 def Play(path, game, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
-    play.Play.Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT)
     play.Play.Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game)
     
 
 if __name__ == '__main__':
     pygame.init()
     clock = pygame.time.Clock()
+
     game = game.Game(1) #states_dict = {"startUp":1,"returnToMain":2,"savesMenu":3,"returnToSaves":4,"playGame":5,"inSettings":6}
     SCREEN_WIDTH, SCREEN_HEIGHT, screen, path = SetUpScreen() # sets up screen & frame rate
+    
     run = True
     while run:
         if game.state == 1 or game.state == 2:
