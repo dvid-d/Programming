@@ -10,15 +10,15 @@ import pygame, settings, main, button, gameState, tile, shop, train
 from pytmx.util_pygame import load_pygame
 
 class Play():
-    def Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
-        sprite_group, map_data = Play.LoadMap(path, save_data)
-        sprite_group.draw(screen)
+    def Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, run):
+        map_data = Play.LoadMap(path, save_data, screen)
         objects = map_data.objects
 
         tracks = []
         lines = ["Vic", "H&C", "Cir", "Dis", "Jub", "Met", "Cen", "Pic", "Nor"]
         stations = [["Vic",[],[]], ["H&C",[],[]], ["Cir",[],[]], ["Dis",[],[]], ["Jub",[],[]], ["Met",[],[]], ["Cen",[],[]], ["Pic",[],[]], ["Nor",[],[]]]
         
+        # track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         for object in objects:
             print()
             if object.type[:5] == "Track":
@@ -40,12 +40,14 @@ class Play():
                 for i in range(len(lines)):
                     if lines[i] == station.type[-3:]:
                         stations = Play.AddStationsToList(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
-
-        location = (800,500)                      
-        player, image_location = Play.CreatePlayer(path, screen, location)
-        #also add Trains and other things
         trains = [] #temp
-        return player, image_location, trains
+        if run == 1:
+            location = (650,1000)                      
+            player = Play.CreatePlayer(path, screen, location)
+            return player, trains #, track_surface
+        #also add Trains and other things
+        else:
+            return trains #, track_surface
 
     def AddStationsToList(stations, direction, line_no, station):
         if direction == "NB":
@@ -54,7 +56,7 @@ class Play():
             stations[line_no][2].append(station.points)
         return stations
 
-    def LoadMap(path, save_data):
+    def LoadMap(path, save_data, screen):
         map = Play.GetMap(save_data)
         map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
@@ -66,7 +68,8 @@ class Play():
                     tile.Tile(pos, surface, sprite_group)
         #for object in map_data.visible_object_groups():
             #print(object)
-        return sprite_group, map_data
+        sprite_group.draw(screen)
+        return map_data
     
     def LoadTrains(path, screen, lines):
         #lines[Line][Train]
@@ -109,7 +112,6 @@ class Play():
     def CheckIfClicked(buttons, screen, game_settings, path):
             if buttons[0].wasClicked():
                 game_settings.InGameSettings(screen, game_settings, path)
-                return True
             # if buttons[1].wasClicked():
             #     shop.Shop.UseShop()
             #     return True
@@ -144,7 +146,7 @@ class Play():
     def CreatePlayer(path, screen, location):
         image_location = f"{path}\\Icons\\train.png"
         player = train.PlayerTrain(screen, "NB", "Victoria", "Player", 100, image_location, location) 
-        return player, image_location #to be changed to 'player' object
+        return player
 
     def LoadEntities(path, screen, location):
         Play.CreatePlayer(path, screen, location)
@@ -155,19 +157,17 @@ class Play():
         settings_button_icon = pygame.image.load(f"{path}\\Icons\\cog.png")
         #shop_button_icon = pygame.image.load(f"{path}\\icons\\shop_button.png")
 
-        run = 1
+        run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         while game.state == 5:
-            settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5))
-            #shop_button = button.Button(screen, 500, 1000, shop_button_icon, 1)
-            buttons = [settings_button] #, shop_button
-            clicked = Play.CheckIfClicked(buttons, screen, game_settings, path)
+            #shop_button = button.Button(screen, 500, 1000, shop_button_icon, 1) #creates shop button
             if run == 1:
-                player, image_location, trains = Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
+                player, trains = Play.Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, run)
+                run = 0
             else:
-                if clicked is True:
-                    #save_data = Play.CheckThreshold(save_data)
-                    player, image_location, trains = Play.Load(path, screen, save_data,SCREEN_WIDTH, SCREEN_HEIGHT)
-
+                trains = Play.Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, run)
+            settings_button = button.Button(screen, SCREEN_WIDTH/1.17 - 1325, SCREEN_HEIGHT/6-10, settings_button_icon, 1/(4.5)) #creates settings button
+            buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
+            Play.CheckIfClicked(buttons, screen, game_settings, path)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -177,15 +177,13 @@ class Play():
                     if event.key == pygame.K_ESCAPE:
                         game_settings.InGameSettings(screen, game_settings, path)
                         clicked = True
+            player.Move(screen)
 
             # for train in trains:
             #     train.Move()
-                
-            player.Move(screen, image_location)
-                
+                                        
             #Simulation code
             #check to see if next threshold has been met;
             #Play.CheckLevel()
             #Check to see if any train has met the end of their line
-            run = 0
             pygame.display.update()

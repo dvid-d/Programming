@@ -49,18 +49,17 @@ class Train():
 
     def CheckOnTrack(self, track_points, line):
         if line == len(track_points):
-            if Train.CollideTrainTrack(self.icon.get_rect(), track_points[line-1], track_points[0]):
+            if Train.CollideTrainTrack((self.__image.get_rect()[0]/2, self.__image.get_rect()[1]/2), track_points[line-1], track_points[0]):
                 return True
         else:
-            if Train.CollideTrainTrack(self.icon.get_rect(), track_points[line-1], track_points[line]):
+            if Train.CollideTrainTrack((self.__image.get_rect()[0]/2, self.__image.get_rect()[1]/2), track_points[line-1], track_points[line]):
                 return True
         return False
 
 
-    def UpdateTrainLocation(self, surface, image_location, train_location):
+    def UpdateTrainLocation(self, surface, train_location):
         self.__train_location = train_location
-        image = pygame.image.load(image_location)
-        surface.blit(image, train_location)
+        surface.blit(self.__image, train_location)
     
     def IsOnTrack(self, track_points):
         isOnTrackList = []
@@ -68,38 +67,29 @@ class Train():
             isOnTrackList.append(self.CheckOnTrack(track_points, i))
         return isOnTrackList
 
-    def Move(self, surface, image): #, track_points
+    def Move(self, surface): #, track_points
         MOVERIGHT, MOVELEFT, MOVEUP, MOVEDOWN = 0, 0, 0, 0
-        for event in pygame.event.get():
-            keys = pygame.key.get_pressed()
-            if event.type == pygame.KEYDOWN:
-                if keys[pygame.K_d]:
-                    MOVERIGHT = 10
-                if keys[pygame.K_a]:
-                    MOVELEFT = 10
-                if keys[pygame.K_w]:
-                    MOVEUP = 10
-                if keys[pygame.K_s]:
-                    MOVEDOWN = 10
+        keys = pygame.key.get_pressed()
+        # if event.type == pygame.KEYDOWN:
+        if keys[pygame.K_d]:
+            MOVERIGHT = 1
+        if keys[pygame.K_a]:
+            MOVELEFT = -1
+        if keys[pygame.K_w]:
+            MOVEUP = -1
+        if keys[pygame.K_s]:
+            MOVEDOWN = 1
+            
+        self.UpdateTrainLocation(surface, (self.__train_location[0] + MOVERIGHT + MOVELEFT, self.__train_location[1] + MOVEUP + MOVEDOWN))
 
-            elif event.type == pygame.KEYUP:
-                if not keys[pygame.K_d]:
-                    MOVERIGHT = 0
-                if not keys[pygame.K_a]:
-                    MOVELEFT = 0
-                if not keys[pygame.K_w]:
-                    MOVEUP = 0
-                if not keys[pygame.K_s]:
-                    MOVEDOWN = 0
+        # surface.blit(self.__image, self.__train_location)
 
-            #isOnTrackList = self.IstOnTrack(track_points)
+        #isOnTrackList = self.IstOnTrack(track_points)
 
-            # for checkedSide in isOnTrackList:
-            #     if checkedSide:
-            #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
+        # for checkedSide in isOnTrackList:
+        #     if checkedSide:
+        #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
 
-        self.UpdateTrainLocation(surface, image, (self.__train_location[0] + MOVERIGHT + MOVELEFT, self.__train_location[1] + MOVEUP + MOVEDOWN))
-        return self
         
         
     def CheckIfAtEndOfLine():
@@ -109,11 +99,11 @@ class Train():
     def Clean(lines):
         pass
     
-    def DisplayTrain(surface, icon_location, train_location):
-        icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        hitbox = icon.icon.get_rect()
-        hitbox.center = train_location ##sort this out
-        surface.blit(icon, hitbox)
+    # def DisplayTrain(surface, icon_location, train_location):
+    #     icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
+    #     hitbox = icon.icon.get_rect()
+    #     hitbox.center = train_location ##sort this out
+    #     surface.blit(icon, hitbox)
 
 class PlayerTrain(Train):
     super(Train).__init__(Train)
