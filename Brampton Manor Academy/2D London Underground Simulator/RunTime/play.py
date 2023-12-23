@@ -20,7 +20,6 @@ class Play():
         
         # track_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
         for object in objects:
-            print()
             if object.type[:5] == "Track":
                 track = object
                 direction = track.type[5:7]
@@ -30,7 +29,6 @@ class Play():
                     tracks.append([track.type[-3:], "SB", points])
                 elif direction == "NB":
                     tracks.append([track.type[-3:], "NB", points])
-                print()
 
             if object.type[:7] == "Station":
                 station = object
@@ -41,8 +39,8 @@ class Play():
                     if lines[i] == station.type[-3:]:
                         stations = Play.AddStationsToList(stations, direction, i, station) #must line up with order of stations in trainLocations in save file
         trains = [] #temp
-        if run == 1:
-            location = (650,1000)                      
+        if run == 1 and (int(save_data["level"]) == 0 or int(save_data["level"]) == 1):
+            location = (620,1000)                      
             player = Play.CreatePlayer(path, screen, location)
             return player, trains #, track_surface
         #also add Trains and other things
