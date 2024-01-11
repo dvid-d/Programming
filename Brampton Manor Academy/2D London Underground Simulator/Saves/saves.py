@@ -1,15 +1,15 @@
 import sys, json, time
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\RunTime")
 
-import button, pygame, os
+from button import *
+import pygame, os
 
 class Saves():
     def LoadMenu(screen, SCREEN_WIDTH, SCREEN_HEIGHT, path):
         screen.fill((58,208,241))
         save_rect = pygame.image.load(f"{path}\\Icons\\save_rect.png") # loads the background for each button
-        save_1_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1)
-        save_2_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
-        save_3_button = button.Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
+        save_1_button = Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/3.2, save_rect, 1)
+        save_2_button = Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/2.4, save_rect, 1)
+        save_3_button = Button(screen, SCREEN_WIDTH/4, SCREEN_HEIGHT/1.9, save_rect, 1)
 
         save_surface = pygame.font.Font(f"{path}\\Fonts\\Lora-VariableFont_wght.ttf", 40)
         save_1_surface = save_surface.render("Save 1", True, "black")
@@ -21,7 +21,7 @@ class Saves():
         screen.blit(save_3_surface, (SCREEN_WIDTH/4 + 10, SCREEN_HEIGHT/3 + 260))
 
         back_button_image = pygame.image.load(f"{path}\\Icons\\back_button.png")
-        back_button = button.Button(screen, x=SCREEN_WIDTH-190, y=SCREEN_HEIGHT/10+70, image=back_button_image, scale=0.3)
+        back_button = Button(screen, x=SCREEN_WIDTH-190, y=SCREEN_HEIGHT/10+70, image=back_button_image, scale=0.3)
         return back_button, save_1_button, save_2_button, save_3_button
 
     def ChangeSaveName(screen, path, save, save_data):
@@ -57,9 +57,9 @@ class Saves():
         with open(save, "w") as f:
             f.write(json.dumps(save_data))
 
-    def GetSaveInfo(save):
+    def GetSaveInfo(save, path):
         time.sleep(1)
-        with open(save, 'r') as save_file:
+        with open(f"{path}\\Saves\\{save}", 'r') as save_file:
             save_data = json.load(save_file)
         return save_data
     
