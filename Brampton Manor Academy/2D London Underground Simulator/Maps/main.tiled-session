@@ -1,0 +1,68 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level_1.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "level_1 - Copy.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 681,
+                "y": 346
+            }
+        },
+        "level_1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 753.3333333333333,
+                "y": 547.9999999999999
+            }
+        },
+        "test.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 969.6969696969699,
+                "y": 336.36363636363626
+            }
+        },
+        "tileset.tsx": {
+            "scaleInDock": 5.5,
+            "scaleInEditor": 5.5
+        },
+        "victoria map.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1343.75,
+                "y": 650
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
+    "map.height": 120,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 9,
+    "map.tileWidth": 9,
+    "map.width": 213,
+    "openFiles": [
+        "level_1.tmx",
+        "tileset.tsx",
+        "level_1 - Copy.tmx"
+    ],
+    "project": "main.tiled-project",
+    "recentFiles": [
+        "test.tmx",
+        "level_1.tmx",
+        "level_1 - Copy.tmx",
+        "tileset.tsx",
+        "victoria map.tmx"
+    ]
+}
