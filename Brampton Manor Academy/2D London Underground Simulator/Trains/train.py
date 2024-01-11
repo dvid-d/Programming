@@ -11,10 +11,20 @@ class Train():
         self.__train_location = train_location #Represents top right hand corner of train.
 
         self.__image = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        hitbox = self.__image.get_rect()
-        hitbox.center = [train_location[0]+50, train_location[1]-50] #change depending on southbound/northbounding intially or when loading| Should be a tuple
+        dimensions = self.__image.get_rect()
+        hitbox = pygame.Rect(train_location[0], train_location[1], dimensions[2], dimensions[3])
+        self.__hitbox = hitbox
         surface.blit(self.__image, self.__train_location)
 
+    def GetLine(self):
+        return self.__line
+    
+    def GetDirection(self):
+        return self.__direction
+    
+    def GetLocation(self):
+        return self.__train_location
+    
     def L():
         pass
 
@@ -41,18 +51,18 @@ class Train():
 
         return a > 0 and b > 0 and a**2 < Line1Vector.magnitude_squared() and b**2 < Line2Vector.magnitude_squared()
     
-    def CollideTrainTrack(train, point_1, point_2):
-        return (Train.CheckForCollision(point_1, point_2, train.topleft, train.bottomleft) or
-                Train.CheckForCollision(point_1, point_2, train.bottomleft, train.bottomright) or
-                Train.CheckForCollision(point_1, point_2, train.bottomright, train.topright) or
-                Train.CheckForCollision(point_1, point_2, train.topright, train.topleft))
+    def CollideTrainTrack(train, point_1_track, point_2_track):
+        return (Train.CheckForCollision(point_1_track, point_2_track, train.topleft, train.bottomleft) or
+                Train.CheckForCollision(point_1_track, point_2_track, train.bottomleft, train.bottomright) or
+                Train.CheckForCollision(point_1_track, point_2_track, train.bottomright, train.topright) or
+                Train.CheckForCollision(point_1_track, point_2_track, train.topright, train.topleft))
 
     def CheckOnTrack(self, track_points, line):
         if line == len(track_points):
-            if Train.CollideTrainTrack((self.__image.get_rect()[0]/2, self.__image.get_rect()[1]/2), track_points[line-1], track_points[0]):
+            if Train.CollideTrainTrack(self.__hitbox, track_points[line-1], track_points[0]):
                 return True
         else:
-            if Train.CollideTrainTrack((self.__image.get_rect()[0]/2, self.__image.get_rect()[1]/2), track_points[line-1], track_points[line]):
+            if Train.CollideTrainTrack(self.__hitbox, track_points[line-1], track_points[line]):
                 return True
         return False
 
@@ -62,35 +72,13 @@ class Train():
         surface.blit(self.__image, train_location)
     
     def IsOnTrack(self, track_points):
-        isOnTrackList = []
+        collisionList = []
         for i in range(1, len(track_points)+1):
-            isOnTrackList.append(self.CheckOnTrack(track_points, i))
-        return isOnTrackList
+            collisionList.append(self.CheckOnTrack(track_points, i))
+        return collisionList
 
-    def Move(self, surface): #, track_points
-        MOVERIGHT, MOVELEFT, MOVEUP, MOVEDOWN = 0, 0, 0, 0
-        keys = pygame.key.get_pressed()
-        # if event.type == pygame.KEYDOWN:
-        if keys[pygame.K_d]:
-            MOVERIGHT = 1
-        if keys[pygame.K_a]:
-            MOVELEFT = -1
-        if keys[pygame.K_w]:
-            MOVEUP = -1
-        if keys[pygame.K_s]:
-            MOVEDOWN = 1
-            
-        self.UpdateTrainLocation(surface, (self.__train_location[0] + MOVERIGHT + MOVELEFT, self.__train_location[1] + MOVEUP + MOVEDOWN))
-
-        # surface.blit(self.__image, self.__train_location)
-
-        #isOnTrackList = self.IstOnTrack(track_points)
-
-        # for checkedSide in isOnTrackList:
-        #     if checkedSide:
-        #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
-
-        
+    def Move(): #, track_points
+        pass
         
     def CheckIfAtEndOfLine():
         #if at end of line, destroy
@@ -106,4 +94,29 @@ class Train():
     #     surface.blit(icon, hitbox)
 
 class PlayerTrain(Train):
-    super(Train).__init__(Train)
+    def __init__(self, surface, direction, line, type, customer_satisfaction, icon_location, train_location):
+        super().__init__(surface, direction, line, type, customer_satisfaction, icon_location, train_location)
+
+    def Move(self, surface): #track_points
+        MOVERIGHT, MOVELEFT, MOVEUP, MOVEDOWN = 0, 0, 0, 0
+        keys = pygame.key.get_pressed()
+        # if event.type == pygame.KEYDOWN:
+        if keys[pygame.K_d]:
+            MOVERIGHT = 1
+        if keys[pygame.K_a]:
+            MOVELEFT = -1
+        if keys[pygame.K_w]:
+            MOVEUP = -1
+        if keys[pygame.K_s]:
+            MOVEDOWN = 1
+            
+        # surface.blit(self.__image, self.__train_location)
+
+        # collisionList = self.IstOnTrack(track_points)
+
+        # for checkedSide in collisionList:
+        #     if checkedSide:
+        #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
+        
+        train_location = self.GetLocation()
+        self.UpdateTrainLocation(surface, (train_location[0] + MOVERIGHT + MOVELEFT, train_location[1] + MOVEUP + MOVEDOWN))
