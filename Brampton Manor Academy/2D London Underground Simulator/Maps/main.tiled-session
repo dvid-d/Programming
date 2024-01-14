@@ -3,10 +3,10 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "level_1.tmx",
+    "activeFile": "tileset.tsx",
     "expandedProjectPaths": [
-        "Copies of Levels",
-        "."
+        ".",
+        "Copies of Levels"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -49,8 +49,8 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1016.6666666666666,
-                "y": 304.66666666666663
+                "x": 960.6666666666666,
+                "y": 303.99999999999994
             }
         },
         "test.tmx": {
@@ -66,8 +66,8 @@
             "scaleInEditor": 5.5
         },
         "tileset.tsx": {
-            "scaleInDock": 4,
-            "scaleInEditor": 8
+            "scaleInDock": 5.5,
+            "scaleInEditor": 5.5
         },
         "victoria map.tmx": {
             "scale": 2,
@@ -88,17 +88,17 @@
     "map.width": 213,
     "openFiles": [
         "level_1.tmx",
-        "level_1 Copy 2.tmx",
-        "tileset.tsx"
+        "tileset.tsx",
+        "level_1 Copy 2.tmx"
     ],
     "project": "main.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "level_1.tmx",
+        "level_1 Copy 2.tmx",
+        "tileset.tsx",
         "level_1 Copy 2..tmx",
         "test.tmx",
-        "tileset.tsx",
-        "level_1 Copy 2.tmx",
-        "level_1.tmx",
         "level_1 - Copy.tmx",
         "tiles.tsx",
         "Copies of Levels/level_1 - Copy GOOD.tmx",
