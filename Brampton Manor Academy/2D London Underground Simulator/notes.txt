@@ -25,3 +25,7 @@ Train location in terms of tile not actual coordinates (e.g. (tile_y, tile_x) in
 
 Create a file with all stations on each line (json), e.g: {"Vic":{...}, "District":{...}...}
 to use in Play file to load stations based on location in the same inner loop. should start from brixton.
+
+Stations in save file to be changed to a list including an integer holding the number of customers at the station
+
+Add warning to save before leaving game if game not saved. Should check current "save data" data structure with save file by loading the save file again and setting them equal to each other.
