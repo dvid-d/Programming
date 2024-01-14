@@ -1,20 +1,30 @@
-import pygame, sys
-
+import pygame, sys, csv
+from pathfinding.core.grid import Grid
+from pathfinding.finder.a_star import AStarFinder
+from pathfinding.core.diagonal_movement import DiagonalMovement
+ 
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Icons")
 
 class Train():
-    def __init__(self, surface, direction, line, type, customer_satisfaction, icon_location, train_location):
-        self.__type = type # Player or Non-player
-        self.__direction = direction #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
-        self.__line = line #e.g. District, Victoria, Northern etc
-        self.__customerSatisfaction = customer_satisfaction #as a percentage
-        self.__train_location = train_location #Represents top right hand corner of train.
+    def __init__(self, direction, line, customer_satisfaction, image_location, coordinates, station):
+        # Player or Non-player
+        #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
+        #e.g. District, Victoria, Northern etc
+        #as a percentage
+        #as in Matrix
+        #most recent station
+        #loads image
 
-        self.__image = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        dimensions = self.__image.get_rect()
-        hitbox = pygame.Rect(train_location[0], train_location[1], dimensions[2], dimensions[3])
-        self.__hitbox = hitbox
-        surface.blit(self.__image, self.__train_location)
+        # self.__type = type
+        self.__direction = direction
+        self.__line = line
+        self.__customerSatisfaction = customer_satisfaction
+        self.__tileCoords = coordinates
+        self.__station = station
+        self.__image = pygame.image.load(image_location)
+
+    def DrawTrain(self, surface, location):
+        surface.blit(self.__image, location)
 
     def GetLine(self):
         return self.__line
@@ -23,59 +33,13 @@ class Train():
         return self.__direction
     
     def GetLocation(self):
-        return self.__train_location
+        pass
     
     def L():
         pass
 
-    def CheckForCollision(point_1, point_2, point_3, point_4):
-        P1  = pygame.math.Vector2(*point_1)
-        P2 = pygame.math.Vector2(*point_2)
-        Line1Vector = P2 - P1
-        Line1UnitVector = Line1Vector.normalize()
-
-        P3  = pygame.math.Vector2(*point_3)
-        P4 = pygame.math.Vector2(*point_4)
-        Line2Vector = P4 - P3
-        Line2UnitVector = Line2Vector.normalize()
-
-        NormalLine1 = pygame.math.Vector2(Line1UnitVector[1], -Line1UnitVector[0])
-        NormalLine2 = pygame.math.Vector2(Line2UnitVector[1], -Line2UnitVector[0])
-        Line1UnitVectordotSVN = Line1UnitVector.dot(NormalLine2)
-        if Line1UnitVectordotSVN == 0: #if dot product = 0, line and normal of other line are perpendicular
-            return False
-        
-        DirectionVector3_4  = P3 - P1
-        a = DirectionVector3_4.dot(NormalLine2) / Line1UnitVectordotSVN
-        b = DirectionVector3_4.dot(NormalLine1) / Line1UnitVectordotSVN
-
-        return a > 0 and b > 0 and a**2 < Line1Vector.magnitude_squared() and b**2 < Line2Vector.magnitude_squared()
-    
-    def CollideTrainTrack(train, point_1_track, point_2_track):
-        return (Train.CheckForCollision(point_1_track, point_2_track, train.topleft, train.bottomleft) or
-                Train.CheckForCollision(point_1_track, point_2_track, train.bottomleft, train.bottomright) or
-                Train.CheckForCollision(point_1_track, point_2_track, train.bottomright, train.topright) or
-                Train.CheckForCollision(point_1_track, point_2_track, train.topright, train.topleft))
-
-    def CheckOnTrack(self, track_points, line):
-        if line == len(track_points):
-            if Train.CollideTrainTrack(self.__hitbox, track_points[line-1], track_points[0]):
-                return True
-        else:
-            if Train.CollideTrainTrack(self.__hitbox, track_points[line-1], track_points[line]):
-                return True
-        return False
-
-
     def UpdateTrainLocation(self, surface, train_location):
-        self.__train_location = train_location
-        surface.blit(self.__image, train_location)
-    
-    def IsOnTrack(self, track_points):
-        collisionList = []
-        for i in range(1, len(track_points)+1):
-            collisionList.append(self.CheckOnTrack(track_points, i))
-        return collisionList
+        pass
 
     def Move(): #, track_points
         pass
@@ -84,7 +48,7 @@ class Train():
         #if at end of line, destroy
         pass
 
-    def Clean(lines):
+    def Clean(line):
         pass
     
     # def DisplayTrain(surface, icon_location, train_location):
@@ -94,29 +58,34 @@ class Train():
     #     surface.blit(icon, hitbox)
 
 class PlayerTrain(Train):
-    def __init__(self, surface, direction, line, type, customer_satisfaction, icon_location, train_location):
-        super().__init__(surface, direction, line, type, customer_satisfaction, icon_location, train_location)
+    pass
 
-    def Move(self, surface): #track_points
-        MOVERIGHT, MOVELEFT, MOVEUP, MOVEDOWN = 0, 0, 0, 0
-        keys = pygame.key.get_pressed()
-        # if event.type == pygame.KEYDOWN:
-        if keys[pygame.K_d]:
-            MOVERIGHT = 1
-        if keys[pygame.K_a]:
-            MOVELEFT = -1
-        if keys[pygame.K_w]:
-            MOVEUP = -1
-        if keys[pygame.K_s]:
-            MOVEDOWN = 1
-            
-        # surface.blit(self.__image, self.__train_location)
+class Path():
+    def __init__(self, matrix):
+        self.__matrix = matrix
+        self.__grid = Grid(matrix = matrix)
+        self.select_surface = pygame.image.load("select.png").convert_alpha()
 
-        # collisionList = self.IstOnTrack(track_points)
+    def Update(self):
+        self.DrawSelector()
 
-        # for checkedSide in collisionList:
-        #     if checkedSide:
-        #         MOVEDOWN, MOVEUP, MOVERIGHT, MOVELEFT = 0, 0, 0, 0
-        
-        train_location = self.GetLocation()
-        self.UpdateTrainLocation(surface, (train_location[0] + MOVERIGHT + MOVELEFT, train_location[1] + MOVEUP + MOVEDOWN))
+    def GetMatrix(self):
+        return self.__matrix
+    
+    def GetGrid(self):
+        return self.__grid
+    
+    def DrawSelector(self):
+        mouse = pygame.mouse.get_pos() #gets position of the mouse
+        row = mouse[1] // 9
+        column = mouse[0] // 9
+        selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
+    
+    def LoadMatrix(level, path):
+        level_matrix = []
+        with open(f"{path}\\Maps\\{level}.csv") as file:
+            data = csv.reader(file, delimiter=",")
+            next(data)
+            for row in data:
+                level_matrix.append(row)
+        return level_matrix
