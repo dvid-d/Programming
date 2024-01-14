@@ -5,24 +5,52 @@
     },
     "activeFile": "level_1.tmx",
     "expandedProjectPaths": [
+        "Copies of Levels",
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
-        "level_1 - Copy.tmx": {
-            "scale": 0.5,
+        "Copies of Levels/level_1 - Copy GOOD.tmx": {
+            "scale": 0.41859375,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 681,
-                "y": 346
+                "x": 960.3583426651736,
+                "y": 541.0974244120941
             }
         },
-        "level_1.tmx": {
+        "Copies of Levels/victoria line.tsx": {
+            "scaleInDock": 1
+        },
+        "level_1 - Copy.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 707,
+                "y": 462
+            }
+        },
+        "level_1 Copy 2..tmx": {
+            "scale": 0.4192488262910798,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 958.8577827547593,
+                "y": 541.444568868981
+            }
+        },
+        "level_1 Copy 2.tmx": {
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 753.3333333333333,
-                "y": 547.9999999999999
+                "x": 750.6666666666667,
+                "y": 367.99999999999994
+            }
+        },
+        "level_1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1016.6666666666666,
+                "y": 304.66666666666663
             }
         },
         "test.tmx": {
@@ -30,12 +58,16 @@
             "selectedLayer": 0,
             "viewCenter": {
                 "x": 969.6969696969699,
-                "y": 336.36363636363626
+                "y": 333.33333333333337
             }
         },
-        "tileset.tsx": {
-            "scaleInDock": 5.5,
+        "tiles.tsx": {
+            "scaleInDock": 4,
             "scaleInEditor": 5.5
+        },
+        "tileset.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 8
         },
         "victoria map.tmx": {
             "scale": 2,
@@ -46,23 +78,35 @@
             }
         }
     },
+    "last.exportedFilePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
     "last.imagePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
     "map.height": 120,
+    "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 9,
     "map.tileWidth": 9,
     "map.width": 213,
     "openFiles": [
         "level_1.tmx",
-        "tileset.tsx",
-        "level_1 - Copy.tmx"
+        "level_1 Copy 2.tmx",
+        "tileset.tsx"
     ],
     "project": "main.tiled-project",
+    "property.type": "int",
     "recentFiles": [
+        "level_1 Copy 2..tmx",
         "test.tmx",
+        "tileset.tsx",
+        "level_1 Copy 2.tmx",
         "level_1.tmx",
         "level_1 - Copy.tmx",
-        "tileset.tsx",
+        "tiles.tsx",
+        "Copies of Levels/level_1 - Copy GOOD.tmx",
         "victoria map.tmx"
-    ]
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 9,
+        "width": 9
+    }
 }
