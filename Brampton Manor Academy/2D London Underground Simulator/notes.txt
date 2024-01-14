@@ -6,3 +6,22 @@ train icons should be a circle with the colour of the line with a smaller, white
 sort DisplayTrain() in the class train out
 
 !Change save files to .json files! (done, 12/04)
+
+4/1/2024:
+Jubilee Line to not stop at Baker Street
+For Edgware Road westward, trains should only return at the end of the day and should only go eastward at the start of the day.
+Circle line trains at Edgeware road should swap from the top track to the bottom track whenever they are in the main loop of the line.
+Trains to be allowed to pass on top of each other on the screen.
+
+14/1/2024:
+install pygame, pathfinding (and others, if needed) libraries to make game playable on other computers
+
+trains in save files should look like: "line":{"Train1Northbound":[0,0]...}
+stations in save files should be South to North or West to East
+
+Split Northern line in two in save files and code
+
+Train location in terms of tile not actual coordinates (e.g. (tile_y, tile_x) instead of (924),(192))
+
+Create a file with all stations on each line (json), e.g: {"Vic":{...}, "District":{...}...}
+to use in Play file to load stations based on location in the same inner loop. should start from brixton.
