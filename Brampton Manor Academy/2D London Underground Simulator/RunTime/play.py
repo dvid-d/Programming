@@ -173,14 +173,19 @@ class Play():
 
         count = 0
         trains = save_data["trainLocations"] #is a dictionary
+        stations = save_data["stations"]
+        stationNames = 0 #to read file with stations
 
         level_matrix = Path.LoadMatrix("level_1", path)
         TileIDsVic = [0,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,320,340,350,360,370,380,390,400,410,367,377,397,398] #Allowed IDs only; i.e. can only pass over these tiles
         for row in level_matrix:
             for tile in row:
                 if tile == 120: #Tile ID 120 is Northnound starting positoon for Victoria Line
-                    train = Train("SB","Victoria", 100, f"{path}\\Icons\\train.png", (row, tile), 120)
+                    station = stationNames[len[trains]]
+                    train = Train("SB","Victoria", 100, f"{path}\\Icons\\train.png", (row, tile), station)
                     trains.append(train, (row,tile))
+                elif tile in [140,150,160,170,180,220,230,240,350]: #Victoria Line station tiles
+                    pass #create station object and add to stations list
 
         run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         while game.state == 5:
