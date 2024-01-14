@@ -5,47 +5,48 @@
     "time":"00/00/0000",
     "difficulty":"Easy",
     "customerSatisfaction": 100,
-    "customers_at_stations": {
+    "stations": {
         "victoria line":  {
-            "Brixton":50,
-            "Stockwell": 194},
+            "Brixton":0,
+            "Stockwell": 0,
+            "Walthamstow Central":0},
         "district line": {
-            "station3": 3,
-            "station4": 4}
+            "station3": 0,
+            "station4": 0}
         },
     "money": 0.0,
     "debt": 0.0,
     "trainsPerHour": {
         "victoria line":10,
-        "district line":50
+        "district line":12
     },
     "trainLocations": {
-        "Victoria": {
-            "Train1Northbound":[0,0],
-            "Train2Northbound":[0,0]},
-        "H&C": {
-            "Train3Northbound":[0,0],
-            "Train4Northbound":[0,0]},
-        "Circle": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "District":{
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "Jubilee": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "Metropolitan": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "Central": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "Picadilly": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]},
-        "Northern": {
-            "Train1Northbound":[],
-            "Train2Northbound":[]}
+        "Victoria": [
+
+        ],
+        "H&C": [
+
+        ],
+        "Circle": [
+
+        ],
+        "District":[
+
+        ],
+        "Jubilee": [
+
+        ],
+        "Metropolitan": [
+
+        ],
+        "Central": [
+
+        ],
+        "Picadilly": [
+
+        ],
+        "Northern": [
+            
+        ]
         }
 }
