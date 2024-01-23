@@ -38,19 +38,19 @@
             }
         },
         "level_1 Copy 2.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 750.6666666666667,
-                "y": 367.99999999999994
-            }
-        },
-        "level_1.tmx": {
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 960.6666666666666,
-                "y": 303.99999999999994
+                "x": 687.6666666666666,
+                "y": 383.66666666666663
+            }
+        },
+        "level_1.tmx": {
+            "scale": 8,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1142.3125,
+                "y": 198.6875
             }
         },
         "test.tmx": {
