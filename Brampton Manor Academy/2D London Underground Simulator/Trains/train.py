@@ -5,26 +5,75 @@ from pathfinding.core.diagonal_movement import DiagonalMovement
  
 sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Icons")
 
-class Train():
-    def __init__(self, direction, line, customer_satisfaction, image_location, coordinates, station):
-        # Player or Non-player
+class Train(pygame.sprite.Sprite):
+    def __init__(self, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
         #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
         #e.g. District, Victoria, Northern etc
         #as a percentage
         #as in Matrix
+        #speed of train
         #most recent station
+        #most recent path of train
         #loads image
 
+        super().__init__()
         # self.__type = type
         self.__direction = direction
+        self.__image = pygame.image.load(image_location).convert_alpha()
+        self.__rect = self.__image.get_rect(topleft = location)
+        self.__location = self.__rect.center
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
-        self.__tileCoords = coordinates
         self.__station = station
-        self.__image = pygame.image.load(image_location)
+        self.__speed = speed
+        self.__path = []
+        self.__empty_path = empty_path
+        self.__collisionRects = []
+    
 
     def DrawTrain(self, surface, location):
         surface.blit(self.__image, location)
+
+    def setPath(self, path):
+        self.__path = path
+        self.createCollisionRects()
+        self.get_direction()
+
+    def delPath(self):
+        self.__path = []
+
+    def createCollisionRects(self):
+        if self.__path:
+            self.__collisionRects = []
+            for point in self.__path:
+                x = point[0] * 9 + 4.5
+                y = point[1] * 9 + 4.5
+                rect = pygame.Rect((x - 4.5, y - 4.5), (9, 9))
+                self.__collisionRects.append(rect)
+
+    def getDirection(self):
+        if self.__collisionRects:
+            xy_1 = pygame.math.Vector2(self.__location)
+            xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
+            self.__direction = (xy_2 - xy_1).normalize()
+        else:
+            self.__direction = pygame.math.Vector2(0,0)
+            self.__path = []
+
+    def update(self):
+        self.__location += self.__direction * self.__speed
+        self.checkCollisions()
+        self.__rect.center = self.__location
+
+    def checkCollisions(self):
+        if self.__collisionRects:
+            for rect in self.__collisionRects:
+                if rect.collidepoint(self.__location):
+                    del self.__collisionRects[0]
+                    self.getDirection()
+        else:
+            self.delPath()
+
 
     def GetLine(self):
         return self.__line
@@ -39,9 +88,6 @@ class Train():
         pass
 
     def UpdateTrainLocation(self, surface, train_location):
-        pass
-
-    def Move(): #, track_points
         pass
         
     def CheckIfAtEndOfLine():
@@ -61,27 +107,63 @@ class PlayerTrain(Train):
     pass
 
 class Path():
-    def __init__(self, matrix):
+    def __init__(self, matrix, train, path):
+        # "train" is an object
         self.__matrix = matrix
         self.__grid = Grid(matrix = matrix)
-        self.select_surface = pygame.image.load("select.png").convert_alpha()
+        self.__path = []
+        self.__train = pygame.sprite.GroupSingle(train)
+        self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
 
-    def Update(self):
-        self.DrawSelector()
 
-    def GetMatrix(self):
+    def update(self, screen, validIDs):
+        self.drawSelector(screen, validIDs)
+        self.__train.update()
+        self.__train.draw(screen)
+
+    def getMatrix(self):
         return self.__matrix
     
-    def GetGrid(self):
+    def getGrid(self):
         return self.__grid
     
-    def DrawSelector(self):
+    def generate(self):
+        x_1, y_1 = self.__train.sprite.getCoords()
+        start = self.__grid.note(x_1, y_1)
+        mouse = pygame.mouse.get_pos()
+        x_2, y_2 = mouse[0] // 9, mouse[1] // 9
+        end = self.__grid.note(x_2, y_2)
+        find = AStarFinder(diagonal_movement = DiagonalMovement.always)
+        self.__path = find.find_path(start, end, self.__grid)
+        self.__grid.cleanup()
+        self.__train.sprite.setPath(self.__path)
+
+    def getCoords(self):
+        column = self.__rect.topleftx // 9
+        row = self.__rect.toplefty // 9
+        return column, row
+    
+
+    def loadPath(self, screen):
+        if self.__path:
+            coords = []
+            for point in self.__path:
+                x = point.x * 9 + 4.5
+                y = point.y * 9 + 4.5
+                coords.append((x, y))
+            pygame.draw.lines(screen, '#4a4a4a', False, coords, 5)
+
+
+    def drawSelector(self, screen, validIDs):
         mouse = pygame.mouse.get_pos() #gets position of the mouse
         row = mouse[1] // 9
         column = mouse[0] // 9
-        selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
+        cell = self.getMatrixCell(row, column)
+        if cell in validIDs:
+            selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
+            screen.blit(self.__select_surface, selector)
     
-    def LoadMatrix(level, path):
+    def loadMatrix(level, path):
         level_matrix = []
         with open(f"{path}\\Maps\\{level}.csv") as file:
             data = csv.reader(file, delimiter=",")
@@ -89,3 +171,6 @@ class Path():
             for row in data:
                 level_matrix.append(row)
         return level_matrix
+    
+    def getMatrixCell(self, row, column):
+        return self.__matrix[row][column]

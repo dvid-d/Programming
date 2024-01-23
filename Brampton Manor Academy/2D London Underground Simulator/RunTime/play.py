@@ -165,28 +165,72 @@ class Play():
     def Tutorial(screen, trains):
         trains[PLAYER].Move(screen)
 
-    def CreateTrains():
-        pass
+    def CreateTrains(runNo, lineName, direction, image_location, location, station):
+        empty_path = []
+        if runNo == 1:
+            pass
+        else:
+            pass
     
     def Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game):
         game_settings = settings.Settings(100, 3)
 
         count = 0
-        trains = save_data["trainLocations"] #is a dictionary
+        trains = save_data["trainLocations"] #dictionary
         stations = save_data["stations"]
-        stationNames = 0 #to read file with stations
+        stationNames = save_data["stations"]
+        level_matrix = Path.loadMatrix("level_1", path)
 
-        level_matrix = Path.LoadMatrix("level_1", path)
-        TileIDsVic = [0,50,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,210,220,230,240,250,260,270,320,340,350,360,370,380,390,400,410,367,377,397,398] #Allowed IDs only; i.e. can only pass over these tiles
+
+        trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398'] #Allowed IDs only; i.e. can only pass over these tiles
+        stationIDs = ['140','150','160','170','180','220','230','240','350']
+        startIDs = ['120', '130']
+        validIDs = [["victoria", startIDs, trackIDs, stationIDs]] #[0] = line name, [1] = track ID's for line, [2] = station ID's for line
+        print(level_matrix)
+        t, r = 0, 0 #to keep track of row & column
         for row in level_matrix:
+            r += 1
             for tile in row:
-                if tile == 120: #Tile ID 120 is Northnound starting positoon for Victoria Line
-                    station = stationNames[len[trains]]
-                    train = Train("SB","Victoria", 100, f"{path}\\Icons\\train.png", (row, tile), station)
-                    trains.append(train, (row,tile))
-                elif tile in [140,150,160,170,180,220,230,240,350]: #Victoria Line station tiles
-                    pass #create station object and add to stations list
-
+                t += 1
+                for line in validIDs:
+                    #victoria line
+                    k = 0
+                    if line[0] == "victoria":
+                            #northbound 
+                        if tile in line[1]: #Tile ID 130 is North/southbound starting position for Victoria Line
+                            if k == 1: #to keep track of whether to spawn northbound or southbound train
+                                station = stationNames["victoria line"] #default spawning point
+                                train = Train(direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, empty_path = [])
+                                trains["victoria"] = [0, train, (row,tile)] #number of passengers, train object, 
+                                print("test")
+                            else:
+                                station = stationNames["victoria line"] #default spawning point
+                                train = Train(direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, speed = 1, empty_path = [])
+                                trains["victoria"] = [0, train, (row,tile)]
+                        elif tile in ['140','150','160','170','180','220','230','240','350']: #Victoria Line station tiles
+                            pass #create station object and add to stations list
+                        #southbound
+                        #...
+                        k += 1
+                    elif line[0] == "h&c":
+                        pass
+                    elif line[0] == "circle":
+                        pass
+                    elif line[0] == "district":
+                        pass
+                    elif line[0] == "jubilee":
+                        pass
+                    elif line[0] == "metropolitan":
+                        pass
+                    elif line[0] == "central":
+                        pass
+                    elif line[0] == "picadilly":
+                        pass
+                    elif line[0] == "northern":
+                        pass
+            t = 0
+        print(trains)
+        pathfinder = Path(matrix = level_matrix, train = trains["victoria"][1], path = path)
         run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         while game.state == 5:
             run = 0
@@ -195,9 +239,9 @@ class Play():
             buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
             Play.CheckButtons(buttons, screen, game_settings, path)
 
-            if count % 40:
-                Play.CreateTrains()
-
+            # if count % 40:
+            #     Play.CreateTrains()
+            pathfinder.drawSelector(screen = screen, validIDs = validIDs)
             
                         # clicked = True
             # for train in trains:
@@ -211,6 +255,8 @@ class Play():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pathfinder.generate()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         game_settings.InGameSettings(screen, game_settings, path)
