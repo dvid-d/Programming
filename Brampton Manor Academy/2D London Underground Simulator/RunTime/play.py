@@ -234,7 +234,7 @@ class Play():
                     elif line[0] == "northern":
                         pass
             t = 0
-        print(trains)
+        # print(trains)
         pathfinder = Path(matrix = level_matrix, train = trains["victoria"][1], path = path)
 
         run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
@@ -246,11 +246,15 @@ class Play():
             Play.CheckButtons(buttons, screen, game_settings, path)
             # if count % 40:
             #     Play.CreateTrains()
-            pathfinder.drawSelector(screen = screen, validIDs = validIDs)
+            #pathfinder.drawSelector(screen = screen, validIDs = validIDs)
             
                         # clicked = True
             # for train in trains:
             #     train.Move()
+
+            for line in trains:
+                for train in line:
+                    train.DisplayTrain(screen, f"{path}\\Icons\\{line}.png", train_location)
                                         
             #Simulation code
             #check to see if next threshold has been met;

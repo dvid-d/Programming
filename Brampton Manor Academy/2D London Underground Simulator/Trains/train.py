@@ -25,7 +25,7 @@ class Train(pygame.sprite.Sprite):
         self.__direction = direction
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
-        self.__location = self.__rect.center
+        self.__location = self.__rect.topleft
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
@@ -101,11 +101,10 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    def DisplayTrain(surface, icon_location, train_location):
+    def DisplayTrain(self, surface, icon_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         hitbox = icon.icon.get_rect()
-        hitbox.center = train_location ##sort this out
-        surface.blit(icon, hitbox)
+        surface.blit(icon, self.__location)
 
 class PlayerTrain(Train):
     pass
@@ -158,15 +157,15 @@ class Path():
             pygame.draw.lines(screen, '#4a4a4a', False, coords, 5)
 
 
-    def drawSelector(self, screen, validIDs):
-        mouse = pygame.mouse.get_pos() #gets position of the mouse
-        row = mouse[1] // 9
-        column = mouse[0] // 9
-        cell = self.getMatrixCell(row, column)
-        if (cell in validIDs[0][1]) or (cell in validIDs[0][2]) or (cell in validIDs[0][2]):
-            selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
-            screen.blit(self.__select_surface, selector)
-            print("yass")
+    # def drawSelector(self, screen, validIDs):
+    #     mouse = pygame.mouse.get_pos() #gets position of the mouse
+    #     row = mouse[1] // 9
+    #     column = mouse[0] // 9
+    #     cell = self.getMatrixCell(row, column)
+    #     if (cell in validIDs[0][1]) or (cell in validIDs[0][2]) or (cell in validIDs[0][2]):
+    #         selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
+    #         screen.blit(self.__select_surface, selector)
+    #         print("yass")
     
     def loadMatrix(level, path):
         level_matrix = []
