@@ -103,7 +103,6 @@ class Train(pygame.sprite.Sprite):
     
     def DisplayTrain(self, surface, icon_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        hitbox = icon.icon.get_rect()
         surface.blit(icon, self.__location)
 
 class PlayerTrain(Train):

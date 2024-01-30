@@ -205,12 +205,14 @@ class Play():
                         if tile in line[1]: #Tile ID 130 is North/southbound starting position for Victoria Line
                             if k == 1: #to keep track of whether to spawn northbound or southbound train
                                 station = stationNames["victoria line"] #default spawning point
-                                train = Train(direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, empty_path = [])
-                                trains["victoria"] = [0, train, (r, t)] #number of passengers, train object, 
+                                train = Train(direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\victoria.png", location = (r * 9, t * 9), station = station, empty_path = [])
+                                print(type(train))
+                                trains["victoria"] = [0, train, (r, t)] #number of passengers, train object, (row, column (i.e. tile along row))) 
                                 print("test")
                             else:
                                 station = stationNames["victoria line"] #default spawning point
-                                train = Train(direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, speed = 1, empty_path = [])
+                                train = Train(direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (r * 9, t * 9), station = station, speed = 1, empty_path = [])
+                                print(type(train))
                                 trains["victoria"] = [0, train, (r, t)]
                         elif tile in ['140','150','160','170','180','220','230','240','350']: #Victoria Line station tiles
                             pass #create station object and add to stations list
@@ -254,7 +256,7 @@ class Play():
 
             for line in trains:
                 for train in line:
-                    train.DisplayTrain(screen, f"{path}\\Icons\\{line}.png", train_location)
+                    train.DisplayTrain(screen, f"{path}\\Icons\\{line}.png")
                                         
             #Simulation code
             #check to see if next threshold has been met;
