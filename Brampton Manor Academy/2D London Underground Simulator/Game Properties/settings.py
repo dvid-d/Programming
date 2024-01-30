@@ -1,11 +1,15 @@
 import sys
 
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Game Properties")
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Fonts")
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Maps")
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\RunTime")
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Saves")
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Trains")
+from os.path import abspath
+from inspect import getsourcefile
+path = abspath(getsourcefile(lambda:0))[:-16]
+
+sys.path.append(f"{path}\\Game Properties")
+sys.path.append(f"{path}\\Fonts")
+sys.path.append(f"{path}\\Maps")
+sys.path.append(f"{path}\\RunTime")
+sys.path.append(f"{path}\\Saves")
+sys.path.append(f"{path}\\Trains")
 
 
 import pygame, button, main, shop

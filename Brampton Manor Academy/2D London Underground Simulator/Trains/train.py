@@ -3,7 +3,11 @@ from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
  
-sys.path.append("C:\\Users\\ddobr\\Desktop\\Sixth Form\\Computer Science\\Github\\Programming\\Brampton Manor Academy\\2D London Underground Simulator\\Icons")
+from os.path import abspath
+from inspect import getsourcefile
+
+path = abspath(getsourcefile(lambda:0))[:-16] # obtains path of program
+sys.path.append(f"{path}\\Icons")
 
 class Train(pygame.sprite.Sprite):
     def __init__(self, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
