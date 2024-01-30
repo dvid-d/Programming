@@ -165,7 +165,7 @@ class Play():
     def Tutorial(screen, trains):
         trains[PLAYER].Move(screen)
 
-    def CreateTrains(runNo, lineName, direction, image_location, location, station):
+    def CreateTrains(runNo, lineName, direction, image_location, location, station): #to run instead of big loop in Run()
         empty_path = []
         if runNo == 1:
             pass
@@ -186,7 +186,7 @@ class Play():
         stationIDs = ['140','150','160','170','180','220','230','240','350']
         startIDs = ['120', '130']
         validIDs = [["victoria", startIDs, trackIDs, stationIDs]] #[0] = line name, [1] = track ID's for line, [2] = station ID's for line
-        print(level_matrix)
+        #print(level_matrix)
         t, r = 0, 0 #to keep track of row & column
         for row in level_matrix:
             r += 1
@@ -201,12 +201,12 @@ class Play():
                             if k == 1: #to keep track of whether to spawn northbound or southbound train
                                 station = stationNames["victoria line"] #default spawning point
                                 train = Train(direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, empty_path = [])
-                                trains["victoria"] = [0, train, (row,tile)] #number of passengers, train object, 
+                                trains["victoria"] = [0, train, (r, t)] #number of passengers, train object, 
                                 print("test")
                             else:
                                 station = stationNames["victoria line"] #default spawning point
                                 train = Train(direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\train.png", location = (r * 9, t * 9), station = station, speed = 1, empty_path = [])
-                                trains["victoria"] = [0, train, (row,tile)]
+                                trains["victoria"] = [0, train, (r, t)]
                         elif tile in ['140','150','160','170','180','220','230','240','350']: #Victoria Line station tiles
                             pass #create station object and add to stations list
                         #southbound
@@ -231,14 +231,14 @@ class Play():
             t = 0
         print(trains)
         pathfinder = Path(matrix = level_matrix, train = trains["victoria"][1], path = path)
+
         run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         while game.state == 5:
             run = 0
-
+            Play.Load(path, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, run)
             settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
             Play.CheckButtons(buttons, screen, game_settings, path)
-
             # if count % 40:
             #     Play.CreateTrains()
             pathfinder.drawSelector(screen = screen, validIDs = validIDs)
@@ -255,8 +255,8 @@ class Play():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pathfinder.generate()
+                #if event.type == pygame.MOUSEBUTTONDOWN:
+                    #pathfinder.generate()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         game_settings.InGameSettings(screen, game_settings, path)

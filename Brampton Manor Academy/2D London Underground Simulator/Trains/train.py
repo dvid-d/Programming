@@ -97,11 +97,11 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    # def DisplayTrain(surface, icon_location, train_location):
-    #     icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-    #     hitbox = icon.icon.get_rect()
-    #     hitbox.center = train_location ##sort this out
-    #     surface.blit(icon, hitbox)
+    def DisplayTrain(surface, icon_location, train_location):
+        icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
+        hitbox = icon.icon.get_rect()
+        hitbox.center = train_location ##sort this out
+        surface.blit(icon, hitbox)
 
 class PlayerTrain(Train):
     pass
@@ -159,9 +159,10 @@ class Path():
         row = mouse[1] // 9
         column = mouse[0] // 9
         cell = self.getMatrixCell(row, column)
-        if cell in validIDs:
+        if (cell in validIDs[0][1]) or (cell in validIDs[0][2]) or (cell in validIDs[0][2]):
             selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
             screen.blit(self.__select_surface, selector)
+            print("yass")
     
     def loadMatrix(level, path):
         level_matrix = []
