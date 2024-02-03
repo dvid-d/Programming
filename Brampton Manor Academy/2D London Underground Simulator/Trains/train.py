@@ -101,7 +101,7 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    def DisplayTrain(self, surface, icon_location):
+    def Display(self, surface, icon_location):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         surface.blit(icon, self.__location)
 

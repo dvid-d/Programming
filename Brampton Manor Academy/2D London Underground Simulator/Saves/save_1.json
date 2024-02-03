@@ -21,23 +21,14 @@
         "district line":12
     },
     "trainLocations": {
-        "victoria": [
-        ],
-        "h&c": [
-        ],
-        "circle": [
-        ],
-        "district":[
-        ],
-        "jubilee": [
-        ],
-        "metropolitan": [
-        ],
-        "central": [
-        ],
-        "picadilly": [
-        ],
-        "northern": [
-        ]
+        "victoria": [],
+        "h&c": [],
+        "circle": [],
+        "district":[],
+        "jubilee": [],
+        "metropolitan": [],
+        "central": [],
+        "picadilly": [],
+        "northern": []
         }
 }
