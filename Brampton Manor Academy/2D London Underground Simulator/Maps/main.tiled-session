@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tileset.tsx",
+    "activeFile": "level_1.tmx",
     "expandedProjectPaths": [
         ".",
         "Copies of Levels"
@@ -41,16 +41,16 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 687.6666666666666,
-                "y": 383.66666666666663
+                "x": 958.3333333333333,
+                "y": 540
             }
         },
         "level_1.tmx": {
-            "scale": 8,
+            "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1142.3125,
-                "y": 198.6875
+                "x": 848,
+                "y": 92
             }
         },
         "test.tmx": {
@@ -94,9 +94,9 @@
     "project": "main.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "level_1.tmx",
         "level_1 Copy 2.tmx",
         "tileset.tsx",
+        "level_1.tmx",
         "level_1 Copy 2..tmx",
         "test.tmx",
         "level_1 - Copy.tmx",
