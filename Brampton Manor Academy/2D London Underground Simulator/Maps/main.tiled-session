@@ -41,16 +41,16 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 958.3333333333333,
-                "y": 540
+                "x": 958,
+                "y": 539.6666666666666
             }
         },
         "level_1.tmx": {
             "scale": 0.125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 848,
-                "y": 92
+                "x": 960,
+                "y": 540
             }
         },
         "test.tmx": {
