@@ -119,7 +119,6 @@ def Reset():
 
 def StartGame(path, game, screen, save_data, SCREEN_WIDTH, SCREEN_HEIGHT):
     Play.Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game)
-    
 
 if __name__ == '__main__':
     pygame.init()
