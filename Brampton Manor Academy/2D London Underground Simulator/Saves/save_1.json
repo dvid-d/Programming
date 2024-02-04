@@ -7,9 +7,23 @@
     "customerSatisfaction": 100,
     "stations": {
         "victoria line":  {
-            "Brixton":0,
-            "Stockwell": 0,
-            "Walthamstow Central":0},
+            "0":["Brixton",0],
+            "1":["Stockwell", 0],
+            "2":["Vauxhall",0],
+            "3":["Pimlico",0],
+            "4":["Victoria",0],
+            "5":["Green Park",0],
+            "6":["Oxford Circus",0],
+            "7":["Warren Street",0],
+            "8":["Euston",0],
+            "9":["King's Cross & St Pancras International",0],
+            "10":["Highbury & Islington",0],
+            "11":["Finsbury Park",0],
+            "12":["Seven Sister",0],
+            "13":["Tottenham Hale",0],
+            "14":["Blackhorse Road",0],
+            "15":["Walthamstow Central",0]
+        },
         "district line": {
             "station3": 0,
             "station4": 0}
