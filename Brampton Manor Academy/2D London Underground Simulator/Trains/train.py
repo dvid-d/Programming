@@ -10,7 +10,8 @@ path = abspath(getsourcefile(lambda:0))[:-16] # obtains path of program
 sys.path.append(f"{path}\\Icons")
 
 class Train(pygame.sprite.Sprite):
-    def __init__(self, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
+    def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
+        #ID of train
         #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
         #e.g. District, Victoria, Northern etc
         #as a percentage
@@ -22,6 +23,7 @@ class Train(pygame.sprite.Sprite):
 
         super().__init__()
         # self.__type = type
+        self.__ID = ID
         self.__direction = direction
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
@@ -188,7 +190,23 @@ class Path():
         return self.__matrix[row][column]
     
     class Station():
-        def __init__(self, ID, name, line):
+        def __init__(self, ID, name, line, status, no_customers, customer_satisfaction):
+            # ID of station
+            # name on Station
+            # line station belong to
+            # Open/Shut/Emergency
+            # Number of customers at station
+            # customer satisfaction for the station
+
             self.__ID = ID
             self.__name = name
             self.__line = line
+            self.__status = status
+            self.__customerNumber  = no_customers
+            self.__customerSatisfaction = customer_satisfaction
+
+        def Open():
+            pass
+        
+        def Shut():
+            pass
