@@ -93,7 +93,8 @@ class Train(pygame.sprite.Sprite):
 
     def UpdateTrainLocation(self, surface, train_location):
         pass
-        
+    
+
     def CheckIfAtEndOfLine():
         #if at end of line, destroy
         pass
@@ -105,8 +106,16 @@ class Train(pygame.sprite.Sprite):
         icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
         surface.blit(icon, self.__location)
 
-class PlayerTrain(Train):
-    pass
+    #at Station
+    def leaveStation():
+        pass
+
+    def openDoors():
+        pass
+
+    def shutDoors():
+        pass
+
 
 class Path():
     def __init__(self, matrix, train, path):
@@ -114,6 +123,7 @@ class Path():
         self.__matrix = matrix
         self.__grid = Grid(matrix = matrix)
         self.__path = []
+        self.__empty_path = []
         self.__train = pygame.sprite.GroupSingle(train)
         self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
 
@@ -164,7 +174,6 @@ class Path():
     #     if (cell in validIDs[0][1]) or (cell in validIDs[0][2]) or (cell in validIDs[0][2]):
     #         selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
     #         screen.blit(self.__select_surface, selector)
-    #         print("yass")
     
     def loadMatrix(level, path):
         level_matrix = []
@@ -177,3 +186,9 @@ class Path():
     
     def getMatrixCell(self, row, column):
         return self.__matrix[row][column]
+    
+    class Station():
+        def __init__(self, ID, name, line):
+            self.__ID = ID
+            self.__name = name
+            self.__line = line
