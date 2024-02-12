@@ -119,6 +119,9 @@ class Train(pygame.sprite.Sprite):
         pass
 
 
+
+
+
 class Path():
     def __init__(self, matrix, train, path):
         # "train" is an object
@@ -188,25 +191,27 @@ class Path():
     
     def getMatrixCell(self, row, column):
         return self.__matrix[row][column]
+
+
+class Station():
+    def __init__(self, ID, name, location, line, status, no_customers, customer_satisfaction):
+        # ID of station
+        # name on Station
+        # line station belong to
+        # Open/Shut/Emergency
+        # Number of customers at station
+        # customer satisfaction for the station
+
+        self.__ID = ID
+        self.__name = name
+        self.__location = location
+        self.__line = line
+        self.__status = status
+        self.__customerNumber  = no_customers
+        self.__customerSatisfaction = customer_satisfaction
+
+    def Open():
+        pass
     
-    class Station():
-        def __init__(self, ID, name, line, status, no_customers, customer_satisfaction):
-            # ID of station
-            # name on Station
-            # line station belong to
-            # Open/Shut/Emergency
-            # Number of customers at station
-            # customer satisfaction for the station
-
-            self.__ID = ID
-            self.__name = name
-            self.__line = line
-            self.__status = status
-            self.__customerNumber  = no_customers
-            self.__customerSatisfaction = customer_satisfaction
-
-        def Open():
-            pass
-        
-        def Shut():
-            pass
+    def Shut():
+        pass

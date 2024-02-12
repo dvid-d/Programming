@@ -17,23 +17,33 @@ sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
 
+from train import Station
 
 class Play():
 
-    def LoadMap(path, save_data, screen):
+    def LoadMap(path, save_data, screen, run):
         map = Play.GetMap(save_data)
         map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
+        stations = [["Victoria Line", []]]
         layers = map_data.visible_layers
         for layer in layers:
-            for x,y,surface in layer.tiles():
-                pos = (x*9,y*9) # size of tiles
-                Tile(pos, surface, sprite_group)
-        #Tile.test()
-        #for object in map_data.visible_object_groups():
-            #print(object)
+            if layer not in map_data.objectgroups:
+                for x,y,surface in layer.tiles():
+                    pos = (x*9,y*9) # size of tiles
+                    Tile(pos, surface, sprite_group)
+            else:
+                if run != 1:
+                    if layer.name == "Victoria Line":
+                        i = 0
+                        for station in layer:
+                            print(layer)
+                            print("slayy")
+                            stations[i][1].append(station)
         sprite_group.draw(screen)
-        return map_data
+        run = 0
+        return run, save_data, stations
+
 
     def LoadEntities(path, screen, location):
         Play.CreatePlayer(path, screen, location)
@@ -50,16 +60,6 @@ class Play():
         #shop_button = button.Button(screen, 500, 1000, shop_button_icon, 1) #creates shop button
         return settings_button#, shop_button
     
-    # def LoadTrains(path, screen, lines):
-    #     #lines[Line][Train]
-    #     #lines[Line][Train][NewCoords]
-    #     for line in lines:
-    #         trains = line[1]
-    #         icon_location = f"{path}\\Icons\\{line}.png"
-    #         for obj in trains:
-    #             train_location = trains[obj]
-    #             Train.Display(screen, icon_location, train_location)
-
     def CheckForRewards():
         pass
 
@@ -131,74 +131,90 @@ class Play():
     def Tutorial(screen, trains):
         trains[0].Move(screen)
 
-    def CreateObjects(save_data, stations, trains, level_matrix): #creates Train Objects
-        t, r, trainID = 0, 0, 0 #to keep track of row & column and the order of lines for which "Train" objects are created
+    def CreateObjects(save_data, trains, level_matrix, trainID, stationsTiled):
+        trains, trainID = Play.CreateTrains(save_data, trains, level_matrix, trainID)
+        stations = Play.CreateStations(stationsTiled)
+        return trains, stations, trainID
+
+    def CreateTrains(save_data, trains, level_matrix, trainID): #creates Train Objects
+        t, r, d = 0, 0, 0 #to keep track of row & column and the order of lines for which "Train" objects are created
         if save_data["time"] == "00/00/0000":
-            for counter in range(10): #does inner loop 10 times for all 10 lines. it's easier to keep track of all "Train" objets before appending each group to its corresponding line.
+            for counter in range(10): #inner loop 10 times for all lines; easier to keep track of all "Train" objets before appending
                 tempList = [] #to keep track of all trains set to initlaly be loaded in at the start of the map
-                stationsCoords = [] #create station object and add to stations list
                 for row in level_matrix:
                     r += 1
                     for tile in row:
                         t += 1
-
                         #Victoria line
-                        if trainID < 2: #As long as both "Train" objects at either end of the Vict. line haven't been created
-                            #stations
-                            if tile in ['140','150','160','170','180','220','230','240','350']: #station tiles
-                                stationsCoords.append((t, r))
+                        if d < 2: #As long as both "Train" objects at either end of the Vict. line haven't been created
 
-                            #train
-                            if trainID == 0 and tile == '130':
-                                # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
-                                print("(NB) Tile number is: " + tile)
-                                station = stations["victoria line"] #default spawning point
-                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 1, empty_path = [])
-                                pathfinder = Path(matrix = level_matrix, train = train, path = path)
-                                tempList.append([train, pathfinder, [t, r]])
-                                trainID += 1
-                            elif trainID == 1 and tile == '130':
-                                print("(SB) Tile number is: " + tile)
-                                station = stations["victoria line"] #default spawning point
-                                train = Train(ID = trainID, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, empty_path = [], speed = 1)
-                                pathfinder = Path(matrix = level_matrix, train = train, path = path)
-                                tempList.append([train, pathfinder, [t, r]]) #number of passengers, train object, (row, column (i.e. tile along row))) 
-                                trainID += 1
+                            #Victoria Line
+                            if tile == '130':
+                                if d == 0:
+                                    # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
+                                    station = "default" #default spawning point
+                                    train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 1, empty_path = [])
+                                    pathfinder = Path(matrix = level_matrix, train = train, path = path)
+                                    tempList.append([train, pathfinder, [t, r]])
+                                    trainID += 1
+                                    d += 1
+                                elif d == 1:
+                                    station = "default" #default spawning point
+                                    train = Train(ID = trainID, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, empty_path = [], speed = 1)
+                                    pathfinder = Path(matrix = level_matrix, train = train, path = path)
+                                    tempList.append([train, pathfinder, [t, r]]) #number of passengers, train object, (row, column (i.e. tile along row))) 
+                                    trainID += 1
+                                    d += 1
 
-                                #adds the temp list to the 'victoria' key, increments trainID by 1 as vic line doesn't need more trains at the start (1 for NB, 1 for SB)
+                                    #adds the temp list to the 'victoria' key
+                                    trains["victoria"] = tempList
+
+                            #Hammersmith & City line
+                            elif tile == 0:
+                                if d == 2:
+                                    pass
+                                elif d == 3:
+                                    #code
+                                    trains["hammersmith & city"] = tempList
+                            elif tile == 0:
                                 trains["victoria"] = tempList
-                                trainID += 1
+                                #southbound
+                                #...
 
-                        #Hammersmith & City line
-                        elif trainID < 4:
+                            # elif line[0] == "circle":
+                            #     pass
+                            # elif line[0] == "district":
+                            #     pass
+                            # elif line[0] == "jubilee":
+                            #     pass
+                            # elif line[0] == "metropolitan":
+                            #     pass
+                            # elif line[0] == "central":
+                            #     pass
+                            # elif line[0] == "picadilly":
+                            #     pass
+                            # elif line[0] == "northern":
+                            #     pass
+                        else:
                             pass
-                        elif trainID == 4:
-                            trains["victoria"] = tempList
-                            #southbound
-                            #...
-
-                        # elif line[0] == "circle":
-                        #     pass
-                        # elif line[0] == "district":
-                        #     pass
-                        # elif line[0] == "jubilee":
-                        #     pass
-                        # elif line[0] == "metropolitan":
-                        #     pass
-                        # elif line[0] == "central":
-                        #     pass
-                        # elif line[0] == "picadilly":
-                        #     pass
-                        # elif line[0] == "northern":
-                        #     pass
                     t = 0
                 r = 0
-                print(stationsCoords)
-        print(trains)
-        return trains
+                #print(stationsCoords)
+        return trains, trainID
     
-    def CreateStations():
-        pass
+    def CreateStations(stationsTiled):
+        stations = []
+        StationID = 0
+        for line in stationsTiled:
+            line_name = line[0]
+            tempList = [] #to hold station objects until the end of the loop for each line
+            stationsTemp = line[1]
+            for station in stationsTemp:
+                tempList.append(Station(StationID, name = station.name, location = (station.coordinates[0] // 9, station.coordinates[1] // 9), line = line_name, status = "open", no_customers = 0, customer_satisfaction = 100))
+            stations.append([line_name, tempList])
+        return stations
+
+
     def MoveTrains(all_stations):
         for line in all_stations:
             stationIDs = all_stations[line]
@@ -220,14 +236,16 @@ class Play():
         # print(len(level_matrix)) # number of rows
         # print(len(level_matrix[0])) #number of tiles per row
 
-        trains = Play.CreateObjects(save_data, stations, trains, level_matrix)
+        run = 1
+        trainID = 0
+        run, save_data, stationsTiled = Play.LoadMap(path, save_data, screen, run)
+        trains, stations, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, stationsTiled) #save_data, trains, level_matrix, trainID, stationsTiled)
         # print(trains)
 
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
         while game.state == 5:
-            # run = 0
-            Play.LoadMap(path, save_data, screen)
+            run, save_data, stations = Play.LoadMap(path, save_data, screen, run)
             settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
             Play.CheckButtons(buttons, screen, game_settings, path)
@@ -241,7 +259,7 @@ class Play():
 
             for line in trains:
                 for trainList in trains[line]:
-                    train = trainList[1]
+                    train = trainList[0]
                     train.Display(screen, f"{path}\\Icons\\{line}.png")
                                         
             #Simulation code
