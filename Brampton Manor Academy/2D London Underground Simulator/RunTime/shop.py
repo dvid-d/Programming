@@ -1,4 +1,4 @@
-import pygame, sys, button
+import pygame, sys
 from os.path import abspath
 from inspect import getsourcefile
 path = abspath(getsourcefile(lambda:0))[:-16]
@@ -9,7 +9,7 @@ sys.path.append(f"{path}z\Maps")
 sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
-
+from button import Button
 
 class Shop():
     def __init__(self):
