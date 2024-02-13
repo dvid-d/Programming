@@ -25,24 +25,15 @@ class Play():
         map = Play.GetMap(save_data)
         map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
-        stations = [["Victoria Line", []]]
         layers = map_data.visible_layers
         for layer in layers:
             if layer not in map_data.objectgroups:
                 for x,y,surface in layer.tiles():
                     pos = (x*9,y*9) # size of tiles
                     Tile(pos, surface, sprite_group)
-            else:
-                if run != 1:
-                    if layer.name == "Victoria Line":
-                        i = 0
-                        for station in layer:
-                            print(layer)
-                            print("slayy")
-                            stations[i][1].append(station)
         sprite_group.draw(screen)
         run = 0
-        return run, save_data, stations
+        return run, save_data, layers
 
 
     def LoadEntities(path, screen, location):
@@ -202,16 +193,17 @@ class Play():
                 #print(stationsCoords)
         return trains, trainID
     
-    def CreateStations(stationsTiled):
-        stations = []
-        StationID = 0
-        for line in stationsTiled:
-            line_name = line[0]
-            tempList = [] #to hold station objects until the end of the loop for each line
-            stationsTemp = line[1]
-            for station in stationsTemp:
-                tempList.append(Station(StationID, name = station.name, location = (station.coordinates[0] // 9, station.coordinates[1] // 9), line = line_name, status = "open", no_customers = 0, customer_satisfaction = 100))
-            stations.append([line_name, tempList])
+    def CreateStations(layers):
+        stations = [["Victoria Line", []]]
+        for layer in layers:
+            if layer.name == "Victoria Line":
+                i = 0
+                for station in layer:
+                    id = station.id
+                    location = [station.x, station.y] #tile, row
+                    name = station.name
+                    station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
+                    stations[i][1].append(station_obj)
         return stations
 
 
@@ -228,9 +220,9 @@ class Play():
         level_matrix = Path.loadMatrix("level_1", path)
 
         trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398'] #Allowed IDs only; i.e. can only pass over these tiles
-        stationIDs = ['140','150','160','170','180','220','230','240','350']
-        startIDs = ['120', '130']
-        validIDs = [["victoria", startIDs, trackIDs, stationIDs]] #[0] = line name, [1] = starting IDs for trains on a specific line, [2] = track ID's for line, [2] = station ID's for line
+        stationIDs = ['130', '140','150','160','170','180','220','230','240','350']
+        # startIDs = []
+        validIDs = [["victoria", stationIDs, trackIDs]] #[0] = line name, [1] = 1st 2 are starting IDs for trains, rest are station IDs, [2] = track ID's for line
 
         # # print(level_matrix)
         # print(len(level_matrix)) # number of rows
@@ -238,9 +230,8 @@ class Play():
 
         run = 1
         trainID = 0
-        run, save_data, stationsTiled = Play.LoadMap(path, save_data, screen, run)
-        trains, stations, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, stationsTiled) #save_data, trains, level_matrix, trainID, stationsTiled)
-        # print(trains)
+        run, save_data, layers = Play.LoadMap(path, save_data, screen, run)
+        trains, stations, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, layers) #save_data, trains, level_matrix, trainID, stationsTiled)
 
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
@@ -249,6 +240,7 @@ class Play():
             settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
             Play.CheckButtons(buttons, screen, game_settings, path)
+
             # if count % 40:
             #     Play.CreateTrains()
             #pathfinder.drawSelector(screen = screen, validIDs = validIDs)
@@ -257,11 +249,35 @@ class Play():
             # for train in trains:
             #     train.Move()
 
+            #Display trains on screen
             for line in trains:
                 for trainList in trains[line]:
-                    train = trainList[0]
-                    train.Display(screen, f"{path}\\Icons\\{line}.png")
-                                        
+                    trains = trainList[0]
+                    for train in trains:
+                        train.Display(screen, f"{path}\\Icons\\{line}.png")
+
+            for line in trains:
+                for trainList in trains[line]:
+                    trains = trainList[0]
+                    for train in trains:
+                        if train.GetLine() == "Victoria Line":
+                            if train.GetDirection() == "NB":
+                                stations_temp = stations[0][1]
+                            else:
+                                stations_temp = stations[0][1].reverse()
+                            current_station = train.GetStation()
+                            next_station = ""
+
+                            #finds index of current station
+                            for i in range(stations_temp):
+                                if stations_temp[i].GetName() == current_station:
+                                    next_station = stations_temp[i+1]
+
+                            #if index not found, next_station doesn't change so train must be on default starting tile
+                            if next_station == "":
+                                next_station = stations_temp[0]
+
+                            
             #Simulation code
             #check to see if next threshold has been met;
             #Play.CheckLevel()
