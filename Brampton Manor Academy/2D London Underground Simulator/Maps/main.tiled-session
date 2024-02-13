@@ -5,8 +5,8 @@
     },
     "activeFile": "level_1.tmx",
     "expandedProjectPaths": [
-        ".",
-        "Copies of Levels"
+        "Copies of Levels",
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -46,11 +46,11 @@
             }
         },
         "level_1.tmx": {
-            "scale": 5.5,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 958.3636363636364,
-                "y": 539.909090909091
+                "x": 958,
+                "y": 539.6666666666666
             }
         },
         "test.tmx": {
