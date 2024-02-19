@@ -27,7 +27,7 @@ class Train(pygame.sprite.Sprite):
         self.__direction = direction
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
-        self.__location = self.__rect.topleft
+        self.__location = [self.__rect.topleft[0], self.__rect.topleft[1]]
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
@@ -35,10 +35,10 @@ class Train(pygame.sprite.Sprite):
         self.__path = []
         self.__empty_path = empty_path
         self.__collisionRects = []
-    
 
-    def DrawTrain(self, surface, location):
-        surface.blit(self.__image, location)
+        self.image = pygame.image.load(image_location).convert_alpha()
+        self.rect = self.image.get_rect(topleft = location)
+    
 
     def setPath(self, path):
         self.__path = path
@@ -69,7 +69,10 @@ class Train(pygame.sprite.Sprite):
     def update(self):
         self.__location += self.__direction * self.__speed
         self.checkCollisions()
-        self.__rect.center = self.__location
+        self.__rect.center = (self.__location[0], self.__location[1])
+
+    def Move(path, surface, validIDs):
+        path.update(surface, validIDs)
 
     def checkCollisions(self):
         if self.__collisionRects:
@@ -80,7 +83,7 @@ class Train(pygame.sprite.Sprite):
         else:
             self.delPath()
 
-
+    #Getters
     def GetLine(self):
         return self.__line
     
@@ -90,12 +93,13 @@ class Train(pygame.sprite.Sprite):
     def GetLocation(self):
         pass
     
-    def L():
-        pass
+    def GetStation(self):
+        return self.__station
+
+
 
     def UpdateTrainLocation(self, surface, train_location):
         pass
-    
 
     def CheckIfAtEndOfLine():
         #if at end of line, destroy
@@ -104,9 +108,9 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    def Display(self, surface, icon_location):
-        icon = pygame.image.load(icon_location) #location: f"{path}\\Icons\\Player.png"
-        surface.blit(icon, self.__location)
+    def Display(self, surface):
+        surface.blit(self.__image, self.__location)
+
 
     #at Station
     def leaveStation():
@@ -134,7 +138,7 @@ class Path():
 
 
     def update(self, screen, validIDs):
-        self.drawSelector(screen, validIDs)
+        # self.drawSelector(screen, validIDs)
         self.__train.update()
         self.__train.draw(screen)
 

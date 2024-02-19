@@ -222,7 +222,7 @@ class Play():
         trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398'] #Allowed IDs only; i.e. can only pass over these tiles
         stationIDs = ['130', '140','150','160','170','180','220','230','240','350']
         # startIDs = []
-        validIDs = [["victoria", stationIDs, trackIDs]] #[0] = line name, [1] = 1st 2 are starting IDs for trains, rest are station IDs, [2] = track ID's for line
+        validIDs = {"victoria": (stationIDs, trackIDs)} #[0] = line name, [1] = 1st 2 are starting IDs for trains, rest are station IDs, [2] = track ID's for line
 
         # # print(level_matrix)
         # print(len(level_matrix)) # number of rows
@@ -251,32 +251,32 @@ class Play():
 
             #Display trains on screen
             for line in trains:
-                for trainList in trains[line]:
-                    trains = trainList[0]
-                    for train in trains:
-                        train.Display(screen, f"{path}\\Icons\\{line}.png")
+                for train in trains[line]:
+                    train = train[0]
+                    train.Display(screen)
 
             for line in trains:
+                validIDs = validIDs[line]
                 for trainList in trains[line]:
-                    trains = trainList[0]
-                    for train in trains:
-                        if train.GetLine() == "Victoria Line":
-                            if train.GetDirection() == "NB":
-                                stations_temp = stations[0][1]
-                            else:
-                                stations_temp = stations[0][1].reverse()
-                            current_station = train.GetStation()
-                            next_station = ""
+                    train = trainList[0]
+                    train_path = trainList[1]
+                    if train.GetLine() == "Victoria Line":
+                        if train.GetDirection() == "NB":
+                            stations_temp = stations[0][1]
+                        else:
+                            stations_temp = stations[0][1].reverse()
+                        current_station = train.GetStation()
+                        next_station = ""
 
-                            #finds index of current station
-                            for i in range(stations_temp):
-                                if stations_temp[i].GetName() == current_station:
-                                    next_station = stations_temp[i+1]
+                        #finds index of current station
+                        for i in range(stations_temp):
+                            if stations_temp[i].GetName() == current_station:
+                                next_station = stations_temp[i+1]
 
-                            #if index not found, next_station doesn't change so train must be on default starting tile
-                            if next_station == "":
-                                next_station = stations_temp[0]
-
+                        #if index not found, next_station doesn't change so train must be on default starting tile
+                        if next_station == "":
+                            next_station = stations_temp[0]
+                    Train.Move(train_path, screen, validIDs)
                             
             #Simulation code
             #check to see if next threshold has been met;
