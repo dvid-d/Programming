@@ -255,28 +255,29 @@ class Play():
                     train = train[0]
                     train.Display(screen)
 
+            #to UPDATE validIDs with ID's of other lines, starting with H&C
             for line in trains:
-                validIDs = validIDs[line]
-                for trainList in trains[line]:
-                    train = trainList[0]
-                    train_path = trainList[1]
-                    if train.GetLine() == "Victoria Line":
-                        if train.GetDirection() == "NB":
-                            stations_temp = stations[0][1]
-                        else:
-                            stations_temp = stations[0][1].reverse()
-                        current_station = train.GetStation()
-                        next_station = ""
+                if line == "victoria":
+                    validIDs_temp = validIDs[line]
+                    for trainList in trains[line]:
+                        train_path = trainList[1]
+                        if train.GetLine() == "Victoria Line":
+                            if train.GetDirection() == "NB":
+                                stations_temp = stations[0][1]
+                            else:
+                                stations_temp = stations[0][1].reverse()
+                            current_station = train.GetStation()
+                            next_station = ""
 
-                        #finds index of current station
-                        for i in range(stations_temp):
-                            if stations_temp[i].GetName() == current_station:
-                                next_station = stations_temp[i+1]
+                            #finds index of current station
+                            for i in range(stations_temp):
+                                if stations_temp[i].GetName() == current_station:
+                                    next_station = stations_temp[i+1]
 
-                        #if index not found, next_station doesn't change so train must be on default starting tile
-                        if next_station == "":
-                            next_station = stations_temp[0]
-                    Train.Move(train_path, screen, validIDs)
+                            #if index not found, next_station doesn't change so train must be on default starting tile
+                            if next_station == "":
+                                next_station = stations_temp[0]
+                        train_path.update(screen, validIDs)
                             
             #Simulation code
             #check to see if next threshold has been met;
