@@ -26,14 +26,17 @@ class Play():
         map_data = load_pygame(f'{path}\\Maps\\{map}.tmx')
         sprite_group = pygame.sprite.Group()
         layers = map_data.visible_layers
+        layers_group = []
         for layer in layers:
             if layer not in map_data.objectgroups:
                 for x,y,surface in layer.tiles():
                     pos = (x*9,y*9) # size of tiles
                     Tile(pos, surface, sprite_group)
+            else:
+                layers_group.append(layer)
         sprite_group.draw(screen)
         run = 0
-        return run, save_data, layers
+        return run, save_data, layers_group
 
 
     def LoadEntities(path, screen, location):
@@ -59,24 +62,24 @@ class Play():
             map = "level_1"
         else:
             map = "level_" + str(int(save_data[3]))
-        # elif save_data[3] == 2.0:
-        #     map = "level_2"
-        # elif save_data[3] == 3.0:
-        #     map = "level_3"
-        # elif save_data[3] == 4.0:
-        #     map = "level_4"
-        # elif save_data[3] == 5.0:
-        #     map = "level_5"
-        # elif save_data[3] == 6.0:
-        #     map = "level_6"
-        # elif save_data[3] == 7.0:
-        #     map = "level_7"
-        # elif save_data[3] == 8.0:
-        #     map = "level_8"
-        # elif save_data[3] == 9.0:
-        #     map = "level_9"
-        # elif save_data[3] == 10.0:
-        #     map = "level_10"
+    #     elif save_data[3] == 2.0:
+    #         map = "level_2"
+    #     elif save_data[3] == 3.0:
+    #         map = "level_3"
+    #     elif save_data[3] == 4.0:
+    #         map = "level_4"
+    #     elif save_data[3] == 5.0:
+    #         map = "level_5"
+    #     elif save_data[3] == 6.0:
+    #         map = "level_6"
+    #     elif save_data[3] == 7.0:
+    #         map = "level_7"
+    #     elif save_data[3] == 8.0:
+    #         map = "level_8"
+    #     elif save_data[3] == 9.0:
+    #         map = "level_9"
+    #     elif save_data[3] == 10.0:
+    #         map = "level_10"
         return map
 
     def CheckButtons(buttons, screen, game_settings, path):
@@ -194,8 +197,11 @@ class Play():
         return trains, trainID
     
     def CreateStations(layers):
-        stations = [["Victoria Line", []]]
+        print(dir(layers))
+        stations_objects = [["Victoria Line", []]]
         for layer in layers:
+            print("yes, and?")
+            print(layer.name)
             if layer.name == "Victoria Line":
                 i = 0
                 for station in layer:
@@ -203,8 +209,8 @@ class Play():
                     location = [station.x, station.y] #tile, row
                     name = station.name
                     station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
-                    stations[i][1].append(station_obj)
-        return stations
+                    stations_objects[i][1].append(station_obj)
+        return stations_objects
 
 
     def MoveTrains(all_stations):
@@ -231,7 +237,7 @@ class Play():
         run = 1
         trainID = 0
         run, save_data, layers = Play.LoadMap(path, save_data, screen, run)
-        trains, stations, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, layers) #save_data, trains, level_matrix, trainID, stationsTiled)
+        trains, stations_objects, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, layers) #save_data, trains, level_matrix, trainID, stationsTiled)
 
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
@@ -256,28 +262,43 @@ class Play():
                     train.Display(screen)
 
             #to UPDATE validIDs with ID's of other lines, starting with H&C
+            print(stations)
             for line in trains:
                 if line == "victoria":
                     validIDs_temp = validIDs[line]
                     for trainList in trains[line]:
                         train_path = trainList[1]
-                        if train.GetLine() == "Victoria Line":
+                        if train.GetLine() == "victoria":
+                            stations_temp = []
                             if train.GetDirection() == "NB":
-                                stations_temp = stations[0][1]
+                                print("aaaaaaaaaaa")
+                                stations_temp = stations_objects[0][1]
                             else:
-                                stations_temp = stations[0][1].reverse()
+                                print("bbbbbbbbbb")
+                                a = stations_objects[0][1]
+                                b = []
+                                for i in reversed(range(len(a))):
+                                    b.append(a[i])
+                                stations_temp = b
+                                print("bye byeeee ", a)
+                                print("awfqwrq", b)
+
                             current_station = train.GetStation()
                             next_station = ""
 
                             #finds index of current station
-                            for i in range(stations_temp):
+                            for i in range(len(stations_temp)):
+                                print(current_station)
                                 if stations_temp[i].GetName() == current_station:
                                     next_station = stations_temp[i+1]
 
                             #if index not found, next_station doesn't change so train must be on default starting tile
                             if next_station == "":
                                 next_station = stations_temp[0]
-                        train_path.update(screen, validIDs)
+                            print("Next station: ", next_station)
+                            coords = next_station.GetLocation()
+                            train_path.generate_path(next_station)
+                            train_path.update(screen, validIDs)
                             
             #Simulation code
             #check to see if next threshold has been met;

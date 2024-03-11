@@ -58,7 +58,7 @@ class Train(pygame.sprite.Sprite):
                 rect = pygame.Rect((x - 4.5, y - 4.5), (9, 9))
                 self.__collisionRects.append(rect)
 
-    def getDirection(self):
+    def get_direction(self):
         if self.__collisionRects:
             xy_1 = pygame.math.Vector2(self.__location)
             xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
@@ -67,21 +67,19 @@ class Train(pygame.sprite.Sprite):
             self.__direction = pygame.math.Vector2(0,0)
             self.__path = []
 
-    def update(self):
+    def update(self, validIDs):
         self.__location += self.__vector_direction * self.__speed
         print(self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
 
-    def Move(path, surface, validIDs):
-        path.update(surface, validIDs)
 
     def checkCollisions(self):
         if self.__collisionRects:
             for rect in self.__collisionRects:
                 if rect.collidepoint(self.__location):
                     del self.__collisionRects[0]
-                    self.getDirection()
+                    self.get_direction()
         else:
             self.delPath()
 
@@ -142,7 +140,7 @@ class Path():
 
     def update(self, screen, validIDs):
         # self.drawSelector(screen, validIDs)
-        self.__train.update()
+        self.__train.update(validIDs)
         self.__train.draw(screen)
 
     def getMatrix(self):
@@ -216,6 +214,12 @@ class Station():
         self.__customerNumber  = no_customers
         self.__customerSatisfaction = customer_satisfaction
 
+    def GetLocation(self):
+        return self.__location
+    
+    def GetName(self):
+        return self.__name
+    
     def Open():
         pass
     
