@@ -25,6 +25,7 @@ class Train(pygame.sprite.Sprite):
         # self.__type = type
         self.__ID = ID
         self.__direction = direction
+        self.__vector_direction = pygame.math.Vector2(0,0)
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
         self.__location = [self.__rect.topleft[0], self.__rect.topleft[1]]
@@ -67,7 +68,9 @@ class Train(pygame.sprite.Sprite):
             self.__path = []
 
     def update(self):
-        self.__location += self.__direction * self.__speed
+        print(self.GetLocation())
+        self.__location += self.__vector_direction * self.__speed
+        print("b", self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
 
@@ -91,7 +94,8 @@ class Train(pygame.sprite.Sprite):
         return self.__direction
     
     def GetLocation(self):
-        pass
+        print("a")
+        return self.__location
     
     def GetStation(self):
         return self.__station
@@ -109,6 +113,7 @@ class Train(pygame.sprite.Sprite):
         pass
     
     def Display(self, surface):
+        print(self.__location)
         surface.blit(self.__image, self.__location)
 
 
