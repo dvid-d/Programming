@@ -62,15 +62,14 @@ class Train(pygame.sprite.Sprite):
         if self.__collisionRects:
             xy_1 = pygame.math.Vector2(self.__location)
             xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
-            self.__direction = (xy_2 - xy_1).normalize()
+            self.__vector_direction = (xy_2 - xy_1).normalize()
         else:
             self.__direction = pygame.math.Vector2(0,0)
             self.__path = []
 
     def update(self):
-        print(self.GetLocation())
         self.__location += self.__vector_direction * self.__speed
-        print("b", self.__location)
+        print(self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
 
@@ -94,7 +93,6 @@ class Train(pygame.sprite.Sprite):
         return self.__direction
     
     def GetLocation(self):
-        print("a")
         return self.__location
     
     def GetStation(self):
@@ -153,11 +151,10 @@ class Path():
     def getGrid(self):
         return self.__grid
     
-    def generate(self):
-        x_1, y_1 = self.__train.sprite.getCoords()
-        start = self.__grid.note(x_1, y_1)
-        mouse = pygame.mouse.get_pos()
-        x_2, y_2 = mouse[0] // 9, mouse[1] // 9
+    def generate_path(self, next_station):
+        x_1, y_1 = self.__train.sprite.GetLocation()
+        start = self.__grid.node(x_1, y_1)
+        x_2, y_2 = next_station[0] // 9, next_station[1] // 9
         end = self.__grid.note(x_2, y_2)
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
         self.__path = find.find_path(start, end, self.__grid)
