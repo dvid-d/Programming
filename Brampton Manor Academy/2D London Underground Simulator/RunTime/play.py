@@ -153,13 +153,13 @@ class Play():
                                     tempList.append([train, pathfinder, [t, r]])
                                     trainID += 1
                                     d += 1
-                                elif d == 1:
-                                    station = stations_objects[0][1][-1] #default spawning point
-                                    train = Train(ID = trainID, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, empty_path = [], speed = 1)
-                                    pathfinder = Path(matrix = level_matrix, train = train, path = path)
-                                    tempList.append([train, pathfinder, [t, r]]) #number of passengers, train object, (row, column (i.e. tile along row))) 
-                                    trainID += 1
-                                    d += 1
+                                # elif d == 1:
+                                #     station = stations_objects[0][1][-1] #default spawning point
+                                #     train = Train(ID = trainID, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location = f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, empty_path = [], speed = 1)
+                                #     pathfinder = Path(matrix = level_matrix, train = train, path = path)
+                                #     tempList.append([train, pathfinder, [t, r]]) #number of passengers, train object, (row, column (i.e. tile along row))) 
+                                #     trainID += 1
+                                #     d += 1
 
                                     #adds the temp list to the 'victoria' key
                                     trains["victoria"] = tempList
@@ -223,7 +223,7 @@ class Play():
 
         trains = save_data["trainLocations"] #dictionary
         stations = save_data["stations"]
-        level_matrix = Path.loadMatrix("level_1", path)
+        level_matrix = Path.loadMatrix("level_1", path, [])
 
         trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398'] #Allowed IDs only; i.e. can only pass over these tiles
         stationIDs = ['130', '140','150','160','170','180','220','230','240','350']
@@ -266,12 +266,14 @@ class Play():
             for line in trains:
                 if line == "victoria":
                     validIDs_temp = validIDs[line]
+                    level_matrix = Path.loadMatrix("level_1", path, validIDs_temp)
+                    print(level_matrix)
                     for trainList in trains[line]:
                         train_path = trainList[1]
                         if train.GetLine() == "victoria":
                             stations_temp = []
                             print("Line: ", train.GetDirection())
-                            if train.GetDirection() == "NB":
+                            if train.GetDirection() == "SB":
                                 stations_temp = stations_objects[0][1]
                             else:
                                 a = stations_objects[0][1]
@@ -297,9 +299,13 @@ class Play():
                                 next_station = stations_temp[0]
                             print("Next station: ", next_station.GetName())
                             print(train.GetLocation())
-                            coords = next_station.GetLocation()
+                            
+                            temp_coords = next_station.GetLocation()
+                            coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                             train_path.generate_path(next_station)
-                            train_path.update(screen, validIDs)
+                            train_path.update(screen, next_station)
+
+                            pygame.draw.circle(screen, (200,200,250), coords, 5)
                             
             #Simulation code
             #check to see if next threshold has been met;
