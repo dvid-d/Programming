@@ -67,11 +67,12 @@ class Train(pygame.sprite.Sprite):
             self.__direction = pygame.math.Vector2(0,0)
             self.__path = []
 
-    def update(self, validIDs):
+    def update(self, next_station):
         self.__location += self.__vector_direction * self.__speed
         print(self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
+        self.__station = next_station
 
 
     def checkCollisions(self):
@@ -150,17 +151,16 @@ class Path():
         return self.__grid
     
     def generate_path(self, next_station):
-        print("test???????", self.__train.sprite.GetLocation())
         temp = self.__train.sprite.GetLocation()
-        print("oh", temp)
-        x_1, y_1 = xy[0], xy[1]
+        x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
         start = self.__grid.node(x_1, y_1)
-        x_2, y_2 = next_station[0] // 9, next_station[1] // 9
-        end = self.__grid.note(x_2, y_2)
+        next_location = next_station.GetLocation()
+        x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
+        end = self.__grid.node(x_2, y_2)
 
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
         self.__path,_ = find.find_path(start, end, self.__grid)
-        self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.path)]
+        self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
         
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
@@ -180,23 +180,27 @@ class Path():
                 coords.append((x, y))
             pygame.draw.lines(screen, '#4a4a4a', False, coords, 5)
 
-
-    # def drawSelector(self, screen, validIDs):
-    #     mouse = pygame.mouse.get_pos() #gets position of the mouse
-    #     row = mouse[1] // 9
-    #     column = mouse[0] // 9
-    #     cell = self.getMatrixCell(row, column)
-    #     if (cell in validIDs[0][1]) or (cell in validIDs[0][2]) or (cell in validIDs[0][2]):
-    #         selector = pygame.Rect((column * 9, row * 9), (9, 9)) #location, (width, height)
-    #         screen.blit(self.__select_surface, selector)
-    
-    def loadMatrix(level, path):
+    def loadMatrix(level, path, validIDs):
         level_matrix = []
         with open(f"{path}\\Maps\\{level}.csv") as file:
             data = csv.reader(file, delimiter=",")
             next(data)
             for row in data:
                 level_matrix.append(row)
+
+        if len(validIDs) != 0:
+            temp_matrix = []
+            for row in range(len(level_matrix)):
+                temp_row = []
+                for cell in range(row):
+                    if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
+                        temp_row.append(1)
+                    else:
+                        temp_row.append(0)
+                temp_matrix.append(temp_row)
+
+            level_matrix = temp_matrix
+
         return level_matrix
     
     def getMatrixCell(self, row, column):
