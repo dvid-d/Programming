@@ -112,7 +112,7 @@ def Quit():
     pygame.quit()
     exit()
 
-def Reset():
+def ResetFiles():
     #to reset game files to default
     pass
 
