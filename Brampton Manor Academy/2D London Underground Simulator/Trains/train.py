@@ -150,12 +150,18 @@ class Path():
         return self.__grid
     
     def generate_path(self, next_station):
-        x_1, y_1 = self.__train.sprite.GetLocation()
+        print("test???????", self.__train.sprite.GetLocation())
+        temp = self.__train.sprite.GetLocation()
+        print("oh", temp)
+        x_1, y_1 = xy[0], xy[1]
         start = self.__grid.node(x_1, y_1)
         x_2, y_2 = next_station[0] // 9, next_station[1] // 9
         end = self.__grid.note(x_2, y_2)
+
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
-        self.__path = find.find_path(start, end, self.__grid)
+        self.__path,_ = find.find_path(start, end, self.__grid)
+        self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.path)]
+        
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
 
