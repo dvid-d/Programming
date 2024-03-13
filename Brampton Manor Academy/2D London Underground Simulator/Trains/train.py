@@ -69,7 +69,7 @@ class Train(pygame.sprite.Sprite):
 
     def update(self, next_station):
         self.__location += self.__vector_direction * self.__speed
-        print(self.__location)
+        # print(self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
         self.__station = next_station
@@ -110,7 +110,7 @@ class Train(pygame.sprite.Sprite):
         pass
     
     def Display(self, surface):
-        print(self.__location)
+        # print(self.__location)
         surface.blit(self.__image, self.__location)
 
 
@@ -136,7 +136,7 @@ class Path():
         self.__path = []
         self.__empty_path = []
         self.__train = pygame.sprite.GroupSingle(train)
-        self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
+        # self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
 
 
     def update(self, screen, validIDs):
@@ -192,16 +192,17 @@ class Path():
             temp_matrix = []
             for row in range(len(level_matrix)):
                 temp_row = []
-                for cell in range(row):
+                print(len(level_matrix))
+                for cell in range(len(level_matrix[row])):
                     if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
                         temp_row.append(1)
                     else:
                         temp_row.append(0)
                 temp_matrix.append(temp_row)
-
-            level_matrix = temp_matrix
-
-        return level_matrix
+            print(temp_matrix)
+            return temp_matrix
+        else:
+            return level_matrix
     
     def getMatrixCell(self, row, column):
         return self.__matrix[row][column]
