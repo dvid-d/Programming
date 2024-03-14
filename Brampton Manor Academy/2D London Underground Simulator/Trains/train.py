@@ -2,6 +2,7 @@ import pygame, sys, csv
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
+import math
  
 from os.path import abspath
 from inspect import getsourcefile
@@ -161,6 +162,19 @@ class Path():
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
         self.__path,_ = find.find_path(start, end, self.__grid)
         self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
+        print(self.__path)
+        for coordinate_index in range(len(self.__path)):
+            if coordinate_index != len(self.__path):
+                delta_x_1 = self.__path[coordinate_index][0] - self.__train.sprite.GetLocation()[0]
+                delta_y_1 = self.__path[coordinate_index][1] - self.__train.sprite.GetLocation()[1]
+                distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
+
+                delta_x_2 = self.__path[coordinate_index+1][0] - self.__train.sprite.GetLocation()[0]
+                delta_y_2 = self.__path[coordinate_index+1][1] - self.__train.sprite.GetLocation()[1]
+                distance_2 = math.sqrt((delta_x_2**2 + delta_y_2**2))
+
+                if distance_2 > distance_1:
+                    self.__path.remove(self.__path[coordinate_index+1])
         
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
@@ -188,21 +202,21 @@ class Path():
             for row in data:
                 level_matrix.append(row)
 
-        if len(validIDs) != 0:
+        if len(validIDs) > 0:
+            print(validIDs)
             temp_matrix = []
             for row in range(len(level_matrix)):
                 temp_row = []
-                print(len(level_matrix))
                 for cell in range(len(level_matrix[row])):
                     if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
+                        # print("aaaaaaaaaaaaaaa")
                         temp_row.append(1)
                     else:
                         temp_row.append(0)
                 temp_matrix.append(temp_row)
-            print(temp_matrix)
+            # print(temp_matrix)
             return temp_matrix
-        else:
-            return level_matrix
+        return level_matrix
     
     def getMatrixCell(self, row, column):
         return self.__matrix[row][column]
