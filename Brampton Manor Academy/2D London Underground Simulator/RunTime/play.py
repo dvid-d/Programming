@@ -8,6 +8,7 @@ from train import *
 from tile import *
 from game import *
 import settings
+import math
 from pytmx.util_pygame import load_pygame
 path = abspath(getsourcefile(lambda:0))[:-16]
 sys.path.append(f"{path}\\Game Properties")
@@ -303,10 +304,43 @@ class Play():
                             temp_coords = next_station.GetLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                             
-                            train_path.generate_path(next_station)
-                            train_path.update(screen, next_station)
+                            # train_path.generate_path(next_station)
+                            if current_station.GetName() != next_station.GetName():
+                                train_path.generate_path(next_station)
 
+                                temp_path = []
+                                print("abcdefghijklmnopqrstuvwxyz")
+                                print(len(train_path.getPath()))
+                                path_list = train_path.getPath()
+                                for coordinate_index in range(len(train_path.getPath()) - 1):
+                                    # if coordinate_index != (len(self.__path)):
+                                    delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().GetLocation()[0]
+                                    delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().GetLocation()[1]
+                                    distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
+
+                                    delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().GetLocation()[0]
+                                    delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().GetLocation()[1]
+                                    distance_2 = math.sqrt(((delta_x_2)**2 + (delta_y_2)**2))
+                                    
+                                    print("distance 1: ", distance_1, ", distance 2: ", distance_2)
+                                    if distance_2 > distance_1:
+                                        temp_path.append(path_list[coordinate_index])
+                                    print(temp_path)
+
+
+                                    train_sprite = train_path.getTrain()
+                                    train_sprite.setPath(temp_path)
+                            train_path.update(screen, next_station)
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
+
+                            #if at next station:
+                            #   don't move until some user input
+                            # print(current_station.GetName(), next_station.GetName())
+                            
+
+
+
+
                             
             #Simulation code
             #check to see if next threshold has been met;
