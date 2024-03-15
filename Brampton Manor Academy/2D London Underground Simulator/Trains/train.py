@@ -151,10 +151,18 @@ class Path():
     def getGrid(self):
         return self.__grid
     
+    def getPath(self):
+        return self.__path
+    
+    def getTrain(self):
+        return self.__train.sprite
+
     def generate_path(self, next_station):
         temp = self.__train.sprite.GetLocation()
         x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
         start = self.__grid.node(x_1, y_1)
+
+        
         next_location = next_station.GetLocation()
         x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
         end = self.__grid.node(x_2, y_2)
@@ -162,22 +170,10 @@ class Path():
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
         self.__path,_ = find.find_path(start, end, self.__grid)
         self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
-        print(self.__path)
-        for coordinate_index in range(len(self.__path)):
-            if coordinate_index != len(self.__path):
-                delta_x_1 = self.__path[coordinate_index][0] - self.__train.sprite.GetLocation()[0]
-                delta_y_1 = self.__path[coordinate_index][1] - self.__train.sprite.GetLocation()[1]
-                distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
-
-                delta_x_2 = self.__path[coordinate_index+1][0] - self.__train.sprite.GetLocation()[0]
-                delta_y_2 = self.__path[coordinate_index+1][1] - self.__train.sprite.GetLocation()[1]
-                distance_2 = math.sqrt((delta_x_2**2 + delta_y_2**2))
-
-                if distance_2 > distance_1:
-                    self.__path.remove(self.__path[coordinate_index+1])
         
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
+        print(self.__path)
 
     def getCoords(self):
         column = self.__rect.topleftx // 9
@@ -203,18 +199,15 @@ class Path():
                 level_matrix.append(row)
 
         if len(validIDs) > 0:
-            print(validIDs)
             temp_matrix = []
             for row in range(len(level_matrix)):
                 temp_row = []
                 for cell in range(len(level_matrix[row])):
                     if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
-                        # print("aaaaaaaaaaaaaaa")
                         temp_row.append(1)
                     else:
                         temp_row.append(0)
                 temp_matrix.append(temp_row)
-            # print(temp_matrix)
             return temp_matrix
         return level_matrix
     
