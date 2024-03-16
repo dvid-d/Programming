@@ -10,6 +10,12 @@ from inspect import getsourcefile
 path = abspath(getsourcefile(lambda:0))[:-16] # obtains path of program
 sys.path.append(f"{path}\\Icons")
 
+def convertToTileCoords(coords):
+    x = int(coords[0] // 9)
+    y = int(coords[1] // 9)
+    return [x, y]
+
+
 class Train(pygame.sprite.Sprite):
     def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
         #ID of train
@@ -65,7 +71,7 @@ class Train(pygame.sprite.Sprite):
             xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
             self.__vector_direction = (xy_2 - xy_1).normalize()
         else:
-            self.__direction = pygame.math.Vector2(0,0)
+            # self.__direction = pygame.math.Vector2(0,0)
             self.__path = []
 
     def update(self, next_station):
@@ -74,6 +80,7 @@ class Train(pygame.sprite.Sprite):
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
         self.__station = next_station
+        
 
 
     def checkCollisions(self):
@@ -86,18 +93,20 @@ class Train(pygame.sprite.Sprite):
             self.delPath()
 
     #Getters
-    def GetLine(self):
+    def getLine(self):
         return self.__line
     
-    def GetDirection(self):
+    def getDirection(self):
         return self.__direction
     
-    def GetLocation(self):
+    def getLocation(self):
         return self.__location
     
     def GetStation(self):
         return self.__station
 
+    def getPath(self):
+        return self.__path
 
 
     def UpdateTrainLocation(self, surface, train_location):
@@ -110,7 +119,7 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    def Display(self, surface):
+    def Display(self, surface, ):
         # print(self.__location)
         surface.blit(self.__image, self.__location)
 
@@ -158,12 +167,12 @@ class Path():
         return self.__train.sprite
 
     def generate_path(self, next_station):
-        temp = self.__train.sprite.GetLocation()
+        temp = self.__train.sprite.getLocation()
         x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
         start = self.__grid.node(x_1, y_1)
 
         
-        next_location = next_station.GetLocation()
+        next_location = next_station.getLocation()
         x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
         end = self.__grid.node(x_2, y_2)
 
@@ -232,7 +241,7 @@ class Station():
         self.__customerNumber  = no_customers
         self.__customerSatisfaction = customer_satisfaction
 
-    def GetLocation(self):
+    def getLocation(self):
         return self.__location
     
     def GetName(self):

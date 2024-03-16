@@ -271,10 +271,10 @@ class Play():
                 if line == "victoria":        
                     for trainList in trains[line]:
                         train_path = trainList[1]
-                        if train.GetLine() == "victoria":
+                        if train.getLine() == "victoria":
                             stations_temp = []
                             # print("Line: ", train.GetDirection())
-                            if train.GetDirection() == "SB":
+                            if train.getDirection() == "SB":
                                 stations_temp = stations_objects[0][1]
                             else:
                                 a = stations_objects[0][1]
@@ -282,11 +282,8 @@ class Play():
                                 for i in reversed(range(len(a))):
                                     b.append(a[i])
                                 stations_temp = b
-
                             current_station = train.GetStation()
-                            # print("Current station: ", current_station.GetName())
                             next_station = ""
-
                             #finds index of current station
                             for i in range(len(stations_temp)):
                                 try:
@@ -294,42 +291,51 @@ class Play():
                                         next_station = stations_temp[i+1] #index error when at the last station
                                 except:
                                     pass
-
                             #if index not found, next_station doesn't change so train must be on default starting tile
                             if next_station == "":
                                 next_station = stations_temp[0]
-                            # print("Next station: ", next_station.GetName())
-                            # print(train.GetLocation())
                             
-                            temp_coords = next_station.GetLocation()
+                            temp_coords = next_station.getLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                             
                             # train_path.generate_path(next_station)
-                            if current_station.GetName() != next_station.GetName():
+                            # if convertToTileCoords(train.getLocation()) != convertToTileCoords(next_station.getLocation()):
+                            if train.getPath() == []:
                                 train_path.generate_path(next_station)
 
                                 temp_path = []
-                                print("abcdefghijklmnopqrstuvwxyz")
                                 print(len(train_path.getPath()))
                                 path_list = train_path.getPath()
+
+                                """
+                                train goes off screen to the right after going past a few stations
+                                
+                                train is not displayed appropriately for horizontal stretches of the line
+                                however, it is shown as intended when on diagonal parts
+                                """
+
+                                
                                 for coordinate_index in range(len(train_path.getPath()) - 1):
                                     # if coordinate_index != (len(self.__path)):
-                                    delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().GetLocation()[0]
-                                    delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().GetLocation()[1]
+                                    delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().getLocation()[0]
+                                    delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().getLocation()[1]
                                     distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
 
-                                    delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().GetLocation()[0]
-                                    delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().GetLocation()[1]
+                                    delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().getLocation()[0]
+                                    delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().getLocation()[1]
                                     distance_2 = math.sqrt(((delta_x_2)**2 + (delta_y_2)**2))
                                     
                                     print("distance 1: ", distance_1, ", distance 2: ", distance_2)
                                     if distance_2 > distance_1:
                                         temp_path.append(path_list[coordinate_index])
-                                    print(temp_path)
+                                    else:
+                                        temp_path.append(path_list[coordinate_index + 1])
+                                print(temp_path)
 
 
-                                    train_sprite = train_path.getTrain()
-                                    train_sprite.setPath(temp_path)
+                                train_sprite = train_path.getTrain()
+                                train_sprite.setPath(temp_path)
+                                    
                             train_path.update(screen, next_station)
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
 
