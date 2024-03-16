@@ -2,6 +2,7 @@ import pygame, sys, csv
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
 from pathfinding.core.diagonal_movement import DiagonalMovement
+import math
  
 from os.path import abspath
 from inspect import getsourcefile
@@ -150,10 +151,18 @@ class Path():
     def getGrid(self):
         return self.__grid
     
+    def getPath(self):
+        return self.__path
+    
+    def getTrain(self):
+        return self.__train.sprite
+
     def generate_path(self, next_station):
         temp = self.__train.sprite.GetLocation()
         x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
         start = self.__grid.node(x_1, y_1)
+
+        
         next_location = next_station.GetLocation()
         x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
         end = self.__grid.node(x_2, y_2)
@@ -164,6 +173,7 @@ class Path():
         
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
+        print(self.__path)
 
     def getCoords(self):
         column = self.__rect.topleftx // 9
@@ -188,21 +198,18 @@ class Path():
             for row in data:
                 level_matrix.append(row)
 
-        if len(validIDs) != 0:
+        if len(validIDs) > 0:
             temp_matrix = []
             for row in range(len(level_matrix)):
                 temp_row = []
-                print(len(level_matrix))
                 for cell in range(len(level_matrix[row])):
                     if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
                         temp_row.append(1)
                     else:
                         temp_row.append(0)
                 temp_matrix.append(temp_row)
-            print(temp_matrix)
             return temp_matrix
-        else:
-            return level_matrix
+        return level_matrix
     
     def getMatrixCell(self, row, column):
         return self.__matrix[row][column]

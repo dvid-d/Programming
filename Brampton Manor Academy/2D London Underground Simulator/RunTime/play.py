@@ -8,6 +8,7 @@ from train import *
 from tile import *
 from game import *
 import settings
+import math
 from pytmx.util_pygame import load_pygame
 path = abspath(getsourcefile(lambda:0))[:-16]
 sys.path.append(f"{path}\\Game Properties")
@@ -125,14 +126,15 @@ class Play():
     def Tutorial(screen, trains):
         pass
 
-    def CreateObjects(save_data, trains, level_matrix, trainID, stationsTiled, validIDs):
+    def CreateObjects(save_data, trains, trainID, stationsTiled, validIDs):
         stations_objects = Play.CreateStations(stationsTiled)
-        trains, trainID = Play.CreateTrains(save_data, trains, level_matrix, trainID, stations_objects, validIDs)
+        trains, trainID = Play.CreateTrains(save_data, trains, trainID, stations_objects, validIDs)
         # print(stations_objects[0][0])
         return trains, stations_objects, trainID
 
-    def CreateTrains(save_data, trains, level_matrix, trainID, stations_objects, validIDs): #creates Train Objects
+    def CreateTrains(save_data, trains, trainID, stations_objects, validIDs): #creates Train Objects
         t, r, d = 0, 0, 0 #to keep track of row & column and the order of lines for which "Train" objects are created
+        level_matrix = Path.loadMatrix("level_1", path, [])
         if save_data["time"] == "00/00/0000":
             for counter in range(10): #inner loop 10 times for all lines; easier to keep track of all "Train" objets before appending
                 tempList = [] #to keep track of all trains set to initlaly be loaded in at the start of the map
@@ -151,7 +153,7 @@ class Play():
                                     # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
                                     #validIDs to be changed for every line
                                     station = stations_objects[0][1][0] #default spawning point
-                                    train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 1, empty_path = [])
+                                    train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 9, empty_path = [])
                                     pathfinder = Path(matrix = matrix, train = train, path = [])
                                     tempList.append([train, pathfinder, [t, r]])
                                     trainID += 1
@@ -226,7 +228,7 @@ class Play():
 
         trains = save_data["trainLocations"] #dictionary
         stations = save_data["stations"]
-        level_matrix = Path.loadMatrix("level_1", path, [])
+        # level_matrix = Path.loadMatrix("level_1", path, [])
 
         trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398'] #Allowed IDs only; i.e. can only pass over these tiles
         stationIDs = ['130', '140','150','160','170','180','220','230','240','350']
@@ -240,7 +242,7 @@ class Play():
         run = 1
         trainID = 0
         run, save_data, layers = Play.LoadMap(path, save_data, screen, run)
-        trains, stations_objects, trainID = Play.CreateObjects(save_data, trains, level_matrix, trainID, layers, validIDs) #save_data, trains, level_matrix, trainID, stationsTiled)
+        trains, stations_objects, trainID = Play.CreateObjects(save_data, trains, trainID, layers, validIDs) #save_data, trains, level_matrix, trainID, stationsTiled)
 
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
@@ -256,8 +258,6 @@ class Play():
             #pathfinder.drawSelector(screen = screen, validIDs = validIDs)
             
                         # clicked = True
-            # for train in trains:
-            #     train.Move()
 
             #Display trains on screen
             for line in trains:
@@ -268,20 +268,7 @@ class Play():
             #to UPDATE validIDs with ID's of other lines, starting with H&C
             # print(stations_objects[0][1][0].GetName())
             for line in trains:
-                if line == "victoria":
-                    validIDs_temp = validIDs[line]
-                    # if constant == 0:
-                    #     print(level_matrix)
-                    #     print("what is happening test")
-                    # print(constant)
-                    # constant = 1
-                    # print(constant)
-
-                    """
-                    TO FIX: Temp matrix is now only 0's"""
-
-
-                    
+                if line == "victoria":        
                     for trainList in trains[line]:
                         train_path = trainList[1]
                         if train.GetLine() == "victoria":
@@ -316,10 +303,44 @@ class Play():
                             
                             temp_coords = next_station.GetLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
-                            train_path.generate_path(next_station)
-                            train_path.update(screen, next_station)
+                            
+                            # train_path.generate_path(next_station)
+                            if current_station.GetName() != next_station.GetName():
+                                train_path.generate_path(next_station)
 
+                                temp_path = []
+                                print("abcdefghijklmnopqrstuvwxyz")
+                                print(len(train_path.getPath()))
+                                path_list = train_path.getPath()
+                                for coordinate_index in range(len(train_path.getPath()) - 1):
+                                    # if coordinate_index != (len(self.__path)):
+                                    delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().GetLocation()[0]
+                                    delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().GetLocation()[1]
+                                    distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
+
+                                    delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().GetLocation()[0]
+                                    delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().GetLocation()[1]
+                                    distance_2 = math.sqrt(((delta_x_2)**2 + (delta_y_2)**2))
+                                    
+                                    print("distance 1: ", distance_1, ", distance 2: ", distance_2)
+                                    if distance_2 > distance_1:
+                                        temp_path.append(path_list[coordinate_index])
+                                    print(temp_path)
+
+
+                                    train_sprite = train_path.getTrain()
+                                    train_sprite.setPath(temp_path)
+                            train_path.update(screen, next_station)
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
+
+                            #if at next station:
+                            #   don't move until some user input
+                            # print(current_station.GetName(), next_station.GetName())
+                            
+
+
+
+
                             
             #Simulation code
             #check to see if next threshold has been met;
