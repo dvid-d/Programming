@@ -23,6 +23,7 @@ sys.path.append(f"{path}\\Trains")
 
 import pygame
 import time
+import pyautogui
 from pytmx.util_pygame import load_pygame
 from button import *
 from controls import *
@@ -33,8 +34,9 @@ from saves import *
 
 
 def SetUpScreen():
-    SCREEN_WIDTH = 1540
-    SCREEN_HEIGHT = 900
+    screen_dimensions = pyautogui.size()
+    SCREEN_WIDTH = screen_dimensions[0]
+    SCREEN_HEIGHT = screen_dimensions[1]
     screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT)) # sets window width & length
     pygame.display.set_caption('2D London Underground Simulator') # sets window name
     screen.fill((58,208,241)) # sets window colour
