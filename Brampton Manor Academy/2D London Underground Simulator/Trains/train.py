@@ -35,7 +35,7 @@ class Train(pygame.sprite.Sprite):
         self.__vector_direction = pygame.math.Vector2(0,0)
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
-        self.__location = [self.__rect.midleft[0], self.__rect.topleft[1]]
+        self.__location = [self.__rect.topleft[0], self.__rect.topleft[1]]
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
@@ -67,7 +67,6 @@ class Train(pygame.sprite.Sprite):
 
     def get_direction(self):
         if self.__collisionRects:
-            # print("collision thing:", self.__collisionRects)
             xy_1 = pygame.math.Vector2(self.__location)
             xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
             self.__vector_direction = (xy_2 - xy_1).normalize()
@@ -77,7 +76,6 @@ class Train(pygame.sprite.Sprite):
 
     def update(self, next_station):
         self.__location += self.__vector_direction * self.__speed
-        # print(self.__location)
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
         self.__station = next_station
@@ -124,7 +122,6 @@ class Train(pygame.sprite.Sprite):
         pass
     
     def Display(self, surface, ):
-        # print(self.__location)
         surface.blit(self.__image, self.__location)
 
 
@@ -177,8 +174,12 @@ class Path():
 
         
         next_location = next_station.getLocation()
-        print("Station Name: ", next_station.getName(), "Station Location", next_station.getLocation())
-        x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
+        # print("Station Name: ", next_station.getName(), "Station Location", next_station.getLocation())
+        x_2, y_2 = int(int(next_location[0]) // 9), int(int(next_location[1]) // 9)
+        print()
+        print("Current location: ", self.__train.sprite.getLocation())
+        print("end: ", x_2, y_2)
+        print("next station: ", next_station.getName(), next_station.getLocation())
         end = self.__grid.node(x_2, y_2)
 
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
@@ -187,7 +188,6 @@ class Path():
         
         self.__grid.cleanup()
         self.__train.sprite.setPath(self.__path)
-        # print(self.__path)
 
     def getCoords(self):
         column = self.__rect.topleftx // 9
@@ -208,14 +208,9 @@ class Path():
         level_matrix = []
         with open(f"{path}\\Maps\\{level}.csv") as file:
             data = csv.reader(file, delimiter=",")
-            # next(data)
+            next(data)
             for row in data:
-                # print(row)
                 level_matrix.append(row)
-
-        print("MATRIX:")
-        # print(len(level_matrix))
-        print(level_matrix)
 
         if len(validIDs) > 0:
             temp_matrix = []

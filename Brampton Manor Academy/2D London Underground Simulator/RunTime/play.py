@@ -135,15 +135,6 @@ class Play():
     def CreateTrains(save_data, trains, trainID, stations_objects, validIDs): #creates Train Objects
         t, r, d = 0, 0, 0 #to keep track of row & column and the order of lines for which "Train" objects are created
         level_matrix = Path.loadMatrix("level_1", path, [])
-        # print(level_matrix)
-        # print(len(level_matrix[0]))
-        #about 26537 tiles
-        # for row in level_matrix:
-        #     # print(row)
-        #     for tile in row:
-        #         if tile == '130':
-        #             print(row)
-        #             print(tile == '130')
         if save_data["time"] == "00/00/0000":
             for counter in range(10): #inner loop 10 times for all lines; easier to keep track of all "Train" objets before appending
                 tempList = [] #to keep track of all trains set to initlaly be loaded in at the start of the map
@@ -153,17 +144,16 @@ class Play():
                         t += 1
                         #Victoria line
 
-                        """d value follows the pattern below;
+                        # """d value follows the pattern below;
                         
-                        0, 1 for trains
-                        2 for appending to list
-                        """
+                        # 0, 1 for trains
+                        # 2 for appending to list
+                        # """
                         if d < 2: #As long as both "Train" objects at either end of the Vict. line haven't been fully created
                             # if tile == '130':
                             #     print("is the problem here question mark")
                             #     print("nvm it does but it's just slow for some reason")
                             #     print(tile)
-                            
                             
                             # if tile == '130':
                             # validIDs_temp = validIDs["victoria"]
@@ -182,7 +172,8 @@ class Play():
                                 # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
                                 #validIDs to be changed for every line
                                 station = stations_objects[0][1][0] #default spawning point
-                                print(station)
+                                print("Brixton location: ", station.getLocation())
+                                print("Train location: ", (t * 9, r * 9))
                                 train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 9, empty_path = [])
                                 print(t*9, r*9)
                                 pathfinder = Path(matrix = matrix, train = train, path = [])
@@ -195,7 +186,6 @@ class Play():
                         elif d == 2:
                             #adds the temp list to the 'victoria' key
                             trains["victoria"] = tempList
-                            print("help")
                             d += 1
 
                         # #Hammersmith & City line
@@ -239,13 +229,14 @@ class Play():
             # print(layer.name)
             if layer.name == "Victoria Line":
                 i = 0
+                # default_station_obj = Station(ID = -1, name = "Default", location = (-1, -1), line = "N/A", no_customers = -1, customer_satisfaction = -1, status = "N/A")
+                # stations_objects[i][1].append(default_station_obj)
                 for station in layer:
                     id = station.id
                     location = [station.x, station.y] #tile, row
                     name = station.name
                     station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
                     stations_objects[i][1].append(station_obj)
-                    print(name)
         return stations_objects
 
 
@@ -266,15 +257,14 @@ class Play():
         # startIDs = []
         validIDs = {"victoria": (stationIDs, trackIDs)} #[0] = line name, [1] = 1st 2 are starting IDs for trains, rest are station IDs, [2] = track ID's for line
 
-        # # print(level_matrix)
-        # print(len(level_matrix)) # number of rows
-        # print(len(level_matrix[0])) #number of tiles per row
 
         run = 1
         trainID = 0
         run, save_data, layers = Play.LoadMap(path, save_data, screen, run)
         trains, stations_objects, trainID = Play.CreateObjects(save_data, trains, trainID, layers, validIDs) #save_data, trains, level_matrix, trainID, stationsTiled)
 
+        # for station in stations_objects[0][1]:
+        #     print(station.getName(), station.getLocation())
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
         constant = 0
@@ -297,14 +287,12 @@ class Play():
                     train.Display(screen)
 
             #to UPDATE validIDs with ID's of other lines, starting with H&C
-            # print(stations_objects[0][1][0].GetName())
             for line in trains:
                 if line == "victoria":        
                     for trainList in trains[line]:
                         train_path = trainList[1]
                         if train.getLine() == "victoria":
                             stations_temp = []
-                            # print("Line: ", train.GetDirection())
                             if train.getDirection() == "NB":
                                 stations_temp = stations_objects[0][1]
                             else:
@@ -313,22 +301,7 @@ class Play():
                                 for i in reversed(range(len(a))):
                                     b.append(a[i])
                                 stations_temp = b
-                            current_station = train.GetStation()
-                            next_station = ""
-                            #finds index of current station
-                            # for i in range(len(stations_temp)):
-                            # try:
-                            i = 0
-                            o = 0
-                            for i in range(len(stations_temp)):
-                                print(i, train.getDirection() ,stations_temp[i].getName(), current_station.getName())
-                                if (stations_temp[i].getName() == current_station.getName()) and train.getPath() == []:
-                                    # print(i)
-                                    next_station = stations_temp[i+1] #index error when at the last station
-                                    
-                                    print(o)
-                                    o += 1
-                                    break
+                            
                             # except:
                             #     print("Train has reached the end of the line", i)
                             #     print(stations_temp[i].getName())
@@ -337,33 +310,38 @@ class Play():
                             #     # exit()
                             #     #save data into a list of trains that have reached the end of their lines, sorted by line
                             #     #list will be used to determine if user has successfully completed the level.
-                                
 
-                            #if index not found, next_station doesn't change so train must be on default starting tile
-                            if next_station == "":
-                                next_station = stations_temp[0]
-                            
-                            temp_coords = next_station.getLocation()
-                            coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                             
                             # train_path.generate_path(next_station)
                             # if convertToTileCoords(train.getLocation()) != convertToTileCoords(next_station.getLocation()):
                             if train.getPath() == []:
+                                current_station = train.GetStation()
+                                next_station = ""
+                                #finds index of current station
+                                # for i in range(len(stations_temp)):
+                                # try:
+                                i = 0
+                                o = 0
+                                try:
+                                    for i in range(len(stations_temp)):
+                                        if (stations_temp[i].getName() == current_station.getName()):
+                                            # print(i)
+                                            next_station = stations_temp[i+1] #index error when at the last station
+                                            break
+                                except:
+                                    print("End of line reached")
+                                #if index not found, next_station doesn't change so train must be on default starting tile
+                                if next_station == "":
+                                    next_station = stations_temp[0]
                                 train_path.generate_path(next_station)
-                                print(train.get_direction_vector())
+                                print("Path: ", train_path.getPath())
+                                print()
+                                # print(train.get_direction_vector())
 
                                 temp_path = []
                                 # print(len(train_path.getPath()))
                                 path_list = train_path.getPath()
-
-                                """
-                                train goes off screen to the right after going past a few stations
-                                
-                                train is not displayed appropriately for horizontal stretches of the line
-                                however, it is shown as intended when on diagonal parts
-                                """
-
-                                
+ 
                                 for coordinate_index in range(len(train_path.getPath()) - 1):
                                     # if coordinate_index != (len(self.__path)):
                                     delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().getLocation()[0]
@@ -381,9 +359,11 @@ class Play():
                                         temp_path.append(path_list[coordinate_index + 1])
                                 # print(temp_path)
 
-
-                                train_sprite = train_path.getTrain()
-                                train_sprite.setPath(temp_path)
+                                if train.getPath() != []:
+                                    train_sprite = train_path.getTrain()
+                                    train_sprite.setPath(temp_path)
+                            temp_coords = next_station.getLocation()
+                            coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
                             train_path.update(screen, next_station)
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
