@@ -303,10 +303,6 @@ class Play():
                                 stations_temp = b
                             
                             # except:
-                            #     print("Train has reached the end of the line", i)
-                            #     print(stations_temp[i].getName())
-                            #     print(current_station.getName())
-                            #     # print(current_station.getName())
                             #     # exit()
                             #     #save data into a list of trains that have reached the end of their lines, sorted by line
                             #     #list will be used to determine if user has successfully completed the level.
@@ -318,25 +314,20 @@ class Play():
                                 current_station = train.GetStation()
                                 next_station = ""
                                 #finds index of current station
-                                # for i in range(len(stations_temp)):
-                                # try:
                                 i = 0
-                                o = 0
                                 try:
                                     for i in range(len(stations_temp)):
                                         if (stations_temp[i].getName() == current_station.getName()):
-                                            # print(i)
                                             next_station = stations_temp[i+1] #index error when at the last station
                                             break
                                 except:
                                     print("End of line reached")
-                                #if index not found, next_station doesn't change so train must be on default starting tile
+                                #else, train must be on default starting tile
                                 if next_station == "":
                                     next_station = stations_temp[0]
                                 train_path.generate_path(next_station)
                                 print("Path: ", train_path.getPath())
                                 print()
-                                # print(train.get_direction_vector())
 
                                 temp_path = []
                                 # print(len(train_path.getPath()))
@@ -357,11 +348,11 @@ class Play():
                                         temp_path.append(path_list[coordinate_index])
                                     else:
                                         temp_path.append(path_list[coordinate_index + 1])
-                                # print(temp_path)
+                                print(temp_path)
 
-                                if train.getPath() != []:
-                                    train_sprite = train_path.getTrain()
-                                    train_sprite.setPath(temp_path)
+                                # if train.getPath() != []:
+                                train_sprite = train_path.getTrain()
+                                train_sprite.setPath(temp_path)
                             temp_coords = next_station.getLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
