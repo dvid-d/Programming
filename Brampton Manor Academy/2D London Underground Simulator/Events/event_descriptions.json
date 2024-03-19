@@ -1,0 +1,24 @@
+{
+  "events";{
+    
+    "event_1":{
+      "Name":NULL,
+      "ID": NULL,
+      "Description":NULL
+    },
+
+     "event_2":
+    {
+      "Name":NULL,
+      "ID": NULL,
+      "Description":NULL
+    },
+
+      "event_3":
+    {
+      "Name":NULL,
+      "ID": NULL,
+      "Description":NULL
+    }
+  }
+}

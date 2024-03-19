@@ -30,7 +30,13 @@ class Settings():
                 #save if they want to
                 main.Quit()
                 pygame.display.update()
-            
+            """
+            elif help_button.wasClicked():
+                load help section
+                
+            elif map_key.wasClicked():
+                Load map key
+                """
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
