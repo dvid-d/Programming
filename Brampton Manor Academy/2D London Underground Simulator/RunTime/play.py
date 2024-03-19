@@ -173,9 +173,8 @@ class Play():
                                 #validIDs to be changed for every line
                                 station = stations_objects[0][1][0] #default spawning point
                                 print("Brixton location: ", station.getLocation())
-                                print("Train location: ", (t * 9, r * 9))
-                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 9, empty_path = [])
-                                print(t*9, r*9)
+                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = ((t-1) * 9, r * 9), station = station, speed = 9, empty_path = [])
+                                print("Train location0000",(t-1)*9, r*9)
                                 pathfinder = Path(matrix = matrix, train = train, path = [])
                                 tempList.append([train, pathfinder, [t, r]])
                                 trainID += 1
@@ -234,6 +233,7 @@ class Play():
                 for station in layer:
                     id = station.id
                     location = [station.x, station.y] #tile, row
+                    print("LOCALSSSS", location)
                     name = station.name
                     station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
                     stations_objects[i][1].append(station_obj)
@@ -250,9 +250,9 @@ class Play():
 
         trains = save_data["trainLocations"] #dictionary
         stations = save_data["stations"]
-        # level_matrix = Path.loadMatrix("level_1", path, [])
+        level_matrix = Path.loadMatrix("level_1", path, [])
 
-        trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390','400','410','367','377','397','398', '480'] #Allowed IDs only; i.e. can only pass over these tiles
+        trackIDs = ['0','50','60','70','80','90','100','110','140','150','160','170','180','190','200','210','220','230','240','250','260','270','320','340','350','360','370','380','390', '397','400','410','367','377','397','398', '480'] #Allowed IDs only; i.e. can only pass over these tiles
         stationIDs = ['130', '140','150','160','170','180','220','230','240','350']
         # startIDs = []
         validIDs = {"victoria": (stationIDs, trackIDs)} #[0] = line name, [1] = 1st 2 are starting IDs for trains, rest are station IDs, [2] = track ID's for line
@@ -286,6 +286,18 @@ class Play():
                     train = train[0]
                     train.Display(screen)
 
+            validIDs_temp = validIDs["victoria"]
+            matrix = Path.loadMatrix("level_1", path, validIDs_temp)
+
+            for row in range(len(matrix)):
+                for cell in range(len(matrix[row])):
+                    x= (cell-1)* 9
+                    y= (row-1) * 9
+                    # if level_matrix[row][cell] == 140:
+                    #     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFWJKFFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJKFASLKFASNFASFAKLSF")
+                    #     rect = pygame.Rect(x, y, 9, 9)
+                    #     pygame.draw.rect(screen, "black", rect)
+
             #to UPDATE validIDs with ID's of other lines, starting with H&C
             for line in trains:
                 if line == "victoria":        
@@ -310,6 +322,10 @@ class Play():
                             
                             # train_path.generate_path(next_station)
                             # if convertToTileCoords(train.getLocation()) != convertToTileCoords(next_station.getLocation()):
+                                
+                            # if next_station == "":
+                            #         next_station = stations_temp[0]
+
                             if train.getPath() == []:
                                 current_station = train.GetStation()
                                 next_station = ""
@@ -319,12 +335,12 @@ class Play():
                                     for i in range(len(stations_temp)):
                                         if (stations_temp[i].getName() == current_station.getName()):
                                             next_station = stations_temp[i+1] #index error when at the last station
+                                            print("Next station: ", next_station.getName())
                                             break
                                 except:
                                     print("End of line reached")
                                 #else, train must be on default starting tile
-                                if next_station == "":
-                                    next_station = stations_temp[0]
+                                
                                 train_path.generate_path(next_station)
                                 print("Path: ", train_path.getPath())
                                 print()
@@ -332,7 +348,8 @@ class Play():
                                 temp_path = []
                                 # print(len(train_path.getPath()))
                                 path_list = train_path.getPath()
- 
+
+                                #TO FIX TRAIN GOING THE WRONG WAY
                                 for coordinate_index in range(len(train_path.getPath()) - 1):
                                     # if coordinate_index != (len(self.__path)):
                                     delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().getLocation()[0]
@@ -348,15 +365,39 @@ class Play():
                                         temp_path.append(path_list[coordinate_index])
                                     else:
                                         temp_path.append(path_list[coordinate_index + 1])
+                                        
+                                # for coordinate_index in range(len(temp_path)):
+                                #     rect = pygame.Rect(temp_coords[0], temp_coords[1], 9, 9)
+                                #     pygame.draw.rect(screen, "black", rect)
+                                
+                                # #TO FIX TRAIN NOT GOING THE RIGHT WAY VERTICALLY
+                                temp_path_2 = []
+                                for coordinate_index in range(len(train_path.getPath()) - 1):
+                                    x = temp_path[coordinate_index][0]
+                                    y = temp_path[coordinate_index][1]
+                                    tile = level_matrix[x][y]
+                                    print(tile, "BEFORE x: ", x)
+                                    # print(type(tile))
+                                    if tile == '9':
+                                        x -= 1
+                                    print("AFTER x", x)
+                                    temp_path_2.append([x, y])
+                                temp_path = temp_path_2
+                                train_path.setPath(temp_path)
+
                                 print(temp_path)
 
                                 # if train.getPath() != []:
                                 train_sprite = train_path.getTrain()
                                 train_sprite.setPath(temp_path)
-                            temp_coords = next_station.getLocation()
+                            temp_coords = train.getLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
                             train_path.update(screen, next_station)
+                            train_location = train.getLocation()
+                            # x = int(train_location[0] // 9)
+                            # y = int(train_location[1] // 9)
+                            # print("Tile: ", level_matrix[x][y])
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
 
                             #if at next station:

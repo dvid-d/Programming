@@ -167,6 +167,10 @@ class Path():
     def getTrain(self):
         return self.__train.sprite
 
+    def setPath(self, new_path):
+        self.__path = new_path
+
+        
     def generate_path(self, next_station):
         temp = self.__train.sprite.getLocation()
         x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
@@ -175,7 +179,7 @@ class Path():
         
         next_location = next_station.getLocation()
         # print("Station Name: ", next_station.getName(), "Station Location", next_station.getLocation())
-        x_2, y_2 = int(int(next_location[0]) // 9), int(int(next_location[1]) // 9)
+        x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
         print()
         print("Current location: ", self.__train.sprite.getLocation())
         print("end: ", x_2, y_2)
@@ -217,7 +221,8 @@ class Path():
             for row in range(len(level_matrix)):
                 temp_row = []
                 for cell in range(len(level_matrix[row])):
-                    if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]) and level_matrix[row][cell] != 9:
+                    if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
+                        # print(level_matrix[row][cell])
                         temp_row.append(1)
                     else:
                         temp_row.append(0)
