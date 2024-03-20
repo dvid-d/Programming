@@ -233,7 +233,7 @@ class Play():
                 for station in layer:
                     id = station.id
                     location = [station.x, station.y] #tile, row
-                    print("LOCALSSSS", location)
+                    # print("LOCALSSSS", location)
                     name = station.name
                     station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
                     stations_objects[i][1].append(station_obj)
@@ -325,9 +325,9 @@ class Play():
                                 
                             # if next_station == "":
                             #         next_station = stations_temp[0]
-
-                            if train.getPath() == []:
-                                current_station = train.GetStation()
+                            print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
+                            if train.getPath() == [] and (train.getStation().getLocation() == train.getLocation()):
+                                current_station = train.getStation()
                                 next_station = ""
                                 #finds index of current station
                                 i = 0
@@ -341,9 +341,14 @@ class Play():
                                     print("End of line reached")
                                 #else, train must be on default starting tile
                                 
-                                train_path.generate_path(next_station)
-                                print("Path: ", train_path.getPath())
-                                print()
+                                # train_path.generate_path(next_station)
+                                # print("Path: ", train_path.getPath())
+                                # print()
+
+
+                                # crds_nxt_sttn = train.getStation().getLocation()
+                                # pygame.draw.circle(screen, (100, 50, 25), crds_nxt_sttn, 5)
+
 
                                 temp_path = []
                                 # print(len(train_path.getPath()))
@@ -394,11 +399,13 @@ class Play():
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
                             train_path.update(screen, next_station)
+                            # print("is this working hello abc 123")
                             train_location = train.getLocation()
                             # x = int(train_location[0] // 9)
                             # y = int(train_location[1] // 9)
                             # print("Tile: ", level_matrix[x][y])
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
+                            # print("QQQQQQQQQQQQQQQQQQQQQQQq")
 
                             #if at next station:
                             #   don't move until some user input

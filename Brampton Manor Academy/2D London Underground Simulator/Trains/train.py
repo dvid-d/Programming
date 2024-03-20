@@ -104,7 +104,7 @@ class Train(pygame.sprite.Sprite):
     def getLocation(self):
         return self.__location
     
-    def GetStation(self):
+    def getStation(self):
         return self.__station
 
     def getPath(self):
