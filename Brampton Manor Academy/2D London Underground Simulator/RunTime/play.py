@@ -28,16 +28,20 @@ class Play():
         sprite_group = pygame.sprite.Group()
         layers = map_data.visible_layers
         layers_group = []
+        a  = 0
         for layer in layers:
             if layer not in map_data.objectgroups:
                 for x,y,surface in layer.tiles():
                     pos = (x*9,y*9) # size of tiles
                     Tile(pos, surface, sprite_group)
+                    if a  == 0:
+                        coords_temp = pos
+                        a += 1
             else:
                 layers_group.append(layer)
         sprite_group.draw(screen)
         run = 0
-        return run, save_data, layers_group
+        return run, save_data, layers_group, coords_temp
 
 
     def LoadEntities(path, screen, location):
@@ -173,7 +177,7 @@ class Play():
                                 #validIDs to be changed for every line
                                 station = stations_objects[0][1][0] #default spawning point
                                 print("Brixton location: ", station.getLocation())
-                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = ((t-1) * 9, r * 9), station = station, speed = 9, empty_path = [])
+                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = ((t) * 9, r * 9), station = station, speed = 9, empty_path = [])
                                 print("Train location0000",(t-1)*9, r*9)
                                 pathfinder = Path(matrix = matrix, train = train, path = [])
                                 tempList.append([train, pathfinder, [t, r]])
@@ -228,12 +232,11 @@ class Play():
             # print(layer.name)
             if layer.name == "Victoria Line":
                 i = 0
-                # default_station_obj = Station(ID = -1, name = "Default", location = (-1, -1), line = "N/A", no_customers = -1, customer_satisfaction = -1, status = "N/A")
-                # stations_objects[i][1].append(default_station_obj)
+                default_station_obj = Station(ID = -1, name = "Default", location = (-1, -1), line = "N/A", no_customers = -1, customer_satisfaction = -1, status = "N/A")
+                stations_objects[i][1].append(default_station_obj)
                 for station in layer:
                     id = station.id
                     location = [station.x, station.y] #tile, row
-                    # print("LOCALSSSS", location)
                     name = station.name
                     station_obj = Station(ID = id, name = name, location = location, line = layer.name, no_customers = 0, customer_satisfaction = 100, status = "open")
                     stations_objects[i][1].append(station_obj)
@@ -260,7 +263,7 @@ class Play():
 
         run = 1
         trainID = 0
-        run, save_data, layers = Play.LoadMap(path, save_data, screen, run)
+        run, save_data, layers, coords_temp = Play.LoadMap(path, save_data, screen, run)
         trains, stations_objects, trainID = Play.CreateObjects(save_data, trains, trainID, layers, validIDs) #save_data, trains, level_matrix, trainID, stationsTiled)
 
         # for station in stations_objects[0][1]:
@@ -268,12 +271,20 @@ class Play():
         # run = 1 #used to check if it the first time the loop is run in order to not load the player in their default position more than once (which is when first loading the map)
         count = 0
         constant = 0
+        for x in range(len(level_matrix)):
+            for y in range(len(level_matrix[x])):
+                if level_matrix[x][y] == "480":
+                    print("X & Y", x, y)
         while game.state == 5:
-            run, save_data, stations = Play.LoadMap(path, save_data, screen, run)
-            settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
-            buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
-            Play.CheckButtons(buttons, screen, game_settings, path)
-
+            run, save_data, stations, coords_temp = Play.LoadMap(path, save_data, screen, run)
+            # settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
+            # buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
+            # Play.CheckButtons(buttons, screen, game_settings, path)
+            
+            # print(level_matrix[0])
+            # topleft = level_matrix[0][0]
+            print(coords_temp)
+            pygame.draw.circle(screen, (0, 0, 0), coords_temp, 3) #top left coords are right?
             # if count % 40:
             #     Play.CreateTrains()
             #pathfinder.drawSelector(screen = screen, validIDs = validIDs)
@@ -294,7 +305,6 @@ class Play():
                     x= (cell-1)* 9
                     y= (row-1) * 9
                     # if level_matrix[row][cell] == 140:
-                    #     print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFWJKFFJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJFJKFASLKFASNFASFAKLSF")
                     #     rect = pygame.Rect(x, y, 9, 9)
                     #     pygame.draw.rect(screen, "black", rect)
 
@@ -326,7 +336,8 @@ class Play():
                             # if next_station == "":
                             #         next_station = stations_temp[0]
                             print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
-                            if train.getPath() == [] and (train.getStation().getLocation() == train.getLocation()):
+                            print(train.getStation())
+                            if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"):
                                 current_station = train.getStation()
                                 next_station = ""
                                 #finds index of current station
@@ -370,10 +381,6 @@ class Play():
                                         temp_path.append(path_list[coordinate_index])
                                     else:
                                         temp_path.append(path_list[coordinate_index + 1])
-                                        
-                                # for coordinate_index in range(len(temp_path)):
-                                #     rect = pygame.Rect(temp_coords[0], temp_coords[1], 9, 9)
-                                #     pygame.draw.rect(screen, "black", rect)
                                 
                                 # #TO FIX TRAIN NOT GOING THE RIGHT WAY VERTICALLY
                                 temp_path_2 = []
@@ -399,13 +406,11 @@ class Play():
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
                             train_path.update(screen, next_station)
-                            # print("is this working hello abc 123")
                             train_location = train.getLocation()
                             # x = int(train_location[0] // 9)
                             # y = int(train_location[1] // 9)
                             # print("Tile: ", level_matrix[x][y])
                             pygame.draw.circle(screen, (200,200,250), coords, 5)
-                            # print("QQQQQQQQQQQQQQQQQQQQQQQq")
 
                             #if at next station:
                             #   don't move until some user input
