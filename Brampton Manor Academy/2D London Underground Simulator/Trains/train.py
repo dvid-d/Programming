@@ -15,6 +15,11 @@ def convertToTileCoords(coords):
     y = int(coords[1] // 9)
     return [x, y]
 
+def convertToTuple(coords): #converts a list with two items to a tuple
+    x = coords[0]
+    y = coords[1]
+    new_coords = (x, y)
+    return new_coords
 
 class Train(pygame.sprite.Sprite):
     def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
@@ -180,10 +185,10 @@ class Path():
         next_location = next_station.getLocation()
         # print("Station Name: ", next_station.getName(), "Station Location", next_station.getLocation())
         x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
-        print()
-        print("Current location: ", self.__train.sprite.getLocation())
-        print("end: ", x_2, y_2)
-        print("next station: ", next_station.getName(), next_station.getLocation())
+        # print()
+        # print("Current location: ", self.__train.sprite.getLocation())
+        # print("end: ", x_2, y_2)
+        # print("next station: ", next_station.getName(), next_station.getLocation())
         end = self.__grid.node(x_2, y_2)
 
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
@@ -191,6 +196,11 @@ class Path():
         self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
         
         self.__grid.cleanup()
+        print("Path index 0: ", self.__path[0], "Train location: ", convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
+        print(self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
+        if self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())):
+            self.__path = self.__path[1:]
+
         self.__train.sprite.setPath(self.__path)
 
     def getCoords(self):

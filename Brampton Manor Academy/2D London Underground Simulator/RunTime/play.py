@@ -143,9 +143,8 @@ class Play():
             for counter in range(10): #inner loop 10 times for all lines; easier to keep track of all "Train" objets before appending
                 tempList = [] #to keep track of all trains set to initlaly be loaded in at the start of the map
                 for row in level_matrix:
-                    r += 1
+                    
                     for tile in row:
-                        t += 1
                         #Victoria line
 
                         # """d value follows the pattern below;
@@ -153,6 +152,8 @@ class Play():
                         # 0, 1 for trains
                         # 2 for appending to list
                         # """
+                        if level_matrix[r][t] == '5':
+                            print()
                         if d < 2: #As long as both "Train" objects at either end of the Vict. line haven't been fully created
                             # if tile == '130':
                             #     print("is the problem here question mark")
@@ -176,9 +177,9 @@ class Play():
                                 # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
                                 #validIDs to be changed for every line
                                 station = stations_objects[0][1][0] #default spawning point
-                                print("Brixton location: ", station.getLocation())
-                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = ((t) * 9, r * 9), station = station, speed = 9, empty_path = [])
-                                print("Train location0000",(t-1)*9, r*9)
+                                # print("Brixton location: ", station.getLocation())
+                                train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 9, empty_path = [])
+                                # print("Train location0000",(t)*9, r*9)
                                 pathfinder = Path(matrix = matrix, train = train, path = [])
                                 tempList.append([train, pathfinder, [t, r]])
                                 trainID += 1
@@ -220,6 +221,8 @@ class Play():
                         #     pass
                         else:
                             pass
+                        t += 1
+                    r += 1
                     t = 0
                 r = 0
                 #print(stationsCoords)
@@ -337,7 +340,8 @@ class Play():
                             #         next_station = stations_temp[0]
                             print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
                             print(train.getStation())
-                            if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"):
+                            if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"): # 
+                                print("hgjagkagansfbasjakgaskjgag")
                                 current_station = train.getStation()
                                 next_station = ""
                                 #finds index of current station
@@ -352,7 +356,7 @@ class Play():
                                     print("End of line reached")
                                 #else, train must be on default starting tile
                                 
-                                # train_path.generate_path(next_station)
+                                train_path.generate_path(next_station)
                                 # print("Path: ", train_path.getPath())
                                 # print()
 
@@ -363,54 +367,57 @@ class Play():
 
                                 temp_path = []
                                 # print(len(train_path.getPath()))
-                                path_list = train_path.getPath()
+                                # path_list = train_path.getPath()
 
                                 #TO FIX TRAIN GOING THE WRONG WAY
-                                for coordinate_index in range(len(train_path.getPath()) - 1):
-                                    # if coordinate_index != (len(self.__path)):
-                                    delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().getLocation()[0]
-                                    delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().getLocation()[1]
-                                    distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
+                                # for coordinate_index in range(len(train_path.getPath()) - 1):
+                                #     # if coordinate_index != (len(self.__path)):
+                                #     delta_x_1 = path_list[coordinate_index][0] - train_path.getTrain().getLocation()[0]
+                                #     delta_y_1 = path_list[coordinate_index][1] - train_path.getTrain().getLocation()[1]
+                                #     distance_1 = math.sqrt((delta_x_1**2 + delta_y_1**2))
 
-                                    delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().getLocation()[0]
-                                    delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().getLocation()[1]
-                                    distance_2 = math.sqrt(((delta_x_2)**2 + (delta_y_2)**2))
+                                #     delta_x_2 = path_list[coordinate_index+1][0] - train_path.getTrain().getLocation()[0]
+                                #     delta_y_2 = path_list[coordinate_index+1][1] - train_path.getTrain().getLocation()[1]
+                                #     distance_2 = math.sqrt(((delta_x_2)**2 + (delta_y_2)**2))
                                     
-                                    # print("distance 1: ", distance_1, ", distance 2: ", distance_2)
-                                    if distance_2 > distance_1:
-                                        temp_path.append(path_list[coordinate_index])
-                                    else:
-                                        temp_path.append(path_list[coordinate_index + 1])
+                                #     # print("distance 1: ", distance_1, ", distance 2: ", distance_2)
+                                #     if distance_2 > distance_1:
+                                #         temp_path.append(path_list[coordinate_index])
+                                #     else:
+                                #         temp_path.append(path_list[coordinate_index + 1])
                                 
                                 # #TO FIX TRAIN NOT GOING THE RIGHT WAY VERTICALLY
-                                temp_path_2 = []
-                                for coordinate_index in range(len(train_path.getPath()) - 1):
-                                    x = temp_path[coordinate_index][0]
-                                    y = temp_path[coordinate_index][1]
-                                    tile = level_matrix[x][y]
-                                    print(tile, "BEFORE x: ", x)
-                                    # print(type(tile))
-                                    if tile == '9':
-                                        x -= 1
-                                    print("AFTER x", x)
-                                    temp_path_2.append([x, y])
-                                temp_path = temp_path_2
-                                train_path.setPath(temp_path)
+                                # temp_path_2 = []
+                                # for coordinate_index in range(len(train_path.getPath()) - 1):
+                                #     x = temp_path[coordinate_index][0]
+                                #     y = temp_path[coordinate_index][1]
+                                #     tile = level_matrix[x][y]
+                                #     print(tile, "BEFORE x: ", x)
+                                #     # print(type(tile))
+                                #     if tile == '9':
+                                #         x -= 1
+                                #     print("AFTER x", x)
+                                #     temp_path_2.append([x, y])
+                                # temp_path = temp_path_2
+                                # train_path.setPath(temp_path)
 
-                                print(temp_path)
+                                # print(temp_path_2)
 
                                 # if train.getPath() != []:
-                                train_sprite = train_path.getTrain()
-                                train_sprite.setPath(temp_path)
+                                # train_sprite = train_path.getTrain()
+                                # train_sprite.setPath(temp_path)
+                            
                             temp_coords = train.getLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
                                     
                             train_path.update(screen, next_station)
                             train_location = train.getLocation()
+                            print("Train path: ", train.getPath())
+                            print("Train direction: ", train.get_direction_vector())
                             # x = int(train_location[0] // 9)
                             # y = int(train_location[1] // 9)
                             # print("Tile: ", level_matrix[x][y])
-                            pygame.draw.circle(screen, (200,200,250), coords, 5)
+                            # pygame.draw.circle(screen, (200,200,250), coords, 5)
 
                             #if at next station:
                             #   don't move until some user input
