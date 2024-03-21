@@ -212,7 +212,7 @@ class Path():
         level_matrix = []
         with open(f"{path}\\Maps\\{level}.csv") as file:
             data = csv.reader(file, delimiter=",")
-            next(data)
+            # next(data)
             for row in data:
                 level_matrix.append(row)
 
