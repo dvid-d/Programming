@@ -11,5 +11,5 @@ class Tile(pygame.sprite.Sprite):
         # except:
         #     temp.append(pos)
 
-    def test():
-        print(temp)
+    def getCoords(self):
+        return self.__pos
