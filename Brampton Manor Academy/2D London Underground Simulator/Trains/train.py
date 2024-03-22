@@ -85,7 +85,7 @@ class Train(pygame.sprite.Sprite):
         self.__location += self.__vector_direction * self.__speed
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
-        print("Test 102")
+        # print("Test 102")
         
 
 
@@ -131,7 +131,8 @@ class Train(pygame.sprite.Sprite):
     def Clean(line):
         pass
     
-    def Display(self, surface, ):
+    def display(self, surface):
+        print(self.__location[0], self.__location[1])
         surface.blit(self.__image, self.__location)
 
 
@@ -164,7 +165,7 @@ class Path():
         # self.drawSelector(screen, validIDs)
         self.__train.update()
         self.__train.draw(screen)
-        print("test 101")
+        # print("test 101")
 
     def getMatrix(self):
         return self.__matrix

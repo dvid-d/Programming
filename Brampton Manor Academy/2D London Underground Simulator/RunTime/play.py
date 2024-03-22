@@ -276,13 +276,15 @@ class Play():
             for y in range(len(level_matrix[x])):
                 if level_matrix[x][y] == "480":
                     print("X & Y", x, y)
+
         while game.state == 5:
             if run == 1:
                 for line in trains:
                     for train in trains[line]:
                         train = train[0]
-                        train.Display(screen)
+                        train.display(screen)
             run, save_data, stations, coords_temp = Play.LoadMap(path, save_data, screen, run)
+            print(run)
             # settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             # buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
             # Play.CheckButtons(buttons, screen, game_settings, path)
@@ -315,8 +317,8 @@ class Play():
             for line in trains:
                 if line == "victoria":        
                     for trainList in trains[line]:
-                        train = trainList[0]
                         train_path = trainList[1]
+                        train = train_path.getTrain()
                         if train.getLine() == "victoria":
                             stations_temp = []
                             if train.getDirection() == "NB":
@@ -339,7 +341,7 @@ class Play():
                                 
                             # if next_station == "":
                             #         next_station = stations_temp[0]
-                            print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
+                            # print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
                             print(train.getStation())
                             if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"): #
                                 
@@ -368,8 +370,6 @@ class Play():
 
 
                                 temp_path = []
-                                # print(len(train_path.getPath()))
-                                # path_list = train_path.getPath()
 
                                 #TO FIX TRAIN GOING THE WRONG WAY
                                 # for coordinate_index in range(len(train_path.getPath()) - 1):
@@ -409,17 +409,18 @@ class Play():
                                 # train_sprite = train_path.getTrain()
                                 # train_sprite.setPath(temp_path)
                             
-                            temp_coords = train.getLocation()
-                            coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
+                            # temp_coords = train.getLocation()
+                            # coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
 
                             train_path.update(screen)
+                            train.display(screen)
 
-                            train_location = train.getLocation()
+                            # train_location = train.getLocation()
 
-                            print("Train path: ", train.getPath())
-                            print("Train direction: ", train.get_direction_vector())
+                            # print("Train path: ", train.getPath())
+                            # print("Train direction: ", train.get_direction_vector())
 
-                            print("test 4")
+                            # print("test 4")
                             # x = int(train_location[0] // 9)
                             # y = int(train_location[1] // 9)
                             # print("Tile: ", level_matrix[x][y])
