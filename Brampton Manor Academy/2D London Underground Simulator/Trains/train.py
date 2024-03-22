@@ -24,7 +24,7 @@ def convertToTuple(coords): #converts a list with two items to a tuple
 class Train(pygame.sprite.Sprite):
     def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
         #ID of train
-        #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the cirlce line
+        #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the circle line
         #e.g. District, Victoria, Northern etc
         #as a percentage
         #as in Matrix
@@ -41,10 +41,12 @@ class Train(pygame.sprite.Sprite):
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
         self.__location = [self.__rect.topleft[0], self.__rect.topleft[1]]
+
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
         self.__speed = speed
+
         self.__path = []
         self.__empty_path = empty_path
         self.__collisionRects = []
@@ -79,11 +81,11 @@ class Train(pygame.sprite.Sprite):
             # self.__vector_direction = pygame.math.Vector2(0,0)
             self.__path = []
 
-    def update(self, next_station):
+    def update(self):
         self.__location += self.__vector_direction * self.__speed
         self.checkCollisions()
         self.__rect.center = (self.__location[0], self.__location[1])
-        self.__station = next_station
+        print("Test 102")
         
 
 
@@ -95,6 +97,9 @@ class Train(pygame.sprite.Sprite):
                     self.get_direction()
         else:
             self.delPath()
+
+    def setStation(self, station):
+        self.__station = station
 
     #Getters
     def getLine(self):
@@ -155,10 +160,11 @@ class Path():
         # self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
 
 
-    def update(self, screen, validIDs):
+    def update(self, screen):
         # self.drawSelector(screen, validIDs)
-        self.__train.update(validIDs)
+        self.__train.update()
         self.__train.draw(screen)
+        print("test 101")
 
     def getMatrix(self):
         return self.__matrix
@@ -196,10 +202,10 @@ class Path():
         self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
         
         self.__grid.cleanup()
-        print("Path index 0: ", self.__path[0], "Train location: ", convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
-        print(self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
-        if self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())):
-            self.__path = self.__path[1:]
+        # print("Path index 0: ", self.__path[0], "Train location: ", convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
+        # print(self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
+        # if self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())):
+        #     self.__path = self.__path[1:]
 
         self.__train.sprite.setPath(self.__path)
 
