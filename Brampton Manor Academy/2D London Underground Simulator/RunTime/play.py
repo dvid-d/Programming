@@ -177,9 +177,7 @@ class Play():
                                 # retrives station name, creates Train obj, appends to temporary list and increments trainID by 1
                                 #validIDs to be changed for every line
                                 station = stations_objects[0][1][0] #default spawning point
-                                # print("Brixton location: ", station.getLocation())
                                 train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (t * 9, r * 9), station = station, speed = 9, empty_path = [])
-                                # print("Train location0000",(t)*9, r*9)
                                 pathfinder = Path(matrix = matrix, train = train, path = [])
                                 tempList.append([train, pathfinder, [t, r]])
                                 trainID += 1
@@ -279,6 +277,11 @@ class Play():
                 if level_matrix[x][y] == "480":
                     print("X & Y", x, y)
         while game.state == 5:
+            if run == 1:
+                for line in trains:
+                    for train in trains[line]:
+                        train = train[0]
+                        train.Display(screen)
             run, save_data, stations, coords_temp = Play.LoadMap(path, save_data, screen, run)
             # settings_button = Play.LoadButtons(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT)
             # buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
@@ -286,7 +289,7 @@ class Play():
             
             # print(level_matrix[0])
             # topleft = level_matrix[0][0]
-            print(coords_temp)
+            # print(coords_temp)
             pygame.draw.circle(screen, (0, 0, 0), coords_temp, 3) #top left coords are right?
             # if count % 40:
             #     Play.CreateTrains()
@@ -295,10 +298,7 @@ class Play():
                         # clicked = True
 
             #Display trains on screen
-            for line in trains:
-                for train in trains[line]:
-                    train = train[0]
-                    train.Display(screen)
+            
 
             validIDs_temp = validIDs["victoria"]
             matrix = Path.loadMatrix("level_1", path, validIDs_temp)
@@ -315,6 +315,7 @@ class Play():
             for line in trains:
                 if line == "victoria":        
                     for trainList in trains[line]:
+                        train = trainList[0]
                         train_path = trainList[1]
                         if train.getLine() == "victoria":
                             stations_temp = []
@@ -340,8 +341,8 @@ class Play():
                             #         next_station = stations_temp[0]
                             print("Station coords: ", train.getStation().getLocation(), "train coords: ", train.getLocation())
                             print(train.getStation())
-                            if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"): # 
-                                print("hgjagkagansfbasjakgaskjgag")
+                            if train.getPath() == [] and ((train.getStation().getLocation() == train.getLocation()) or train.getStation().getName() == "Default"): #
+                                
                                 current_station = train.getStation()
                                 next_station = ""
                                 #finds index of current station
@@ -351,6 +352,7 @@ class Play():
                                         if (stations_temp[i].getName() == current_station.getName()):
                                             next_station = stations_temp[i+1] #index error when at the last station
                                             print("Next station: ", next_station.getName())
+                                            train.setStation(next_station)
                                             break
                                 except:
                                     print("End of line reached")
@@ -409,11 +411,15 @@ class Play():
                             
                             temp_coords = train.getLocation()
                             coords =(temp_coords[0] + 4.5, temp_coords[1] + 4.5)
-                                    
-                            train_path.update(screen, next_station)
+
+                            train_path.update(screen)
+
                             train_location = train.getLocation()
+
                             print("Train path: ", train.getPath())
                             print("Train direction: ", train.get_direction_vector())
+
+                            print("test 4")
                             # x = int(train_location[0] // 9)
                             # y = int(train_location[1] // 9)
                             # print("Tile: ", level_matrix[x][y])
