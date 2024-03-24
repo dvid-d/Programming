@@ -6,7 +6,8 @@
     "activeFile": "level_1.tmx",
     "expandedProjectPaths": [
         ".",
-        "Copies of Levels"
+        "Copies of Levels",
+        "copies"
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -19,6 +20,25 @@
             }
         },
         "Copies of Levels/victoria line.tsx": {
+            "scaleInDock": 1
+        },
+        "copies/level_1 Copy 2.tmx": {
+            "scale": 0.4192488262910798,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 958.8577827547593,
+                "y": 540.2519596864502
+            }
+        },
+        "copies/level_1.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 774,
+                "y": 450
+            }
+        },
+        "copies/tileset.tsx": {
             "scaleInDock": 1
         },
         "level_1 - Copy.tmx": {
@@ -41,19 +61,19 @@
             "scale": 1.5,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 958.3333333333333,
-                "y": 539.6666666666666
+                "x": 957.9999999999999,
+                "y": 540
             }
         },
         "level_1.tmx": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 8,
-            "selectedLayer": 0,
+            "scale": 0.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 692.5,
-                "y": 675.25
+                "x": 774,
+                "y": 450
             }
         },
         "test.tmx": {
@@ -83,23 +103,26 @@
     },
     "last.exportedFilePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
     "last.imagePath": "C:/Users/ddobr/Desktop/Sixth Form/Computer Science/Github/Programming/Brampton Manor Academy/2D London Underground Simulator/Maps",
-    "map.height": 120,
+    "map.height": 100,
     "map.lastUsedExportFilter": "All Files (*)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 9,
     "map.tileWidth": 9,
-    "map.width": 213,
+    "map.width": 172,
     "openFiles": [
         "level_1.tmx",
         "tileset.tsx",
-        "level_1 Copy 2.tmx"
+        "level_1 Copy 2.tmx",
+        "copies/level_1.tmx"
     ],
     "project": "main.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "copies/level_1.tmx",
         "level_1 Copy 2.tmx",
         "tileset.tsx",
         "level_1.tmx",
+        "copies/level_1 Copy 2.tmx",
         "level_1 Copy 2..tmx",
         "test.tmx",
         "level_1 - Copy.tmx",
