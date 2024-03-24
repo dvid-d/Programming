@@ -2,6 +2,7 @@ import sys, json, time
 
 from button import *
 import pygame, os
+from play import *
 
 class Saves():
     def LoadMenu(screen, SCREEN_WIDTH, SCREEN_HEIGHT, path):
@@ -63,5 +64,10 @@ class Saves():
             save_data = json.load(save_file)
         return save_data
     
+    def LoadSaveData():
+        pass
+
+    
+
     def Save():
         pass
