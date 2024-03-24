@@ -6,13 +6,14 @@ import math
  
 from os.path import abspath
 from inspect import getsourcefile
+import json
 
 path = abspath(getsourcefile(lambda:0))[:-16] # obtains path of program
 sys.path.append(f"{path}\\Icons")
 
 def convertToTileCoords(coords):
-    x = int(coords[0] // 9)
-    y = int(coords[1] // 9)
+    x = int(int(coords[0]) // 9)
+    y = int(int(coords[1]) // 9)
     return [x, y]
 
 def convertToTuple(coords): #converts a list with two items to a tuple
@@ -20,6 +21,14 @@ def convertToTuple(coords): #converts a list with two items to a tuple
     y = coords[1]
     new_coords = (x, y)
     return new_coords
+
+def getCenterCoords(coords):
+    #assuming coods given are top left
+    x = coords[0] + 4.5
+    y = coords[1] + 4.5
+    new_coords = (x, y)
+    return new_coords
+
 
 class Train(pygame.sprite.Sprite):
     def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
@@ -40,7 +49,8 @@ class Train(pygame.sprite.Sprite):
         self.__vector_direction = pygame.math.Vector2(0,0)
         self.__image = pygame.image.load(image_location).convert_alpha()
         self.__rect = self.__image.get_rect(topleft = location)
-        self.__location = [self.__rect.topleft[0], self.__rect.topleft[1]]
+        self.__location = self.__rect.center
+        self.__tile_location = [int(self.__rect.topleft[0] // 9), int(self.__rect.topleft[1] // 9)]
 
         self.__line = line
         self.__customerSatisfaction = customer_satisfaction
@@ -55,10 +65,17 @@ class Train(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = location)
     
 
+
+    def display(self, surface):
+        surface.blit(self.__image, self.__rect.topleft)
+
     def setPath(self, path):
         self.__path = path
         self.createCollisionRects()
         self.get_direction()
+
+    def setStation(self, station):
+        self.__station = station
 
     def delPath(self):
         self.__path = []
@@ -69,24 +86,26 @@ class Train(pygame.sprite.Sprite):
             for point in self.__path:
                 x = point[0] * 9 + 4.5
                 y = point[1] * 9 + 4.5
-                rect = pygame.Rect((x, y), (9, 9)) #before: x - 4.5, y - 4.5
+                rect = pygame.Rect((x-1, y-1), (2, 2)) #before: x - 4.5, y - 4.5
                 self.__collisionRects.append(rect)
+            # print(self.__path)
+            # print(self.__collisionRects)
 
     def get_direction(self):
         if self.__collisionRects:
             xy_1 = pygame.math.Vector2(self.__location)
             xy_2 = pygame.math.Vector2(self.__collisionRects[0].center)
+            # print(xy_1, xy_2)
+            # print("Collision rect: ", xy_2, "Train: ", self.__location)
             self.__vector_direction = (xy_2 - xy_1).normalize()
         else:
-            # self.__vector_direction = pygame.math.Vector2(0,0)
+            self.__vector_direction = pygame.math.Vector2(0,0)
             self.__path = []
 
     def update(self):
         self.__location += self.__vector_direction * self.__speed
         self.checkCollisions()
-        self.__rect.center = (self.__location[0], self.__location[1])
-        # print("Test 102")
-        
+        self.__rect.center = self.__location
 
 
     def checkCollisions(self):
@@ -101,7 +120,46 @@ class Train(pygame.sprite.Sprite):
     def setStation(self, station):
         self.__station = station
 
+    def findNextStation(self, stations):
+        #station IDs from east to west or south to north (or clockwise for circle line) by default
+        current_station = self.getStation()
+        if self.__direction == "SB" or self.__direction == "EB" or self.__direction == "ACW":
+            a = stations[self.__line]
+            b = []
+            for i in reversed(range(len(a))):
+                b.append(a[i])
+            stations = b
+        else:
+            stations = stations[self.__line]
+
+        next_station = ""
+        if current_station.getName() == "Default":
+            next_station = stations[1] #index 0 is the default station obj
+            return next_station
+        else:
+            for i in range(1, len(stations) - 1):
+                if stations[i].getName() == current_station.getName():
+                    next_station = stations[i+1]
+                    return next_station
+            if next_station == "":
+                isAtEndOfLine = True
+                return isAtEndOfLine
+            
     #Getters
+    def getValidIDs(path, line):
+        file_name = "IDs.json"
+
+        with open(f"{path}\\Maps\\{file_name}", 'r') as IDs_file:
+            IDs = json.load(IDs_file)
+        validIDs = IDs[line]
+        return validIDs
+
+    def get_coords(self):
+        x = self.__rect.centerx // 9
+        y = self.__rect.centery // 9
+        return (x, y)
+    
+
     def getLine(self):
         return self.__line
     
@@ -120,20 +178,13 @@ class Train(pygame.sprite.Sprite):
     def getPath(self):
         return self.__path
 
+    def getID(self):
+        return self.__ID
 
-    def UpdateTrainLocation(self, surface, train_location):
-        pass
-
-    def CheckIfAtEndOfLine():
-        #if at end of line, destroy
-        pass
+    #Managing the train in-game
 
     def Clean(line):
         pass
-    
-    def display(self, surface):
-        print(self.__location[0], self.__location[1])
-        surface.blit(self.__image, self.__location)
 
 
     #at Station
@@ -146,7 +197,18 @@ class Train(pygame.sprite.Sprite):
     def shutDoors():
         pass
 
+    #at end of line
+    def RemoveTrain(self, trains):
+        line = self.getLine()
+        current_line_trains = trains[line]
+        temporary = []
+        for obj in current_line_trains:
+            if obj[0].getID() != self.getID():
+                temporary.append(obj)
+        trains[line] = temporary
 
+    def AddToStats(self, stats):
+        stats.append(self)
 
 
 
@@ -161,14 +223,17 @@ class Path():
         # self.__select_surface = pygame.image.load(f"{path}\\Icons\\select.png").convert_alpha()
 
 
-    def update(self, screen):
-        # self.drawSelector(screen, validIDs)
+    def update(self, surface):
+        self.draw_path(surface)
         self.__train.update()
-        self.__train.draw(screen)
+        self.__train.draw(surface)
         # print("test 101")
 
     def getMatrix(self):
         return self.__matrix
+    
+    def getTrain(self):
+        return self.__train.sprite
     
     def getGrid(self):
         return self.__grid
@@ -184,18 +249,12 @@ class Path():
 
         
     def generate_path(self, next_station):
-        temp = self.__train.sprite.getLocation()
-        x_1, y_1 = (int(temp[0]//9)), (int(temp[1]//9))
+        x_1, y_1 = self.__train.sprite.get_coords()
         start = self.__grid.node(x_1, y_1)
 
         
         next_location = next_station.getLocation()
-        # print("Station Name: ", next_station.getName(), "Station Location", next_station.getLocation())
         x_2, y_2 = int(next_location[0] // 9), int(next_location[1] // 9)
-        # print()
-        # print("Current location: ", self.__train.sprite.getLocation())
-        # print("end: ", x_2, y_2)
-        # print("next station: ", next_station.getName(), next_station.getLocation())
         end = self.__grid.node(x_2, y_2)
 
         find = AStarFinder(diagonal_movement = DiagonalMovement.always)
@@ -203,10 +262,7 @@ class Path():
         self.__path = [*map(lambda  gridnode: (gridnode.x, gridnode.y), self.__path)]
         
         self.__grid.cleanup()
-        # print("Path index 0: ", self.__path[0], "Train location: ", convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
-        # print(self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())))
-        # if self.__path[0] == convertToTuple(convertToTileCoords(self.__train.sprite.getLocation())):
-        #     self.__path = self.__path[1:]
+        self.getTrain().setStation(next_station)
 
         self.__train.sprite.setPath(self.__path)
 
@@ -216,16 +272,16 @@ class Path():
         return column, row
     
 
-    def loadPath(self, screen):
+    def draw_path(self, screen):
         if self.__path:
             coords = []
             for point in self.__path:
-                x = point.x * 9 + 4.5
-                y = point.y * 9 + 4.5
+                x = point[0] * 9 + 4.5
+                y = point[1] * 9 + 4.5
                 coords.append((x, y))
-            pygame.draw.lines(screen, '#4a4a4a', False, coords, 5)
+            pygame.draw.lines(screen, '#ff80ff', False, coords, 5)
 
-    def loadMatrix(level, path, validIDs, z = 0):
+    def loadMatrix(level, path, validIDs):
         level_matrix = []
         with open(f"{path}\\Maps\\{level}.csv") as file:
             data = csv.reader(file, delimiter=",")
@@ -238,7 +294,7 @@ class Path():
             for row in range(len(level_matrix)):
                 temp_row = []
                 for cell in range(len(level_matrix[row])):
-                    if (level_matrix[row][cell] in validIDs[0]) or (level_matrix[row][cell] in validIDs[1]):
+                    if (level_matrix[row][cell] in validIDs["track_IDs"]) or (level_matrix[row][cell] in validIDs["station_IDs"]):
                         # print(level_matrix[row][cell])
                         temp_row.append(1)
                     else:
