@@ -23,11 +23,10 @@ sys.path.append(f"{path}\\Trains")
 
 import pygame
 import time
-import pyautogui
+# import pyautogui
 from pytmx.util_pygame import load_pygame
 from button import *
 from controls import *
-from settings import *
 from play import *
 from game import *
 from saves import *
@@ -63,9 +62,9 @@ def SavesMenu(path, screen, SCREEN_WIDTH, SCREEN_HEIGHT):
     back_button, save_1_button, save_2_button, save_3_button = Saves.LoadMenu(screen, SCREEN_WIDTH, SCREEN_HEIGHT, path)
     while game.state == 3 or game.state == 4:
         for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
         if back_button.wasClicked():
             game.changeState(2)

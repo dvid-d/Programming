@@ -9,7 +9,7 @@ sys.path.append(f"{path}z\Maps")
 sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
-from button import Button
+# from button import Button
 
 class Shop():
     def __init__(self):
@@ -17,6 +17,10 @@ class Shop():
         self.loans = [["Loan_ID",1000000, 0.01], ["Loan_ID", 50000, 0.03]] #LoanID, Loan Amount, Annual Interest
 
         
+    def loadButton(path):
+        shop_button_icon = pygame.image.load(f"{path}\\icons\\shop_button.png")
+        pass
+    
     def GetTrains(self):
         pass
 
