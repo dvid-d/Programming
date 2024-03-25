@@ -56,6 +56,9 @@ class Train(pygame.sprite.Sprite):
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
         self.__speed = speed
+        self.__isAtStation = False
+        self.__stop_time = False
+        self.__capacity = 0
 
         self.__path = []
         self.__empty_path = empty_path
@@ -77,9 +80,17 @@ class Train(pygame.sprite.Sprite):
     def setStation(self, station):
         self.__station = station
 
+    def setIsAtStation(self, isAtStation):
+        self.__isAtStation = isAtStation
+    
+    def increaseStop_time(self, value):
+        self.__stop_time += value
+
     def delPath(self):
         self.__path = []
 
+
+    #pathing
     def createCollisionRects(self):
         if self.__path:
             self.__collisionRects = []
@@ -106,7 +117,6 @@ class Train(pygame.sprite.Sprite):
         self.__location += self.__vector_direction * self.__speed
         self.checkCollisions()
         self.__rect.center = self.__location
-
 
     def checkCollisions(self):
         if self.__collisionRects:
@@ -145,7 +155,7 @@ class Train(pygame.sprite.Sprite):
                 isAtEndOfLine = True
                 return isAtEndOfLine
             
-    #Getters
+    #Pathing Getters
     def getValidIDs(path, line):
         file_name = "IDs.json"
 
@@ -159,7 +169,7 @@ class Train(pygame.sprite.Sprite):
         y = self.__rect.centery // 9
         return (x, y)
     
-
+    #Other Getters
     def getLine(self):
         return self.__line
     
@@ -181,11 +191,18 @@ class Train(pygame.sprite.Sprite):
     def getID(self):
         return self.__ID
 
-    #Managing the train in-game
+    def getIsAtStation(self):
+        return self.__isAtStation
 
+    def getStopTime(self):
+        return self.__stop_time
+        
+    #Managing the train in-game
     def Clean(line):
         pass
-
+    
+    def wasLate(self):
+        pass
 
     #at Station
     def leaveStation():
@@ -199,6 +216,8 @@ class Train(pygame.sprite.Sprite):
 
     #at end of line
     def RemoveTrain(self, trains):
+        #appends all trains which do not have the ID as the train being removed to a list
+        #list is set as the new list with all train obj's for that line
         line = self.getLine()
         current_line_trains = trains[line]
         temporary = []
@@ -330,6 +349,7 @@ class Station():
     def getName(self):
         return self.__name
     
+
     def Open():
         pass
     
