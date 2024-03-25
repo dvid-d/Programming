@@ -103,16 +103,16 @@ class Play():
 
         victoria_temp = []
         if trains_to_make["victoria"]["SB"] is True:
-            train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (79* 9, 75 * 9), station = station, speed = 1, empty_path = [])
+            train = Train(ID = trainID, direction = "NB", line = "victoria", capacity = 864, customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (79* 9, 75 * 9), station = station, speed = 1, empty_path = [])
             pathfinder = Path(matrix = victoria_matrix, train = train, path = [])   
             victoria_temp.append([train, pathfinder])
             trainID += 1
 
-        if trains_to_make["victoria"]["NB"] is True:
-            train_2 = Train(ID = trainID + 1, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (125 * 9, 19 * 9), station = station, speed = 1, empty_path = [])
-            pathfinder_2 = Path(matrix = victoria_matrix, train = train_2, path = [])   
-            victoria_temp.append([train_2, pathfinder_2])
-            trainID += 1
+        # if trains_to_make["victoria"]["NB"] is True:
+        #     train_2 = Train(ID = trainID + 1, direction = "SB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (125 * 9, 19 * 9), station = station, speed = 1, empty_path = [])
+        #     pathfinder_2 = Path(matrix = victoria_matrix, train = train_2, path = [])   
+        #     victoria_temp.append([train_2, pathfinder_2])
+        #     trainID += 1
 
         trains = {"victoria": victoria_temp, "h&c" : []}
         return trains
@@ -160,6 +160,18 @@ class Play():
                     if len(group) > 0:
                         train = group[0]
                         pathfinder = group[1]
+                        station = train.getStation()
+
+                        if convertToTileCoords(train.getLocation()) == convertToTileCoords(station.getLocation()):
+                            train.setIsAtStation(True)
+                        
+                        # if train.getIsAtStation():
+                        #     train.increaseStop_time(1)
+                        #     new_customers = 0 #no. getting on
+                        #     leaving_customers = 0 #no. getting off
+
+                        #     wasLate = station.wasLate(train.getID())
+
                         if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
                             next_station = train.findNextStation(stations_objects)
                             if type(next_station) == bool:
