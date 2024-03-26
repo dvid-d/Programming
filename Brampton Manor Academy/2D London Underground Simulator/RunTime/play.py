@@ -2,6 +2,7 @@ import sys
 from os.path import abspath
 from inspect import getsourcefile
 import pygame
+import secrets #to generate random numbers for events
 from shop import *
 from train import *
 from tile import *
@@ -10,6 +11,7 @@ from map import *
 from settings import Settings
 import math
 from pytmx.util_pygame import load_pygame
+
 path = abspath(getsourcefile(lambda:0))[:-16]
 sys.path.append(f"{path}\\Game Properties")
 sys.path.append(f"{path}\\Fonts")
@@ -166,17 +168,19 @@ class Play():
                         pathfinder = group[1]
                         station = train.getStation()
 
-                        if convertToTileCoords(train.getLocation()) == convertToTileCoords(station.getLocation()):
+                        train_location = train.getLocation()
+                        station_location = station.getLocation()
+                        if convertToTileCoords(train_location) == convertToTileCoords(station_location):
                             train.setIsAtStation(True)
                         
-                        # if train.IsAtStation():
+                        # if train.IsAtStation:
                         # train may be stopped whilst not at a station
                         #     train.increaseStop_time(1)
                         #     new_customers = 0 #no. getting on
                         #     leaving_customers = 0 #no. getting off
 
                         #     wasLate = station.wasLate(train.getID())
-                        #    if train.stop_time % 300 == 0:
+                        #    if train.stop_time % (4 * FPS) == 0:
                         #        train.isAtStation = False
                         # elif train.TimeToCompleteEvent != 0:
                         #     train.stop_time += 1
