@@ -133,7 +133,8 @@ class Play():
         stations_objects = Play.CreateStations(layers)
         trains = save_data["trainLocations"]
         if save_data["time"] == "00/00/0000":
-            trains_to_make = {"victoria": {"NB": True, "SB" : True}, "h&c": {}, "circle": {}, "district":{}, "jubilee": {}, "metropolitan": {}, "central": {}, "picadilly": {}, "northern": {}}
+            #Northern line needs to be sorted out
+            trains_to_make = {"victoria": {"NB": True, "SB" : True}, "h&c": {"WB": False, "EB" : False}, "circle": {"CW": False, "ACW": False}, "district":{"WB": False, "EB": True}, "jubilee": {"WB": False, "EB": False}, "metropolitan": {"WB": False, "EB": False}, "central": {"WB": False, "EB": False}, "picadilly": {"WB": False, "EB": False}, "northern": {"NB" : False, "SB": False}}
         else:
             trains_to_make = {"victoria": {"NB": False, "SB" : False}, "h&c": {}, "circle": {}, "district":{}, "jubilee": {}, "metropolitan": {}, "central": {}, "picadilly": {}, "northern": {}}
 
@@ -155,6 +156,9 @@ class Play():
             for button in buttons:
                 button.display()
 
+            #generate random event at a randm time
+            #generate line-specific event before FOR loop
+            
             for line in trains:
                 for group in trains[line]:
                     if len(group) > 0:
@@ -172,6 +176,15 @@ class Play():
 
                         #     wasLate = station.wasLate(train.getID())
 
+                        #if train.getTimeToComplete() != 0:
+                            # stop_time = train.getStop_time()
+                            # new_stop_time = stop_time + value
+                            # if new_stop_time == train.get_time_to_complete():
+                            #     train.setStop_time(0)
+                            # else:
+                            #     train.setStop_time(stop_time + value)
+
+                        #generate train-related event here
                         if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
                             next_station = train.findNextStation(stations_objects)
                             if type(next_station) == bool:
