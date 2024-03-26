@@ -2,23 +2,23 @@
   "events":{
     
     "event_1":{
-      "Name":NULL,
-      "ID": NULL,
-      "Description":NULL
+      "Name":"",
+      "ID": "",
+      "Description":""
     },
 
      "event_2":
     {
-      "Name":NULL,
-      "ID": NULL,
-      "Description":NULL
+      "Name":"",
+      "ID": "",
+      "Description":""
     },
 
       "event_3":
     {
-      "Name":NULL,
-      "ID": NULL,
-      "Description":NULL
+      "Name":"",
+      "ID": "",
+      "Description":""
     }
   }
 }
