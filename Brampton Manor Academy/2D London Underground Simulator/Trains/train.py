@@ -65,6 +65,16 @@ class Train(pygame.sprite.Sprite):
         self.__empty_path = empty_path
         self.__collisionRects = []
 
+     #most event status info, expt were not appropriate (*)
+        self.__isBrokenDown = False
+        self.__track_isFaulty = False
+        # self.__nextStationIsClose = False (*) ?
+        self.__signalIssue = False
+        self.__driverAvailable = True
+        self.__trainAvailable = True
+        self.__isTooHot = False #To occour during summer time only
+
+     
         self.image = pygame.image.load(image_location).convert_alpha()
         self.rect = self.image.get_rect(topleft = location)
     
