@@ -169,21 +169,32 @@ class Play():
                         if convertToTileCoords(train.getLocation()) == convertToTileCoords(station.getLocation()):
                             train.setIsAtStation(True)
                         
-                        # if train.getIsAtStation():
+                        # if train.IsAtStation():
+                        # train may be stopped whilst not at a station
                         #     train.increaseStop_time(1)
                         #     new_customers = 0 #no. getting on
                         #     leaving_customers = 0 #no. getting off
 
                         #     wasLate = station.wasLate(train.getID())
+                        #    if train.stop_time % 300 == 0:
+                        #        train.isAtStation = False
+                        # elif train.TimeToCompleteEvent != 0:
+                        #     train.stop_time += 1
+                        #    if train._stop_time % train.timeToCompleteEvent == 0:
+                        #        train.toCompleteEvent = 0
+                        #        train.stopTime = 0
 
-                        #if train.getTimeToComplete() != 0:
+                        #if train.stop_time == 0:
+                        #if train.getTimeToCompleteEvent() != 0:
                             # stop_time = train.getStop_time()
                             # new_stop_time = stop_time + value
                             # if new_stop_time == train.get_time_to_complete():
                             #     train.setStop_time(0)
+                            #     train.setTimeToComplete(0)
                             # else:
-                            #     train.setStop_time(stop_time + value)
+                            #     train.setStop_time(new_stop_time)
 
+                        #both IF statements below to be indended under line 182
                         #generate train-related event here
                         if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
                             next_station = train.findNextStation(stations_objects)
