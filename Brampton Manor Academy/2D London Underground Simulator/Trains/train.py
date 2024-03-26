@@ -56,8 +56,8 @@ class Train(pygame.sprite.Sprite):
         self.__customerSatisfaction = customer_satisfaction
         self.__station = station
         self.__speed = speed
-        self.__isAtStation = False
-        self.__stop_timer = 0
+        self.isAtStation = False
+        self.__stop_time = 0
         self.__time_to_complete_event = 0
         self.__max_capacity = 0
         self.__number_of_passengers = 0
@@ -84,13 +84,7 @@ class Train(pygame.sprite.Sprite):
     def display(self, surface):
         surface.blit(self.__image, self.__rect.topleft)
 
-    def setPath(self, path):
-        self.__path = path
-        self.createCollisionRects()
-        self.get_direction()
-
-    def setStation(self, station):
-        self.__station = station
+    
 
     def setIsAtStation(self, isAtStation):
         self.__isAtStation = isAtStation
@@ -98,8 +92,6 @@ class Train(pygame.sprite.Sprite):
     def increaseStop_time(self, value):
         self.__stop_time += value
 
-    def delPath(self):
-        self.__path = []
 
 
     #pathing
@@ -139,9 +131,6 @@ class Train(pygame.sprite.Sprite):
         else:
             self.delPath()
 
-    def setStation(self, station):
-        self.__station = station
-
     def findNextStation(self, stations):
         #station IDs from east to west or south to north (or clockwise for circle line) by default
         current_station = self.getStation()
@@ -166,7 +155,22 @@ class Train(pygame.sprite.Sprite):
             if next_station == "":
                 isAtEndOfLine = True
                 return isAtEndOfLine
-            
+    
+    def delPath(self):
+        self.__path = []
+    
+    def setPath(self, path):
+        self.__path = path
+        self.createCollisionRects()
+        self.get_direction()
+
+    def setStation(self, station):
+        self.__station = station
+
+    def set_isBrokenDown(self):
+        self.isBrokenDown = True
+
+    #Getters    
     #Pathing Getters
     def getValidIDs(path, line):
         file_name = "IDs.json"
@@ -181,6 +185,8 @@ class Train(pygame.sprite.Sprite):
         y = self.__rect.centery // 9
         return (x, y)
     
+
+
     #Other Getters
     def getLine(self):
         return self.__line
@@ -209,6 +215,8 @@ class Train(pygame.sprite.Sprite):
     def getStopTime(self):
         return self.__stop_time
         
+
+
     #Managing the train in-game
     def Clean(line):
         pass
@@ -216,15 +224,7 @@ class Train(pygame.sprite.Sprite):
     def wasLate(self):
         pass
 
-    #at Station
-    def leaveStation():
-        pass
 
-    def openDoors():
-        pass
-
-    def shutDoors():
-        pass
 
     #at end of line
     def RemoveTrain(self, trains):
