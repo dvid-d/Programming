@@ -57,7 +57,7 @@ class Train(pygame.sprite.Sprite):
         self.__station = station
         self.__speed = speed
         self.__isAtStation = False
-        self.__stop_time = False
+        self.__stop_timer = 0
         self.__max_capacity = 0
         self.__number_of_passengers = 0
 
