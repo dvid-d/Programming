@@ -205,14 +205,17 @@ class Play():
                         #        train.stopTime = 0
 
                         #if train.stop_time == 0:
-                        #if train.getTimeToCompleteEvent() != 0:
-                            # stop_time = train.getStop_time()
-                            # new_stop_time = stop_time + value
-                            # if new_stop_time == train.get_time_to_complete():
-                            #     train.setStop_time(0)
-                            #     train.setTimeToComplete(0)
-                            # else:
-                            #     train.setStop_time(new_stop_time)
+                            #if train.getTimeToCompleteEvent() != 0:
+                                # stop_time = train.getStop_time()
+                                # new_stop_time = stop_time + value
+                                # if new_stop_time == train.get_time_to_complete():
+                                #     train.setStop_time(0)
+                                #     train.setTimeToComplete(0)
+                                # else:
+                                #     train.setStop_time(new_stop_time)
+                        #    else:
+                        #        generate random number
+                        #        if no. appropriatee, generate event
 
                         #both IF statements below to be indended under line 182
                         #generate train-related event here
