@@ -12,6 +12,8 @@ from settings import Settings
 import math
 from pytmx.util_pygame import load_pygame
 
+import time
+
 path = abspath(getsourcefile(lambda:0))[:-16]
 sys.path.append(f"{path}\\Game Properties")
 sys.path.append(f"{path}\\Fonts")
@@ -105,7 +107,7 @@ class Play():
 
         victoria_temp = []
         if trains_to_make["victoria"]["SB"] is True:
-            train = Train(ID = trainID, direction = "NB", line = "victoria", capacity = 864, customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (79* 9, 75 * 9), station = station, speed = 1, empty_path = [])
+            train = Train(ID = trainID, direction = "NB", line = "victoria", customer_satisfaction = 100, image_location= f"{path}\\Icons\\victoria.png", location = (79* 9, 75 * 9), station = station, speed = 1, empty_path = [], stop_time = 0, time_to_complete_event = 0, number_of_passengers = 0)
             pathfinder = Path(matrix = victoria_matrix, train = train, path = [])   
             victoria_temp.append([train, pathfinder])
             trainID += 1
@@ -122,7 +124,7 @@ class Play():
 
     def Run(screen, path, save_data, SCREEN_WIDTH, SCREEN_HEIGHT, game):
         # game_settings = Settings.Settings(100, 3)
-        frames = 30
+        FPS = 30
         clock = pygame.time.Clock()
 
         map_data, layers, sprite_group = Map.LoadData(path, save_data)
@@ -143,7 +145,8 @@ class Play():
         trains = Play.CreateTrains(layers, stations_objects, trains_to_make)
         settings_button = Settings.loadButtons(path = path, surface = screen, SCREEN_WIDTH = SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_HEIGHT)
         buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
-        
+
+        victoria_path = []
         while game.state == 5:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -170,14 +173,27 @@ class Play():
 
                         train_location = train.getLocation()
                         station_location = station.getLocation()
-                        if convertToTileCoords(train_location) == convertToTileCoords(station_location):
-                            train.setIsAtStation(True)
+
+                        if convertToTileCoords(train_location) == convertToTileCoords(station_location) and train.getPath() == []:
+                            a = time.time()
+                            train.isAtStation = True
                         
-                        # if train.IsAtStation:
-                        # train may be stopped whilst not at a station
-                        #     train.increaseStop_time(1)
-                        #     new_customers = 0 #no. getting on
-                        #     leaving_customers = 0 #no. getting off
+                        if train.isAtStation:
+                        # train maybe stopped whilst not at a station
+                            stop_time_before = train.get_stop_time()
+                            stop_time_after = stop_time_before + 1
+                            print(stop_time_after)
+                            train.set_stop_time(stop_time_after)
+
+                            # if stop_time_after == 1:
+                            #     new_customers = 0 #no. getting on
+                            #     leaving_customers = 0 #no. getting off
+                            if train.get_stop_time() % (2 * FPS) == 0:
+                                train.set_stop_time(0) 
+                                train.isAtStation = False
+                                b = time.time()
+                                print("TIME SPENT AT STATION: ", (b-a))
+                        
 
                         #     wasLate = station.wasLate(train.getID())
                         #    if train.stop_time % (4 * FPS) == 0:
@@ -200,16 +216,24 @@ class Play():
 
                         #both IF statements below to be indended under line 182
                         #generate train-related event here
-                        if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
-                            next_station = train.findNextStation(stations_objects)
-                            if type(next_station) == bool:
-                                train.AddToStats(stats)
-                                train.RemoveTrain(trains)
-                            else:
-                                pathfinder.generate_path(next_station)
+                        if train.get_stop_time() == 0:
+                            if len(victoria_path) == 0:
+                                start = time.time()
+                            if len(victoria_path) == 16:
+                                end = time.time()
+                                print(end - start)
+                            if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
+                                next_station = train.findNextStation(stations_objects)
+                                if type(next_station) == bool:
+                                    train.AddToStats(stats)
+                                    train.RemoveTrain(trains)
+                                else:
+                                    pathfinder.generate_path(next_station)
+                                    victoria_path.append(train.getPath())
 
-                        if type(next_station) != bool:
-                            pathfinder.update(screen)   
-                            train.display(screen)
-            clock.tick(frames)
+                            if type(next_station) != bool:
+                                pathfinder.update(screen)
+
+                        train.display(screen)
+            clock.tick(FPS)
             pygame.display.update()

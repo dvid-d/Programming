@@ -31,7 +31,7 @@ def getCenterCoords(coords):
 
 
 class Train(pygame.sprite.Sprite):
-    def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path):
+    def __init__(self, ID, direction, line, customer_satisfaction, image_location, location, speed, station, empty_path, stop_time, time_to_complete_event, number_of_passengers):
         #ID of train
         #Northbound/Southbound/Eastbound/Westbound - NB, SB, EB, WB - or Clockwise/Anitclockwise (CW/ACW) for the circle line
         #e.g. District, Victoria, Northern etc
@@ -57,10 +57,10 @@ class Train(pygame.sprite.Sprite):
         self.__station = station
         self.__speed = speed
         self.isAtStation = False
-        self.__stop_time = 0
-        self.__time_to_complete_event = 0
-        self.__max_capacity = 0
-        self.__number_of_passengers = 0
+        self.__stop_time = stop_time
+        self.__time_to_complete_event = time_to_complete_event
+        self.__max_capacity = 864
+        self.__number_of_passengers = number_of_passengers
 
         self.__path = []
         self.__empty_path = empty_path
@@ -89,10 +89,14 @@ class Train(pygame.sprite.Sprite):
     def setIsAtStation(self, isAtStation):
         self.__isAtStation = isAtStation
     
-    def increaseStop_time(self, value):
-        self.__stop_time += value
+    def increase_stop_time(self, increment):
+        self.__stop_time += increment
 
+    def get_stop_time(self):
+        return self.__stop_time
 
+    def set_stop_time(self, stop_time):
+        self.__stop_time = stop_time
 
     #pathing
     def createCollisionRects(self):
@@ -211,10 +215,6 @@ class Train(pygame.sprite.Sprite):
 
     def getIsAtStation(self):
         return self.__isAtStation
-
-    def getStopTime(self):
-        return self.__stop_time
-        
 
 
     #Managing the train in-game
