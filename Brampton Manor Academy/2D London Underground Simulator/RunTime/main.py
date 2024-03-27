@@ -19,6 +19,7 @@ sys.path.append(f"{path}\\Maps")
 sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
+sys.path.append(f"{path}\\Events")
 
 
 import pygame

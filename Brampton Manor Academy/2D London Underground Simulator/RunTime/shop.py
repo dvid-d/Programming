@@ -9,6 +9,8 @@ sys.path.append(f"{path}z\Maps")
 sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
+sys.path.append(f"{path}\\Events")
+
 # from button import Button
 
 class Shop():

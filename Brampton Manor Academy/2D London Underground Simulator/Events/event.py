@@ -6,17 +6,32 @@ from os.path import abspath
 path = abspath(getsourcefile(lambda:0))[:-16]
 
 class Event():
-
-  events = []
-  with open(f"{path}\\Saves\\event_descriptions.json", 'r') as save_file:
-            events = json.load(save_file)
-
   def __init__(self, id, line, train):
     self.__ID = id
     self.__line = line
     self.__isCompleted = False
     self__train = pygame.sprite.GroupSingle(train)
   
+  def load(save_data):
+    event_probability = save_data["event probability"] #prob. of any event to happen
+    event_init_list = [] #contains list with binary for event occourance selection; 0 = not happening, 1 = defintely happening
+    for _ in range(1/event_probability - 1):
+        event_init_list.append(0)
+    event_init_list.append(1)
+
+    with open(f"path\\Events\\event_descriptions.json", "r") as events_file: #loads details of events from file
+        events_data = json.load(events_file)
+
+    events_probalitities = [] #contains names of all events; no. each appears dep. on probablity of each occouring
+    for event in events_data:
+        probability = events_data[event]
+        occourances = 1 / probability
+        for _ in occourances:
+            events_probalitities.append(event)
+    
+    return event_probability, event_init_list, events_data, events_probalitities
+  
+
   def setAsCompleted(self):
     self.__isCompleted = True
 

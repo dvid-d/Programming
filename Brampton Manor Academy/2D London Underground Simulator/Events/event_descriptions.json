@@ -14,7 +14,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.25
     },
 
 
@@ -33,7 +33,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.10
     },
 
 
@@ -52,7 +52,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.05
     },
 
 
@@ -71,7 +71,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.30
     },
 
 
@@ -90,7 +90,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.05
     },
 
 
@@ -109,7 +109,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.02
     },
 
 
@@ -128,7 +128,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.08
     },
 
 
@@ -147,7 +147,7 @@
       {"Cost":0,
       "Duration":0},
       
-      "Probability":0
+      "Probability":0.15
     }
   }
 }

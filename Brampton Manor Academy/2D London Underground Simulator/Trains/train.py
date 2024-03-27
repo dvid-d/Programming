@@ -80,7 +80,6 @@ class Train(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = location)
     
 
-
     def display(self, surface):
         surface.blit(self.__image, self.__rect.topleft)
 

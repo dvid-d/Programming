@@ -45,6 +45,7 @@
         "picadilly": [],
         "northern": []
         },
-    "trainID":0,
-    "Stats":[]
+    "trainID": 0,
+    "Stats": [],
+    "event probability": 0.25
 }

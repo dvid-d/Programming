@@ -2,14 +2,16 @@ import sys
 from os.path import abspath
 from inspect import getsourcefile
 import pygame
-import secrets #to generate random numbers for events
+# import secrets #to generate random numbers for events
 from shop import *
 from train import *
 from tile import *
 from game import *
 from map import *
+# from event import *
 from settings import Settings
 import math
+from random import choice
 from pytmx.util_pygame import load_pygame
 
 import time
@@ -21,6 +23,8 @@ sys.path.append(f"{path}\\Maps")
 sys.path.append(f"{path}\\RunTime")
 sys.path.append(f"{path}\\Saves")
 sys.path.append(f"{path}\\Trains")
+sys.path.append(f"{path}\\Events")
+
 
 from train import Station
 
@@ -130,10 +134,9 @@ class Play():
         map_data, layers, sprite_group = Map.LoadData(path, save_data)
         stats = save_data["Stats"]
         Map.Display(screen, sprite_group) 
-        level_matrix = Path.loadMatrix("level_1", path, [])
         trainID = 0
 
-
+        #STATIONS, TRAINS objects
         stations_objects = Play.CreateStations(layers)
         trains = save_data["trainLocations"]
         if save_data["time"] == "00/00/0000":
@@ -142,11 +145,33 @@ class Play():
         else:
             trains_to_make = {"victoria": {"NB": False, "SB" : False}, "h&c": {}, "circle": {}, "district":{}, "jubilee": {}, "metropolitan": {}, "central": {}, "picadilly": {}, "northern": {}}
 
+
         trains = Play.CreateTrains(layers, stations_objects, trains_to_make)
         settings_button = Settings.loadButtons(path = path, surface = screen, SCREEN_WIDTH = SCREEN_WIDTH, SCREEN_HEIGHT = SCREEN_HEIGHT)
         buttons = [settings_button] #, shop_button etc #list of buttons to loop through and proceed with their individual actions if clicked
 
-        victoria_path = []
+        # victoria_path = []
+
+
+        #EVENTS
+        event_probability = save_data["event probability"] #prob. of any event to happen
+        event_init_list = [] #contains list with binary for event occourance selection; 0 = not happening, 1 = defintely happening
+        for _ in range(1/event_probability - 1):
+            event_init_list.append(0)
+        event_init_list.append(1)
+
+        with open(f"path\\Events\\event_descriptions.json", "r") as events_file:
+            events_data = json.load(events_file)
+
+        events_probalitities = []
+        for event in events_data:
+            probability = events_data[event]
+            occourances = 1 / probability
+            for _ in occourances:
+                events_probalitities.append(event)
+
+        # Event.load()
+        #MAIN GAME LOOP
         while game.state == 5:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -161,8 +186,19 @@ class Play():
             for button in buttons:
                 button.display()
 
+
             #generate random event at a randm time
-            #generate line-specific event before FOR loop
+            #generate events here
+            event_happening = choice(event_init_list)
+            if event_happening == 1:
+                event_isHappening = True
+            else:
+                event_isHappening = False
+
+
+            if event_isHappening:
+                event_happeningID = choice(list)
+            
             
             for line in trains:
                 for group in trains[line]:
@@ -175,7 +211,7 @@ class Play():
                         station_location = station.getLocation()
 
                         if convertToTileCoords(train_location) == convertToTileCoords(station_location) and train.getPath() == []:
-                            a = time.time()
+                            # a = time.time()
                             train.isAtStation = True
                         
                         if train.isAtStation:
@@ -191,13 +227,12 @@ class Play():
                             if train.get_stop_time() % (2 * FPS) == 0:
                                 train.set_stop_time(0) 
                                 train.isAtStation = False
-                                b = time.time()
-                                print("TIME SPENT AT STATION: ", (b-a))
+                                # b = time.time()
+                                # print("TIME SPENT AT STATION: ", (b-a))
                         
 
                         #     wasLate = station.wasLate(train.getID())
-                        #    if train.stop_time % (4 * FPS) == 0:
-                        #        train.isAtStation = False
+                                
                         # elif train.TimeToCompleteEvent != 0:
                         #     train.stop_time += 1
                         #    if train._stop_time % train.timeToCompleteEvent == 0:
@@ -220,11 +255,11 @@ class Play():
                         #both IF statements below to be indended under line 182
                         #generate train-related event here
                         if train.get_stop_time() == 0:
-                            if len(victoria_path) == 0:
-                                start = time.time()
-                            if len(victoria_path) == 16:
-                                end = time.time()
-                                print(end - start)
+                            # if len(victoria_path) == 0:
+                            #     start = time.time()
+                            # if len(victoria_path) == 16:
+                            #     end = time.time()
+                            #     print(end - start)
                             if train.getStation().getName() == "Default" or len(train.getPath()) == 0:
                                 next_station = train.findNextStation(stations_objects)
                                 if type(next_station) == bool:
@@ -232,7 +267,7 @@ class Play():
                                     train.RemoveTrain(trains)
                                 else:
                                     pathfinder.generate_path(next_station)
-                                    victoria_path.append(train.getPath())
+                                    # victoria_path.append(train.getPath())
 
                             if type(next_station) != bool:
                                 pathfinder.update(screen)
