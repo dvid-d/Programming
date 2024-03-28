@@ -1,0 +1,153 @@
+{
+  "events":{
+    
+
+    "Breakdown":{
+      "ID": 1,
+      "Description":"Train breakdown",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.25
+    },
+
+
+
+
+    "Track fault":
+    {
+      "ID": 2,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.10
+    },
+
+
+
+
+      "Station closed":
+    {
+      "ID": 3,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.05
+    },
+
+
+
+
+      "Signal":
+    {
+      "ID": 4,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.30
+    },
+
+
+
+
+     "Driver strike":
+    {
+      "ID": 5,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.05
+    },
+
+
+
+
+    "Lack of train drivers":
+    {
+      "ID": 6,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.02
+    },
+
+
+
+
+    "Lack of available trains":
+    {
+      "ID": 7,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.08
+    },
+
+
+
+
+    "Crime":
+    {
+      "ID": 8,
+      "Description":"",
+      "OptionA":{
+
+        "Cost":0,
+        "Duration":0},
+
+      "OptionB":
+      {"Cost":0,
+      "Duration":0},
+      
+      "Probability":0.15
+    }
+  }
+}
