@@ -8,7 +8,7 @@ from train import *
 from tile import *
 from game import *
 from map import *
-# from event import *
+from game_event import *
 from settings import Settings
 import math
 from random import choice
@@ -154,23 +154,24 @@ class Play():
 
 
         #EVENTS
-        event_probability = save_data["event probability"] #prob. of any event to happen
-        event_init_list = [] #contains list with binary for event occourance selection; 0 = not happening, 1 = defintely happening
-        for _ in range(1/event_probability - 1):
-            event_init_list.append(0)
-        event_init_list.append(1)
+        # event_probability = save_data["event probability"] #prob. of any event to happen
+        # event_init_list = [] #contains list with binary for event occourance selection; 0 = not happening, 1 = defintely happening
+        # for _ in range(1/int(event_probability) - 1):
+        #     event_init_list.append(0)
+        # event_init_list.append(1)
 
-        with open(f"path\\Events\\event_descriptions.json", "r") as events_file:
-            events_data = json.load(events_file)
+        # with open(f"path\\Events\\event_descriptions.json", "r") as events_file:
+        #     events_data = json.load(events_file)
 
-        events_probalitities = []
-        for event in events_data:
-            probability = events_data[event]
-            occourances = 1 / probability
-            for _ in occourances:
-                events_probalitities.append(event)
+        # events_probalitities = []
+        # for event in events_data:
+        #     probability = events_data[event]
+        #     occourances = 1 / probability
+        #     for _ in occourances:
+        #         events_probalitities.append(event)
 
-        # Event.load()
+        event_probability, event_init_list, events_data, events_probalitities = Event.loadData(save_data)
+        print(events_probalitities)
         #MAIN GAME LOOP
         while game.state == 5:
             for event in pygame.event.get():
@@ -197,7 +198,10 @@ class Play():
 
 
             if event_isHappening:
-                event_happeningID = choice(list)
+                event_name = choice(events_probalitities)
+                eventID = events_data[event_name]["ID"]
+                print(event_name)
+
             
             
             for line in trains:
